@@ -97,7 +97,7 @@ Advantage compounds. The best ground both yields more and varies less. A single 
 
 ## Simulated warming and drying
 
-**These are sensitivity experiments, not climate projections.** They apply uniform shifts to observed climate, use no CMIP6 or IPCC pattern, carry no probability information, and assume no agronomic adaptation, cultivar change, or planting-date shift.
+**These are sensitivity experiments, not climate projections.** They apply uniform shifts to observed climate, use no CMIP6 or IPCC pattern, carry no probability information, and assume no agronomic adaptation, cultivar change, or planting-date shift. For scenarios grounded in named SSP pathways, see [CMIP6 scenario projections](#cmip6-scenario-projections) below; these uniform shifts are retained as a robustness check.
 
 | Scenario                | Δ bu/acre | Δ %    | Counties down |
 | ----------------------- | --------- | ------ | ------------- |
@@ -112,6 +112,39 @@ The combination exceeds the sum of its parts, which is finding 1 expressing itse
 ![Simulated yield change under +1C and -10% precipitation](figures/fig17_scenario_map.png)
 
 Losses concentrate in the southwest, where baseline yields are already the lowest in the state. The few counties showing small positive responses sit in the cool northeast, below the estimated temperature optimum.
+
+---
+
+## CMIP6 scenario projections
+
+Scripts `12` and `13` replace the uniform shifts above with change factors taken from CMIP6 under named SSP pathways. Monthly means (`Amon`) for `tas`, `tasmax` and `pr` come from the AWS Open Data registry (`s3://cmip6-pds`, anonymous access) for **8 models**: ACCESS-ESM1-5, CanESM5, EC-Earth3, GFDL-ESM4, INM-CM5-0, MIROC6, MPI-ESM1-2-LR, MRI-ESM2-0.
+
+Raw model output is never fed to the yield model — it carries systematic bias, and the yield model was fitted on nClimDiv scales. Instead each GCM's **change** between a 1985-2014 baseline and the target window is applied to the observed county record (additive for temperature, multiplicative for precipitation), bilinearly interpolated to all 102 county centroids, and every derived feature is rebuilt exactly as script `04` builds it.
+
+### The result is bracketed, not pinned down
+
+| Scenario | Horizon | Δ Tmax Jul-Aug | Beyond record | Boosted trees | Quadratic panel |
+| -------- | ------- | -------------- | ------------- | ------------- | --------------- |
+| SSP2-4.5 | 2040-69 | +2.54 °C       | 9%            | −0.30         | −2.06           |
+| SSP2-4.5 | 2070-99 | +3.08 °C       | 13%           | −0.23         | −2.48           |
+| SSP5-8.5 | 2040-69 | +3.04 °C       | 14%           | −0.22         | −2.58           |
+| SSP5-8.5 | 2070-99 | **+5.44 °C**   | **49%**       | −0.17         | **−8.70**       |
+
+Δ in bu/acre, ensemble median across the 8 models. "Beyond record" is the share of county-years whose July-August maximum temperature exceeds the hottest ever observed (95.0 °F).
+
+**The two estimators disagree by a factor of thirty, and that gap is the honest answer.** Boosted trees win on in-sample skill, but a tree predicts a constant outside its training range: warm the record past 95 °F and the heat signal simply stops. Under SSP5-8.5 late-century, half the county-years sit there, which is why the tree estimate is *smallest* for the *hottest* scenario — an artefact, not a result. The quadratic panel specification extrapolates and restores the expected ordering, but assumes its fitted curve still holds far outside the observed range.
+
+Read the quadratic column for the hot scenarios, the tree column for the near-term ones, and neither as a forecast.
+
+![How much the estimator matters](figures/fig21_cmip6_model_spread.png)
+
+### What these projections do not include
+
+- **Palmer drought indices are held at observed values.** CMIP6 supplies no PDSI, and deriving it needs a water-balance model. Since `zndx08` is among the strongest predictors, drought-driven losses are understated.
+- **`tas` stands in for the `tmin` delta**; `tasmin` was not retrieved.
+- **Monthly means only**, so no change in within-month extremes, heatwave duration, or rainfall intensity.
+- **One realisation per model**, so internal variability is not sampled.
+- **No adaptation**: no cultivar change, no planting-date shift, no CO₂ fertilisation.
 
 ---
 

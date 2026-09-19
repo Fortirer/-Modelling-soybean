@@ -1,0 +1,56 @@
+{
+  "source": "CMIP6 monthly means (Amon), AWS Open Data registry s3://cmip6-pds",
+  "access": "anonymous, no credentials",
+  "url": "https://registry.opendata.aws/cmip6/",
+  "method": "delta change-factor; additive for temperature, multiplicative for precipitation",
+  "baseline": "1985-2014 (historical experiment)",
+  "horizons": {
+    "mid_century": "2040-2069",
+    "late_century": "2070-2099"
+  },
+  "scenarios": [
+    "ssp245",
+    "ssp585"
+  ],
+  "variables": [
+    "tas",
+    "tasmax",
+    "pr"
+  ],
+  "models_requested": {
+    "INM-CM5-0": "r1i1p1f1",
+    "GFDL-ESM4": "r1i1p1f1",
+    "MIROC6": "r1i1p1f1",
+    "MPI-ESM1-2-LR": "r1i1p1f1",
+    "MRI-ESM2-0": "r1i1p1f1",
+    "ACCESS-ESM1-5": "r1i1p1f1",
+    "EC-Earth3": "r1i1p1f1",
+    "CanESM5": "r1i1p1f1",
+    "UKESM1-0-LL": "r1i1p1f2"
+  },
+  "models_delivered": [
+    "ACCESS-ESM1-5",
+    "CanESM5",
+    "EC-Earth3",
+    "GFDL-ESM4",
+    "INM-CM5-0",
+    "MIROC6",
+    "MPI-ESM1-2-LR",
+    "MRI-ESM2-0"
+  ],
+  "n_models": 8,
+  "skipped": [
+    {
+      "model": "UKESM1-0-LL",
+      "stage": "historical",
+      "error": "historical/tas"
+    }
+  ],
+  "spatial": "bilinear interpolation from the native GCM grid to county centroids; GCM resolution is coarser than a county, so within-state gradients are only as sharp as the model resolves",
+  "caveats": [
+    "One realisation per model; internal variability is not sampled.",
+    "Monthly means only; no change in day-to-day or within-month extremes.",
+    "Palmer drought indices (PDSI, Z-index) are NOT perturbed - CMIP6 does not supply them and deriving them needs a water-balance model. Scenario results therefore understate drought-driven yield loss.",
+    "No agronomic adaptation, cultivar change or planting-date shift is assumed."
+  ]
+}

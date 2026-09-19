@@ -1,0 +1,43 @@
+{
+  "method": "CMIP6 delta change-factor applied to the observed county record",
+  "baseline": "1985-2014",
+  "scenarios": [
+    "ssp245",
+    "ssp585"
+  ],
+  "horizons": [
+    "late_century",
+    "mid_century"
+  ],
+  "models": [
+    "ACCESS-ESM1-5",
+    "CanESM5",
+    "EC-Earth3",
+    "GFDL-ESM4",
+    "INM-CM5-0",
+    "MIROC6",
+    "MPI-ESM1-2-LR",
+    "MRI-ESM2-0"
+  ],
+  "n_models": 8,
+  "predictor_model": "Gradient Boosting",
+  "target": "yield_anom",
+  "seed": 42,
+  "estimators": {
+    "trees": "Gradient Boosting from script 08; best in-sample skill, but a tree predicts a constant beyond its training range, so warming past the hottest observed July-August produces no further loss",
+    "parametric": "quadratic panel with county fixed effects (script 07, M3); extrapolates, at the cost of assuming the fitted curve holds outside the observed range"
+  },
+  "observed_tmax_critical_range_F": [
+    76.1,
+    95.05
+  ],
+  "caveats": [
+    "Projection of the statistical yield-climate relationship under a changed climate, not a forecast. No adaptation, cultivar change or CO2 fertilisation.",
+    "EXTRAPOLATION: under SSP5-8.5 late-century a large share of county-years exceed the hottest July-August in the record. The boosted-tree estimate saturates there and must not be read as a yield projection; the quadratic panel column is the one to use, and it carries its own functional-form risk.",
+    "Palmer drought indices held at observed values; CMIP6 supplies no PDSI, so drought-driven losses are understated.",
+    "tas used as the proxy for the tmin delta; tasmin was not retrieved.",
+    "Monthly means only, so no change in within-month extremes.",
+    "One realisation per model; internal variability not sampled.",
+    "The yield model was fitted on 1980-2025 and is extrapolated beyond the temperature range it observed."
+  ]
+}

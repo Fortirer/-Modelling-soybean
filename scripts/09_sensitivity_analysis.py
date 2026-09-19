@@ -3,6 +3,11 @@
 IMPORTANT: the scenarios below are SENSITIVITY EXPERIMENTS, not CMIP6 or IPCC
 projections. They perturb observed climate by a fixed amount and re-predict.
 They carry no information about the probability of any future climate state.
+
+For scenarios grounded in named SSP pathways, see scripts 12 and 13, which take
+change factors from a CMIP6 ensemble. This script is retained as a robustness
+check: uniform perturbations isolate the model's response to temperature and
+precipitation separately, which the CMIP6 deltas confound.
 """
 import sys, json, pickle, numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
