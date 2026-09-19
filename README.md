@@ -271,6 +271,50 @@ The logarithmic FACE curve is extrapolated to 890 ppm, far beyond the ~550-600 p
 
 ---
 
+## Adaptation: what the grower can do, and what this model cannot say
+
+Every scenario above assumes a grower watches R6 arrive a month earlier, every season for seventy-five years, and changes nothing. Script `21` removes that assumption, and in doing so runs into the limit of the whole statistical approach.
+
+### Frost stops being the constraint
+
+| Climate | Longest viable MG | Frost margin at MG 3.5 | Seed fill at MG 3.5 | Seed fill at longest | EDD at MG 3.5 | EDD at longest |
+| ------- | ----------------- | ---------------------- | ------------------- | -------------------- | ------------- | -------------- |
+| Today | **3.5** | 51 d | 23.2 d | 23.2 d | 19 | 19 |
+| SSP2-4.5 mid | ≥5.0 | 79 d | 19.2 d | 21.8 d | 36 | 44 |
+| SSP2-4.5 late | ≥5.0 | 85 d | 18.7 d | 21.0 d | 42 | 51 |
+| SSP5-8.5 mid | ≥5.0 | 85 d | 18.5 d | 20.8 d | 43 | 52 |
+| SSP5-8.5 late | ≥5.0 | 110 d | 17.0 d | 18.9 d | 75 | 90 |
+
+"Longest viable" is the longest maturity group still reaching R8 before the killing frost in 90% of years. Values of 5.0 are censored at the top of the tested range; the true ceiling is higher.
+
+Today the frost constraint binds at **MG 3.5**, which is what Illinois growers actually plant. That the frost rule lands on the observed practice, using only daily temperature and thermal time, is a coherence check worth noting — nothing in the calculation was told what growers do.
+
+Under every scenario frost essentially stops binding. The margin at the current maturity grows from 51 days to 85-110, and even MG 5.0 matures in 97-100% of years.
+
+![What a longer variety buys and costs](figures/fig29_mg_tradeoff.png)
+
+### Adaptation recovers about half the lost seed fill, and buys more heat
+
+Warming cuts seed fill at MG 3.5 from 23.2 days to 17.0-19.2. Moving to the longest viable variety returns it to 18.9-21.8 — roughly half the loss, never all of it. Under SSP5-8.5 late-century even MG 5.0 fills for 18.9 days against today's 23.2.
+
+The price is exposure. Extreme degree days rise about 20% on top of the climate signal: under SSP5-8.5 late, from 75 at MG 3.5 to 90 at MG 5.0. A longer variety keeps the crop in the field through the hottest, driest end of summer. That is a real trade-off, and it is visible without any yield model, because all three panels above come from thermal-time accounting on daily weather.
+
+### Why no maturity group is recommended
+
+The first version of this script did pick one. The answer was worthless, and it is worth showing why.
+
+Predicted yield across MG 2.0 to 5.0 at today's climate: **−5.28, −3.52, −1.77, −0.03, +1.66, +3.36, +5.07.** First differences: +1.76, +1.76, +1.74, +1.69, +1.70, +1.71 — standard deviation 0.029. A straight line.
+
+It is the fitted `season_gdd` coefficient multiplied by the thermal time each group adds, and nothing else. The "optimum" was always the longest variety frost permitted, which is a property of the regression rather than of soybean.
+
+The reason is identification. `season_gdd` varies in the training data because *seasons* vary, at one maturity group. Nothing in the record varies maturity group while holding season fixed, so that coefficient cannot be read as the value of a longer variety.
+
+![Why no maturity group is recommended](figures/fig30_mg_not_identified.png)
+
+**This is where the statistical approach runs out of road.** The phenological consequences of a variety choice are computable and trustworthy. Converting them into a yield optimum needs a model that carries yield potential — light interception, biomass accumulation, partitioning — which is exactly the argument Peng et al. (2020) make for process-based crop models. APSIM or DSSAT answers this question; a regression fitted to one maturity group cannot.
+
+---
+
 ## Does climate actually predict?
 
 Validation is strictly temporal. **No random splits anywhere.** They fail twice over here: they admit future information, and because counties within a year share weather, they place near-duplicates of test rows into training.

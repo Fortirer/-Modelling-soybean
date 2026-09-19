@@ -16,6 +16,34 @@ STAGES = {"VE": 110, "R1": 610, "R3": 860, "R5": 1110, "R6": 1390, "R8": 1550}
 T_BASE, T_CAP, T_EXTREME = 10.0, 30.0, 30.0
 HEAT_DAY_C = 34.0
 
+# ---- maturity group --------------------------------------------------------
+# STAGES is calibrated to the Illinois state average, treated here as MG 3.5.
+#
+# A longer maturity group STRETCHES the reproductive period, it does not merely
+# postpone it. An earlier version of this function added a constant offset to
+# every reproductive threshold, which slid the whole R1-R8 sequence later while
+# leaving R5 to R6 exactly as long: seed-fill duration came out identical for
+# every maturity group, which is wrong and quietly voided the point of the
+# exercise. Thresholds are therefore scaled away from emergence, so the
+# intervals between stages grow with the group.
+#
+# FRAC_PER_MG is an ASSUMPTION, not a calibration. Nothing in this repo fits
+# it, and every maturity-group result scales with it.
+BASELINE_MG = 3.5
+FRAC_PER_MG = 0.08
+
+# first autumn day at or below this kills the crop; soybean is usually taken
+# as about -2.2 C (28 F), below which pods stop filling
+KILLING_FROST_C = -2.2
+
+
+def stages_for_mg(mg):
+    """Thermal-time thresholds for a maturity group, stretched from emergence."""
+    scale = 1.0 + (mg - BASELINE_MG) * FRAC_PER_MG
+    ve = STAGES["VE"]
+    return {k: (v if k == "VE" else ve + (v - ve) * scale)
+            for k, v in STAGES.items()}
+
 # planting: first day on or after EARLIEST with a 7-day mean at or above
 # PLANT_TEMP_C. Rule-based, so a warmer spring plants earlier on its own.
 EARLIEST_DOY, LATEST_DOY, PLANT_TEMP_C = 121, 175, 15.0
@@ -85,12 +113,20 @@ def add_daily_terms(d, lat_map):
     return d
 
 
-def build_features(d, taw):
+def build_features(d, taw, stages=None):
     """One row per unit-year: phenology, window conditions, water balance.
 
     `d` must already carry the daily terms from add_daily_terms.
     `taw` maps unit_id -> total available water in the top metre, mm.
+    `stages` overrides the thermal-time thresholds, for maturity-group work;
+    it defaults to the calibrated Illinois average.
+
+    Also returns the autumn killing-frost date and whether the crop reached R8
+    before it. Under a longer maturity group the crop can simply run out of
+    season, which is the constraint that stops "plant a longer variety" from
+    being a free adaptation.
     """
+    stages = stages or STAGES
     d = d.sort_values(["unit_id", "date"])
     rows, skipped = [], 0
 
@@ -99,6 +135,10 @@ def build_features(d, taw):
         if len(g) < 300:
             skipped += 1
             continue
+
+        # first killing frost after midsummer; NaN if the year never gets one
+        autumn = g[(g.doy > 200) & (g.tmin_c <= KILLING_FROST_C)]
+        frost_doy = int(autumn.doy.iloc[0]) if len(autumn) else np.nan
 
         run = g.tmean_c.rolling(7, min_periods=7).mean()
         win = g.index[(g.doy >= EARLIEST_DOY) & (g.doy <= LATEST_DOY)]
@@ -115,12 +155,16 @@ def build_features(d, taw):
             k = np.searchsorted(gdd_cum, target)
             return int(idx[k]) if k < len(idx) else None
 
-        si = {s: stage_i(v) for s, v in STAGES.items()}
+        si = {s: stage_i(v) for s, v in stages.items()}
         a, b = si["R3"], si["R6"]
         if a is None or b is None:
             skipped += 1
             continue
         w = g.iloc[a:b + 1]
+
+        r8_doy = g.doy.iloc[si["R8"]] if si["R8"] is not None else np.nan
+        matured = bool(np.isfinite(frost_doy) and np.isfinite(r8_doy)
+                       and r8_doy <= frost_doy)
 
         cap = taw.get(uid, np.nan)
         stress_days = min_frac = deficit = np.nan
@@ -148,7 +192,12 @@ def build_features(d, taw):
             r3_doy=int(g.doy.iloc[a]),
             r5_doy=int(g.doy.iloc[si["R5"]]) if si["R5"] else np.nan,
             r6_doy=int(g.doy.iloc[b]),
-            r8_doy=int(g.doy.iloc[si["R8"]]) if si["R8"] else np.nan,
+            r8_doy=int(r8_doy) if np.isfinite(r8_doy) else np.nan,
+            frost_doy=frost_doy,
+            matured_before_frost=int(matured),
+            days_r8_to_frost=(float(frost_doy - r8_doy)
+                              if np.isfinite(frost_doy) and np.isfinite(r8_doy)
+                              else np.nan),
             podfill_days=int(b - a + 1),
             seedfill_days=int(b - si["R5"] + 1) if si["R5"] else np.nan,
             season_days=int(b - plant_i + 1),
