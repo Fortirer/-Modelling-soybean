@@ -13,7 +13,7 @@
     "R6": 1390,
     "R8": 1550
   },
-  "stages_note": "UNCALIBRATED literature values for a mid maturity group; an explicit assumption, not a fitted result",
+  "stages_note": "calibrated to Illinois NASS crop-progress 50% dates; stage dates reproduce the state average by construction, so agreement with those norms is not evidence",
   "planting_rule": {
     "earliest_doy": 121,
     "latest_doy": 175,
@@ -32,5 +32,5 @@
   },
   "county_years": 4314,
   "skipped": 174,
-  "transferable": "every quantity derives from temperature, dewpoint, precipitation and latitude, so the same code runs on Brazilian municipalities"
+  "shared_module": "_pheno.py, also used by script 20 for CMIP6 scenarios"
 }

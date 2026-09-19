@@ -212,6 +212,65 @@ The case for the phenological window was never that it predicts the past better.
 
 ---
 
+## Scenarios on a moving crop window
+
+Script `20` reruns the CMIP6 scenarios, but applies the deltas to the **daily** record and recomputes the entire phenology through the same `_pheno` module script `18` uses on observed weather. Warming now does what warming does.
+
+### None of this was imposed
+
+| Scenario | Horizon | Δ Tmax | R6 date | Seed fill | Extreme degree days |
+| -------- | ------- | ------ | ------- | --------- | ------------------- |
+| SSP2-4.5 | 2040-69 | +2.54 °C | **−17.6 d** | **−4.3 d** | **×2.2** |
+| SSP2-4.5 | 2070-99 | +3.08 °C | −21.5 d | −4.9 d | ×2.7 |
+| SSP5-8.5 | 2040-69 | +3.04 °C | −21.3 d | −4.9 d | ×2.6 |
+| SSP5-8.5 | 2070-99 | +5.44 °C | **−30.7 d** | **−6.4 d** | **×4.8** |
+
+The crop reaches full seed up to a month earlier and fills for six fewer days. Nothing in the code instructs it to; it falls out of thermal time accumulating faster. Script `13` could not represent any of this, because July and August stay where they are no matter how hot it gets.
+
+![Warming moves the crop](figures/fig26_warming_moves_the_crop.png)
+
+### The extrapolation problem is largely solved
+
+The estimator is the Schlenker-Roberts specification: yield on GDD, EDD, precipitation and its square, with county fixed effects. **EDD enters linearly**, which is the entire point of the construction — the nonlinearity lives in the degree-day accounting, not the functional form. Extrapolating is then a straight line in a variable with a physical threshold, rather than a fitted curve in raw temperature.
+
+Fitted on observed data, the coefficient is **−0.0836 bu/acre per degree-day above 30 °C** (p ≈ 4e-93).
+
+Out-of-range county-years fall from **49% in script 13 to 5-22%** here. The boosted trees still saturate (−0.13 to −0.41 bu/acre regardless of scenario), which confirms the original diagnosis rather than fixing it.
+
+| | Script 13, fixed window | Script 20, moving window |
+| --- | --- | --- |
+| SSP5-8.5 late, trees | −0.17 | −0.41 |
+| SSP5-8.5 late, parametric | −8.70 (quadratic) | **−5.28** (Schlenker-Roberts) |
+
+The climate effect across scenarios is **−1.5 to −5.3 bu/acre**, inside the range script 13 bracketed but on far weaker assumptions.
+
+### CO₂ changes the sign, and that is the result
+
+Soybean is a C3 legume and the most CO₂-responsive major crop. SoyFACE, the free-air enrichment facility behind the definitive soybean numbers, sits in Champaign County, this study's focal unit. Script `13` held CO₂ at present levels without saying so.
+
+| Scenario | Horizon | Climate | No CO₂ | Saturating | FACE |
+| -------- | ------- | ------- | ------ | ---------- | ---- |
+| SSP2-4.5 | 2040-69 | −1.54 | −1.54 | +3.97 | +3.97 |
+| SSP2-4.5 | 2070-99 | −1.93 | −1.93 | +4.88 | +5.80 |
+| SSP5-8.5 | 2040-69 | −2.07 | −2.07 | +4.74 | +5.65 |
+| SSP5-8.5 | 2070-99 | **−5.28** | **−5.28** | **+1.53** | **+9.81** |
+
+![Three CO2 assumptions](figures/fig28_co2_assumption_range.png)
+
+**Do not read +9.81 as a projection.** Read the spread. Under SSP5-8.5 late-century the answer runs from −5.3 to +9.8 bu/acre depending on nothing but the CO₂ assumption, a range wider than the climate signal itself. Whether climate change is bad for Illinois soybean cannot be answered from this pipeline without committing to a CO₂ response, and the honest statement is that this study does not know it.
+
+The logarithmic FACE curve is extrapolated to 890 ppm, far beyond the ~550-600 ppm where FACE experiments have data, which is why the saturating variant is the more defensible of the two non-zero options.
+
+### What these scenarios still do not include
+
+- **The CO₂ response is applied as a flat multiplier.** FACE work shows it shrinks under heat and interacts with drought. Neither is represented, and both would reduce the benefit precisely in the scenarios where it is largest.
+- **CO₂ concentrations are round numbers**, not the published CMIP6 GHG concentration series. Replace them before quoting anything.
+- **Dewpoint is shifted with temperature**, holding relative humidity roughly constant. Models projecting declining land humidity would give a larger VPD rise, so this is conservative.
+- **A monthly precipitation ratio scales every wet day equally.** Rainfall intensity changes; wet-day frequency cannot. No delta method can change the shape of the rainfall distribution.
+- **No adaptation.** No shift in maturity group, planting date or cultivar — and a farmer facing a month-earlier R6 would change all three. This is the largest remaining omission.
+
+---
+
 ## Does climate actually predict?
 
 Validation is strictly temporal. **No random splits anywhere.** They fail twice over here: they admit future information, and because counties within a year share weather, they place near-duplicates of test rows into training.
