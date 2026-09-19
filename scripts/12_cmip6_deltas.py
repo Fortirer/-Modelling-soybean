@@ -6,8 +6,16 @@ it carries systematic bias and the model was trained on nClimDiv scales. Instead
 we take each GCM's CHANGE between a historical baseline and a future window and
 apply that change to the observed county record (script 13).
 
-  temperature : additive   delta_T = future_mean - baseline_mean   (K == degC)
-  precipitation: multiplicative  ratio = future_mean / baseline_mean
+  temperature : additive        delta_T = future_mean - baseline_mean  (K == degC)
+  precipitation: multiplicative ratio   = future_mean / baseline_mean
+  humidity    : additive        delta_RH = future_mean - baseline_mean (% points)
+
+Relative humidity is pulled because holding it constant is not the neutral
+choice it appears to be. Vapour pressure deficit is the larger of the two
+warming channels for yield -- Lobell and colleagues attribute more loss at 2 C
+warming to the associated VPD rise than to the warming itself -- and CMIP6
+projects substantial RH decline over North America in summer. Assuming RH
+constant therefore suppresses the dominant damage mechanism.
 
 Deltas are computed per calendar month, per model, per scenario, per horizon,
 and bilinearly interpolated from the GCM grid to each county centroid, so the
@@ -37,7 +45,7 @@ MEMBERS = {                      # one realisation per model, spanning low->high
     "CanESM5":       "r1i1p1f1",
     "UKESM1-0-LL":   "r1i1p1f2",
 }
-VARS      = ["tas", "tasmax", "pr"]
+VARS      = ["tas", "tasmax", "pr", "hurs"]
 BASELINE  = (1985, 2014)                      # historical reference period
 HORIZONS  = {"mid_century": (2040, 2069), "late_century": (2070, 2099)}
 SCENARIOS = ["ssp245", "ssp585"]
@@ -190,6 +198,11 @@ def main():
                 d_tas  = fut["tas"]    - base["tas"]         # K == degC, additive
                 d_tmax = fut["tasmax"] - base["tasmax"]
                 ratio  = fut["pr"] / np.where(base["pr"] == 0, np.nan, base["pr"])
+                # relative humidity is a percentage, so its change is additive in
+                # percentage points. It is pulled because holding RH constant
+                # suppresses the vapour-pressure-deficit rise, and VPD is the
+                # larger of the two warming channels for yield (Lobell et al.).
+                d_hurs = fut["hurs"] - base["hurs"]
 
                 for mi in range(12):
                     for ci, f5 in enumerate(pts.fips5.values):
@@ -198,11 +211,13 @@ def main():
                             year_start=y0, year_end=y1, fips5=f5, month=mi + 1,
                             d_tas_C=float(d_tas[mi, ci]),
                             d_tasmax_C=float(d_tmax[mi, ci]),
-                            pr_ratio=float(ratio[mi, ci])))
+                            pr_ratio=float(ratio[mi, ci]),
+                            d_hurs_pct=float(d_hurs[mi, ci])))
                 jj = slice(6, 8)   # Jul-Aug, the critical window
                 print(f"[12] {model:15} {scen} {hz:12} "
                       f"Jul-Aug dTmax {d_tmax[jj].mean():+.2f} C  "
-                      f"precip x{ratio[jj].mean():.3f}", flush=True)
+                      f"precip x{ratio[jj].mean():.3f}  "
+                      f"RH {d_hurs[jj].mean():+.2f} pp", flush=True)
 
     if not rows:
         raise SystemExit("[12] no deltas computed - nothing written")
@@ -240,7 +255,8 @@ def main():
     # headline ensemble signal, Jul-Aug critical window
     jul_aug = d[d.month.isin([7, 8])]
     s = (jul_aug.groupby(["scenario", "horizon"])
-                .agg(dTmax_C=("d_tasmax_C", "mean"), pr_ratio=("pr_ratio", "mean"))
+                .agg(dTmax_C=("d_tasmax_C", "mean"), pr_ratio=("pr_ratio", "mean"),
+                     dRH_pp=("d_hurs_pct", "mean"))
                 .reset_index())
     s["precip_pct"] = (s.pr_ratio - 1) * 100
     print("\n[12] ENSEMBLE MEAN, JULY-AUGUST CRITICAL WINDOW")

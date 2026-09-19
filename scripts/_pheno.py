@@ -82,6 +82,24 @@ def svp(t):
     return 0.6108 * np.exp(17.27 * t / (t + 237.3))
 
 
+def inv_svp(e):
+    """Dewpoint, degC, from actual vapour pressure in kPa. Inverse of svp."""
+    x = np.log(np.maximum(e, 1e-6) / 0.6108)
+    return 237.3 * x / (17.27 - x)
+
+
+def rh_from_dewpoint(tmin, tmax, tdew):
+    """Relative humidity, %, against the mean of the daily saturation curve."""
+    es = (svp(tmax) + svp(tmin)) / 2.0
+    return np.clip(svp(tdew) / es * 100.0, 1.0, 100.0)
+
+
+def dewpoint_from_rh(tmin, tmax, rh):
+    """Dewpoint implied by a relative humidity and a daily temperature range."""
+    es = (svp(tmax) + svp(tmin)) / 2.0
+    return inv_svp(np.clip(rh, 1.0, 100.0) / 100.0 * es)
+
+
 def ra_mj(lat_deg, doy):
     """Extraterrestrial radiation, MJ/m2/day (FAO-56). Latitude and day only."""
     lat = np.radians(lat_deg)
@@ -93,9 +111,65 @@ def ra_mj(lat_deg, doy):
 
 
 def et0_hargreaves(tmin, tmax, tmean, lat, doy):
-    """Reference ET, mm/day. Temperature and latitude only, so it travels."""
+    """Reference ET, mm/day, from temperature and latitude only.
+
+    Kept as the fallback and for comparison. It is blind to humidity, which is
+    why it cannot be the main estimator here: the whole point of pulling CMIP6
+    relative humidity is that declining RH raises evaporative demand, and
+    Hargreaves cannot see that.
+    """
     return np.maximum(0.0023 * ra_mj(lat, doy) * (tmean + 17.8)
                       * np.sqrt(np.maximum(tmax - tmin, 0)) * 0.408, 0.0)
+
+
+# FAO-56 defaults. Wind is not in the POWER pull, and FAO-56 sanctions 2 m/s
+# where no measurement exists. Elevation is a single Illinois value; ET0 is
+# only weakly sensitive to it through atmospheric pressure.
+DEFAULT_U2, DEFAULT_ELEV_M = 2.0, 200.0
+SIGMA = 4.903e-9          # Stefan-Boltzmann, MJ K^-4 m^-2 day^-1
+ALBEDO = 0.23             # reference grass
+KRS = 0.16                # interior-location coefficient for estimating Rs
+
+
+def et0_penman_monteith(tmin, tmax, tmean, tdew, srad, lat, doy,
+                        elev=DEFAULT_ELEV_M, u2=DEFAULT_U2):
+    """FAO-56 Penman-Monteith reference ET, mm/day.
+
+    Unlike Hargreaves this responds to humidity, so a projected fall in relative
+    humidity raises evaporative demand and feeds through the water balance.
+    That is the mechanistically right channel for vapour pressure deficit to
+    affect yield, and it avoids entering VPD as a second regressor alongside
+    EDD, which the two are far too collinear to support.
+
+    Where solar radiation is missing -- POWER has no ALLSKY before 1984 -- Rs is
+    estimated from the diurnal temperature range by the FAO-56 fallback.
+    """
+    tmin = np.asarray(tmin, float); tmax = np.asarray(tmax, float)
+    tmean = np.asarray(tmean, float); tdew = np.asarray(tdew, float)
+    lat = np.asarray(lat, float); doy = np.asarray(doy, float)
+    ra = ra_mj(lat, doy)
+
+    rs = np.asarray(srad, float) if srad is not None else np.full_like(ra, np.nan)
+    est = KRS * np.sqrt(np.maximum(tmax - tmin, 0)) * ra
+    rs = np.where(np.isfinite(rs), rs, est)
+    rs = np.minimum(rs, 0.85 * ra)                   # clear-sky ceiling
+
+    es = (svp(tmax) + svp(tmin)) / 2.0
+    ea = np.minimum(svp(tdew), es)                   # cannot exceed saturation
+    delta = 4098.0 * svp(tmean) / (tmean + 237.3) ** 2
+    press = 101.3 * ((293.0 - 0.0065 * elev) / 293.0) ** 5.26
+    gamma = 0.000665 * press
+
+    rso = (0.75 + 2e-5 * elev) * ra
+    frac = np.clip(rs / np.where(rso > 0, rso, np.nan), 0.25, 1.0)
+    rnl = (SIGMA * ((tmax + 273.16) ** 4 + (tmin + 273.16) ** 4) / 2.0
+           * (0.34 - 0.14 * np.sqrt(np.maximum(ea, 0)))
+           * (1.35 * frac - 0.35))
+    rn = (1 - ALBEDO) * rs - rnl
+
+    num = 0.408 * delta * rn + gamma * (900.0 / (tmean + 273.0)) * u2 * (es - ea)
+    den = delta + gamma * (1 + 0.34 * u2)
+    return np.maximum(num / den, 0.0)
 
 
 def add_daily_terms(d, lat_map):
@@ -109,7 +183,10 @@ def add_daily_terms(d, lat_map):
     d["vpd"] = np.maximum(es - svp(d.tdew_c), 0.0)
     if "lat" not in d:
         d["lat"] = d.unit_id.map(lat_map)
-    d["et0"] = et0_hargreaves(d.tmin_c, d.tmax_c, d.tmean_c, d.lat, d.doy)
+    d["et0"] = et0_penman_monteith(d.tmin_c, d.tmax_c, d.tmean_c, d.tdew_c,
+                                   d.srad_mj if "srad_mj" in d else None,
+                                   d.lat, d.doy)
+    d["et0_hargreaves"] = et0_hargreaves(d.tmin_c, d.tmax_c, d.tmean_c, d.lat, d.doy)
     return d
 
 

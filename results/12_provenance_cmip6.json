@@ -15,7 +15,8 @@
   "variables": [
     "tas",
     "tasmax",
-    "pr"
+    "pr",
+    "hurs"
   ],
   "models_requested": {
     "INM-CM5-0": "r1i1p1f1",

@@ -59,9 +59,13 @@ CO2_REF = 370.0
 CO2_BETA = 0.15 / np.log(550.0 / 370.0)
 CO2_SATURATE_AT = 550.0
 
-DEW_NOTE = ("dewpoint is shifted by the temperature delta, which holds relative "
-            "humidity roughly constant; models projecting declining land RH "
-            "would give a larger VPD rise, so this is the conservative choice")
+DEW_NOTE = ("relative humidity is taken from the CMIP6 hurs delta and dewpoint is "
+            "recomputed from the perturbed temperature range, rather than shifting "
+            "dewpoint with temperature. An earlier version did the latter, which "
+            "holds RH roughly constant and looks conservative but is not: VPD is "
+            "the larger of the two warming channels for yield (Lobell et al.) and "
+            "CMIP6 projects RH DECLINING over North America, so holding it fixed "
+            "suppressed the dominant damage mechanism")
 PRCP_NOTE = ("a monthly ratio scales every wet day equally, so rainfall "
              "intensity changes but wet-day frequency does not; delta methods "
              "cannot represent a change in the rainfall distribution")
@@ -75,20 +79,33 @@ def co2_factor(ppm, mode):
 
 
 def perturb_daily(d, sub):
-    """Apply one model/scenario/horizon's monthly county deltas to daily rows."""
+    """Apply one model/scenario/horizon's monthly county deltas to daily rows.
+
+    Humidity is handled properly rather than assumed away: the observed daily
+    relative humidity is recovered from the observed dewpoint, the CMIP6 hurs
+    change is added to it in percentage points, and the dewpoint is rebuilt from
+    that humidity against the WARMED temperature range. VPD therefore rises both
+    because the saturation curve rises and because RH falls, which is what the
+    models project. See DEW_NOTE.
+    """
     x = d.copy()
     t = sub.pivot(index="fips5", columns="month", values="d_tas_C")
     tx = sub.pivot(index="fips5", columns="month", values="d_tasmax_C")
     pr = sub.pivot(index="fips5", columns="month", values="pr_ratio")
+    rh = sub.pivot(index="fips5", columns="month", values="d_hurs_pct")
     mo = x.date.dt.month.values
     ids = x.unit_id.values
-    dt = t.reindex(ids).to_numpy()[np.arange(len(x)), mo - 1]
-    dtx = tx.reindex(ids).to_numpy()[np.arange(len(x)), mo - 1]
-    rp = pr.reindex(ids).to_numpy()[np.arange(len(x)), mo - 1]
+    i = np.arange(len(x))
+    dt = t.reindex(ids).to_numpy()[i, mo - 1]
+    dtx = tx.reindex(ids).to_numpy()[i, mo - 1]
+    rp = pr.reindex(ids).to_numpy()[i, mo - 1]
+    drh = rh.reindex(ids).to_numpy()[i, mo - 1]
+
+    rh_obs = P.rh_from_dewpoint(x.tmin_c.values, x.tmax_c.values, x.tdew_c.values)
     x["tmax_c"] = x.tmax_c + dtx
     x["tmin_c"] = x.tmin_c + dt
     x["tmean_c"] = x.tmean_c + dt
-    x["tdew_c"] = x.tdew_c + dt          # approximately constant RH, see DEW_NOTE
+    x["tdew_c"] = P.dewpoint_from_rh(x.tmin_c.values, x.tmax_c.values, rh_obs + drh)
     x["prcp_mm"] = x.prcp_mm * rp
     return x
 
@@ -129,13 +146,58 @@ def main():
     gbm.fit(d0[PROC_F], d0.yield_anom)
     d0 = d0.assign(pred_gbm=gbm.predict(d0[PROC_F]))
 
-    # Schlenker-Roberts: EDD linear, precipitation quadratic, county effects
-    SR = "yield_anom ~ season_gdd + season_edd + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)"
+    # Schlenker-Roberts: EDD linear, precipitation quadratic, county effects.
+    #
+    # VPD is deliberately NOT a separate regressor. It was tried: entered
+    # alongside EDD it takes a POSITIVE coefficient, +4.55 bu/acre per kPa,
+    # which is backwards physiologically, because VPD and EDD correlate at
+    # +0.912 and the pair is not separable. Shipping a model whose humidity
+    # term raises yield would have been worse than omitting humidity.
+    #
+    # Humidity instead enters where it belongs, through evaporative demand:
+    # ET0 is FAO-56 Penman-Monteith, so a projected fall in relative humidity
+    # raises reference ET and drains the soil water balance faster.
+    #
+    # For that to reach yield the balance has to be IN the specification. It was
+    # not, in the first attempt at this fix: humidity was perturbed, ET0 was
+    # rebuilt, and the climate effect came back identical to four decimals,
+    # because none of season_gdd, season_edd or precipitation reads the water
+    # balance at all. The term below is what closes the circuit.
+    #
+    # wb_min_water_frac is chosen over the better-fitting wb_season_deficit_mm
+    # for two reasons. It is bounded on [0,1], so it cannot run away when
+    # extrapolated, which is the failure mode that ruined the tree estimator.
+    # And it correlates -0.484 with EDD rather than +0.789, so the heat and
+    # water channels stay separable: adding the deficit instead drives the EDD
+    # coefficient from -0.084 to -0.018, absorbing the heat signal it is
+    # supposed to sit alongside.
+    SR = ("yield_anom ~ season_gdd + season_edd + wb_min_water_frac "
+          "+ win_prcp_mm + I(win_prcp_mm**2) + C(fips5)")
     sr = smf.ols(SR, data=d0).fit(cov_type="cluster", cov_kwds={"groups": d0.fips5})
     d0 = d0.assign(pred_sr=sr.predict(d0).values)
-    print(f"[20] Schlenker-Roberts R2 : {sr.rsquared:.3f}  (n={int(sr.nobs):,})")
-    print(f"[20] EDD coefficient      : {sr.params['season_edd']:+.4f} bu/acre "
-          f"per degree-day above 30 C   (p={sr.pvalues['season_edd']:.2g})")
+    print(f"[20] Schlenker-Roberts + water balance  R2 : {sr.rsquared:.3f}  "
+          f"(n={int(sr.nobs):,})")
+    for term, unit in [("season_edd", "per degree-day above 30 C"),
+                       ("wb_min_water_frac", "per unit of soil water fraction"),
+                       ("season_gdd", "per degree-day 10-30 C")]:
+        print(f"[20]   {term:18} {sr.params[term]:+.4f} bu/acre {unit:32} "
+              f"(p={sr.pvalues[term]:.2g})")
+
+    # the two specification choices, recorded rather than asserted
+    r_ev = float(np.corrcoef(d0.season_edd, d0.win_vpd_mean)[0, 1])
+    r_ew = float(np.corrcoef(d0.season_edd, d0.wb_min_water_frac)[0, 1])
+    r_ed = float(np.corrcoef(d0.season_edd, d0.wb_season_deficit_mm)[0, 1])
+    with_v = smf.ols(SR.replace("season_edd", "season_edd + win_vpd_mean"),
+                     data=d0).fit(cov_type="cluster", cov_kwds={"groups": d0.fips5})
+    with_d = smf.ols(SR.replace("wb_min_water_frac", "wb_season_deficit_mm"),
+                     data=d0).fit(cov_type="cluster", cov_kwds={"groups": d0.fips5})
+    print(f"[20] VPD omitted: corr(EDD,VPD)={r_ev:+.3f} and adding it gives "
+          f"{with_v.params['win_vpd_mean']:+.2f} bu/acre per kPa, the wrong sign")
+    print(f"[20] water term: min_water_frac corr(EDD)={r_ew:+.3f} keeps EDD at "
+          f"{sr.params['season_edd']:+.4f}; the better-fitting season_deficit "
+          f"corr(EDD)={r_ed:+.3f} drives EDD to "
+          f"{with_d.params['season_edd']:+.4f} (R2 {with_d.rsquared:.3f}) and "
+          f"absorbs the heat channel")
 
     obs_edd_max = float(d0.season_edd.max())
     mean_yield = float(d0.yield_bu_ac.mean())

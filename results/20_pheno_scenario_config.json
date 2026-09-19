@@ -1,7 +1,7 @@
 {
   "method": "CMIP6 deltas applied to DAILY weather, phenology recomputed through _pheno so the crop window moves with the climate",
   "estimators": {
-    "schlenker_roberts": "yield_anom ~ season_gdd + season_edd + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)",
+    "schlenker_roberts": "yield_anom ~ season_gdd + season_edd + wb_min_water_frac + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)",
     "sr_note": "EDD enters linearly; the nonlinearity is in the degree-day construction, so extrapolation is a straight line in a variable with a physical threshold",
     "gbm": "gradient boosting on process features; saturates out of range"
   },
@@ -21,7 +21,7 @@
     "saturating_cap_ppm": 550.0,
     "omitted": "CO2 response shrinks under heat and interacts with drought; neither is represented"
   },
-  "dewpoint_assumption": "dewpoint is shifted by the temperature delta, which holds relative humidity roughly constant; models projecting declining land RH would give a larger VPD rise, so this is the conservative choice",
+  "dewpoint_assumption": "relative humidity is taken from the CMIP6 hurs delta and dewpoint is recomputed from the perturbed temperature range, rather than shifting dewpoint with temperature. An earlier version did the latter, which holds RH roughly constant and looks conservative but is not: VPD is the larger of the two warming channels for yield (Lobell et al.) and CMIP6 projects RH DECLINING over North America, so holding it fixed suppressed the dominant damage mechanism",
   "precipitation_assumption": "a monthly ratio scales every wet day equally, so rainfall intensity changes but wet-day frequency does not; delta methods cannot represent a change in the rainfall distribution",
   "observed_season_edd_max": 130.18852362926594,
   "models": [
@@ -34,5 +34,5 @@
     "MPI-ESM1-2-LR",
     "MRI-ESM2-0"
   ],
-  "runtime_min": 13.5
+  "runtime_min": 4.0
 }
