@@ -1,0 +1,33 @@
+{
+  "source": "NASA POWER daily point API (MERRA-2 reanalysis)",
+  "url": "https://power.larc.nasa.gov/api/temporal/daily/point",
+  "portal": "https://power.larc.nasa.gov/",
+  "accessed": "2026-09-19",
+  "access_note": "free, no API key, global",
+  "community": "AG",
+  "period": "19810101-20241231",
+  "variables_requested": [
+    "T2M_MAX",
+    "T2M_MIN",
+    "T2M",
+    "T2MDEW",
+    "PRECTOTCORR",
+    "ALLSKY_SFC_SW_DWN"
+  ],
+  "units_requested": 102,
+  "units_returned": 102,
+  "daily_records": 1639242,
+  "failed": [],
+  "fill_value": -999.0,
+  "recipe": "Reproduce one point:\n  GET https://power.larc.nasa.gov/api/temporal/daily/point\n      ?parameters=T2M_MAX,T2M_MIN,T2M,T2MDEW,PRECTOTCORR,ALLSKY_SFC_SW_DWN\n      &community=AG&longitude=<LON>&latitude=<LAT>\n      &start=19810101&end=20241231&format=JSON\nNo API key. Values of -999.0 are POWER's fill marker and are read as null here.\nThe same call works for any latitude and longitude on earth, which is the point\nof choosing POWER: Brazilian municipal centroids go through this script\nunchanged, only the centroid table differs.",
+  "missing_pct": {
+    "tmax_c": 0.0,
+    "tmin_c": 0.0,
+    "tmean_c": 0.0,
+    "tdew_c": 0.0,
+    "prcp_mm": 0.0,
+    "srad_mj": 6.816
+  },
+  "spatial_note": "POWER is ~0.5 degree MERRA-2, coarser than a county; values are the containing grid cell at the county centroid, not a polygon average",
+  "why_power": "global coverage, so Illinois and Brazil use one consistent source for cross-scale transfer learning"
+}

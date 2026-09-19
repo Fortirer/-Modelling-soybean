@@ -1,0 +1,36 @@
+{
+  "thermal_time": {
+    "base_c": 10.0,
+    "cap_c": 30.0,
+    "extreme_c": 30.0,
+    "method": "single sine (Snyder 1985) over the daily curve"
+  },
+  "stages_gdd_from_planting": {
+    "VE": 110,
+    "R1": 610,
+    "R3": 860,
+    "R5": 1110,
+    "R6": 1390,
+    "R8": 1550
+  },
+  "stages_note": "UNCALIBRATED literature values for a mid maturity group; an explicit assumption, not a fitted result",
+  "planting_rule": {
+    "earliest_doy": 121,
+    "latest_doy": 175,
+    "temp_c": 15.0,
+    "rule": "first day with a 7-day mean at or above temp_c"
+  },
+  "water_balance": {
+    "kc": {
+      "initial": 0.4,
+      "mid": 1.15,
+      "late": 0.5
+    },
+    "depletion_fraction": 0.5,
+    "capacity": "SSURGO available water, top metre, mm",
+    "et0": "Hargreaves, temperature and latitude only"
+  },
+  "county_years": 4314,
+  "skipped": 174,
+  "transferable": "every quantity derives from temperature, dewpoint, precipitation and latitude, so the same code runs on Brazilian municipalities"
+}

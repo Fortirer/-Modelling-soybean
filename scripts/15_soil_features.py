@@ -50,13 +50,19 @@ def main():
                 rec[f"soil_{short}_{band}"] = wmean(g[col], w)
 
         # ---- plant-available water in the top metre --------------------------
-        # awc is cm water per cm soil, so awc * thickness integrates to cm of water
-        ov100 = (np.minimum(g.hzdepb_r, 100) - np.maximum(g.hzdept_r, 0)).clip(lower=0)
-        cw = g.comppct_r * g.muacres
-        contrib = g.awc_r * ov100
-        k = contrib.notna() & cw.notna() & (cw > 0)
-        rec["soil_aws_0_100cm"] = (float((contrib[k] * cw[k]).sum() / cw[k].sum())
-                                   if k.any() else np.nan)
+        # awc is cm of water per cm of soil, so awc * thickness is the water held
+        # by that horizon. Those must be SUMMED DOWN EACH PROFILE first and only
+        # then averaged across components. Averaging horizon rows directly returns
+        # the mean contribution of a single horizon, which is the whole profile
+        # divided by the number of horizons in it -- about 4x too small here, and
+        # it silently shrinks the bucket in the script 18 water balance.
+        gg = g.copy()
+        gg["_ov"] = (np.minimum(gg.hzdepb_r, 100) - np.maximum(gg.hzdept_r, 0)).clip(lower=0)
+        gg["_cm"] = gg.awc_r * gg._ov
+        prof = gg.groupby("cokey").agg(aws=("_cm", "sum"),
+                                       pct=("comppct_r", "first"),
+                                       acres=("muacres", "first"))
+        rec["soil_aws_0_100cm"] = wmean(prof.aws, prof.pct * prof.acres)
 
         # ---- component-level attributes, area weighted -----------------------
         comp = g.drop_duplicates("cokey")

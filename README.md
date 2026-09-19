@@ -170,6 +170,48 @@ The useful finding sits in the middle row. Soil explains **55%** of how sharply 
 
 ---
 
+## The crop does not follow the calendar
+
+Scripts `17`-`19` replace two assumptions the pipeline inherited without testing. Both break under a changed climate.
+
+**July and August are not the critical window. R3 to R6 is.** Those stages happen to fall in July and August in today's Illinois, which is why the fixed window has worked. Under warming, thermal time accumulates faster, the crop reaches R6 earlier, and seed fill is shorter. A calendar window represents neither effect, so the CMIP6 scenarios in script `13` are asking the wrong question. It also does not travel: July and August are winter in Brazil.
+
+**Monthly means erase the extremes that do the damage.** Schlenker & Roberts (2009) show soybean yield rising with temperature to about 30 °C then falling steeply, with damage tracking the *distribution* of daily temperature. In a monthly dataset, an August averaging 30 °C with no day above 34 and one with five days at 38 are the same number.
+
+Script `17` pulls daily NASA POWER for all 102 county centroids, 1981-2024, 1.64 million records. Script `18` derives degree days by single-sine integration (Snyder 1985), giving GDD(10,30) and EDD(>30) separately, plus vapour pressure deficit and a daily soil water balance whose bucket size is the SSURGO available water from script `15`. Everything is computable from temperature, dewpoint, precipitation and latitude alone, so the same code runs on Brazilian municipalities.
+
+### The window has already moved
+
+| | 1981-1990 | 2015-2024 | Trend |
+| --- | --- | --- | --- |
+| Day of year reaching R6 | 246.6 | 239.4 | **−2.60 / decade** |
+| Seed-fill duration (days) | 24.1 | 22.3 | **−0.71 / decade** |
+| Planting day of year | 125.6 | 126.0 | +0.4 total |
+
+Maturity has advanced a week over the record while planting barely moved, so this is summer warming accelerating development *after* sowing, not earlier sowing.
+
+![The crop window has already moved](figures/fig24_window_is_moving.png)
+
+**But extreme heat in the crop window has gone down, not up** (−0.66 EDD per decade). That is the US Corn Belt summer "warming hole", and it deserves emphasis: the CMIP6 scenarios project large increases in exactly the variable that has been falling here for forty years.
+
+### Does it predict better? Mostly no
+
+| Feature set | n | RMSE | R² | vs calendar |
+| ----------- | - | ---- | -- | ----------- |
+| Both | 37 | 4.761 | 0.305 | **+0.78%** |
+| Calendar (script 08) | 20 | 4.798 | 0.294 | — |
+| Process (script 18) | 17 | 5.133 | 0.192 | **−6.98%** |
+
+Expanding window, rolling origin, 2001-2024, 2,048 test observations.
+
+The process features **lose** on their own and add almost nothing in combination. One result does stand out: the season water-balance deficit correlates with yield anomaly at **r = −0.533**, the strongest single predictor anywhere in this study, ahead of the previous best, July-August precipitation at +0.481.
+
+**This comparison is confounded and should not be read as settled.** The process features come from NASA POWER at roughly half a degree; the calendar features come from nClimDiv county polygons. Part of what the table measures is POWER versus nClimDiv, not phenology versus calendar. A clean test needs the calendar features rebuilt from POWER, which has not been done.
+
+The case for the phenological window was never that it predicts the past better. It is that it can represent a moving, shortening window and a threshold heat response, and the calendar version structurally cannot. That matters for projection, not for hindcast.
+
+---
+
 ## Does climate actually predict?
 
 Validation is strictly temporal. **No random splits anywhere.** They fail twice over here: they admit future information, and because counties within a year share weather, they place near-duplicates of test rows into training.

@@ -14,3 +14,7 @@ data/processed/cmip6_path_index.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Daily weather pull for script 17: 30 MB, regenerated in ~3.5 min by
+# `python scripts/17_download_daily_weather.py` from a documented public API
+data/raw/power_daily.csv.gz
