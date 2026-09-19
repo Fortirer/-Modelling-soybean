@@ -1,0 +1,21 @@
+{
+  "source": "USDA-NRCS Soil Data Access (SDA), SSURGO tabular",
+  "url": "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest",
+  "portal": "https://sdmdataaccess.sc.egov.usda.gov/",
+  "accessed": "2026-09-18",
+  "access_note": "public query service, no API key",
+  "tables": [
+    "legend",
+    "mapunit",
+    "component",
+    "chorizon"
+  ],
+  "areas_requested": 102,
+  "areas_returned": 102,
+  "horizon_records": 83063,
+  "map_units": 10200,
+  "failed": [],
+  "recipe": "Reproduce:\n  POST https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest\n  Content-Type: application/json\n  {\"format\": \"JSON+COLUMNNAME\", \"query\": \"SELECT mu.mukey, mu.muacres, c.cokey, c.comppct_r, c.majcompflag, c.slope_r, c.drainagecl, c.taxorder, c.hydgrp, ch.hzdept_r, ch.hzdepb_r, ch.claytotal_r, ch.sandtotal_r, ch.silttotal_r, ch.om_r, ch.awc_r, ch.ph1to1h2o_r, ch.dbthirdbar_r, ch.ksat_r, ch.cec7_r FROM legend l JOIN mapunit mu ON mu.lkey = l.lkey JOIN component c ON c.mukey = mu.mukey JOIN chorizon ch ON ch.cokey = c.cokey WHERE l.areasymbol = '<AREASYMBOL>'\"}\nSurvey areas are listed by:\n  SELECT areasymbol, areaname FROM legend WHERE areasymbol LIKE 'IL%'\nIllinois survey areas are county-based: areasymbol IL019 -> FIPS 17019.\nSSURGO is revised annually; record the access date with any results.",
+  "representative_values": "all *_r columns are SSURGO representative values",
+  "aggregation": "none here; script 15 aggregates to county level"
+}

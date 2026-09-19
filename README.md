@@ -148,6 +148,28 @@ Read the quadratic column for the hot scenarios, the tree column for the near-te
 
 ---
 
+## Soil: where the good ground is
+
+Scripts `14`-`16` add county soil properties from USDA-NRCS SSURGO, pulled through the public Soil Data Access service (no API key). 83,063 horizon records across 10,200 map units and all 102 counties are aggregated into 25 county features over two depth bands, 0-30 cm and 30-100 cm, weighted by horizon overlap, component percentage and map-unit acreage.
+
+Soil answers three different questions with three very different answers, and reporting them separately matters.
+
+| Question | What is explained | R2 |
+| -------- | ----------------- | -- |
+| Does soil explain the **level** of county yield? | County mean yield 1980-2025 | **0.82** |
+| Does soil explain **climate sensitivity**? | Composite sensitivity index from script 09 | **0.55** |
+| Does soil improve **prediction** of `yield_anom`? | Expanding-window RMSE, 2001-2025 | **+0.3%** |
+
+**Soil explains 82% of the variance in county mean yield.** Mollisol share alone correlates at r = +0.81: each additional percentage point of prairie soil is worth about +0.26 bu/acre. Texture points the expected way too, since more clay *or* more sand at the expense of silt lowers yield, which is the silt loam optimum showing up in the coefficients.
+
+![Soil versus county yield level](figures/fig22_soil_vs_yield_level.png)
+
+**But soil barely improves the model, and that is arithmetic rather than disappointment.** The modelling target is `yield_anom`, the residual of each county's own linear trend, so its county mean is zero *by construction*. A static county attribute has almost no main effect left to explain, and the best soil feature ranks 16th of 45. The 0.3% gain is an interaction term earning its keep, nothing more.
+
+The useful finding sits in the middle row. Soil explains **55%** of how sharply a county's yield responds to climate, and **51%** of its response to heat, where topsoil organic matter is the strongest single predictor. Soil does not tell you what this year's anomaly will be. It tells you which counties suffer most when one arrives, which is exactly what the CMIP6 scenarios above need.
+
+---
+
 ## Does climate actually predict?
 
 Validation is strictly temporal. **No random splits anywhere.** They fail twice over here: they admit future information, and because counties within a year share weather, they place near-duplicates of test rows into training.
