@@ -1,0 +1,6 @@
+observed,model,n,bias_days,rmse_days,anomaly_corr,obs_trend,obs_trend_se,model_trend,trend_gap_in_se
+planted,plant_doy,44,-15.5,18.3,0.18,-1.69,1.15,-0.25,1.2
+blooming,r1_doy,42,-12.3,13.5,0.59,-0.54,0.87,-1.93,-1.4
+pods,r3_doy,41,-10.3,11.3,0.63,-0.98,0.72,-2.07,-1.2
+leaves,r6_doy,44,-19.2,20.5,0.53,0.61,0.64,-2.52,-2.8
+leaves,r8_doy,44,-7.1,10.3,0.48,0.61,0.64,-2.46,-2.7

@@ -13,7 +13,7 @@
     "R6": 1390,
     "R8": 1550
   },
-  "stages_note": "calibrated to Illinois NASS crop-progress 50% dates; stage dates reproduce the state average by construction, so agreement with those norms is not evidence",
+  "stages_note": "written from remembered NASS 50%-progress dates, NOT downloaded data; checked in script 24 against the real series and found within about 5% of the observed thermal requirement (blooming 651, pod setting 883, leaf drop 1504 GDD from observed planting). Late-season timing is not well predicted by thermal time; see script 24",
   "planting_rule": {
     "earliest_doy": 121,
     "latest_doy": 175,
@@ -28,7 +28,7 @@
     },
     "depletion_fraction": 0.5,
     "capacity": "SSURGO available water, top metre, mm",
-    "et0": "Hargreaves, temperature and latitude only"
+    "et0": "FAO-56 Penman-Monteith, humidity-responsive; Hargreaves retained in _pheno for comparison"
   },
   "county_years": 4314,
   "skipped": 174,

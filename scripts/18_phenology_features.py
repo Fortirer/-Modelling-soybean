@@ -49,6 +49,16 @@ PARAMETER PROVENANCE, READ THIS BEFORE QUOTING ANY RESULT
   anything. And maturity group varies north to south across the state, while
   one set of thresholds is applied everywhere. Calibrating per county, or
   against observed county phenology, remains undone.
+
+UPDATE, script 24: the dates above were written from MEMORY and never
+downloaded, so the description of these thresholds as "calibrated to NASS
+norms" overstated what was done. Script 23 has since pulled the real NASS
+series and script 24 checked them. The thresholds turned out to be within
+about 5% of the observed thermal requirement (blooming 651 GDD, pod setting
+883, leaf drop 1504, from observed planting). The larger problems are the
+planting rule below, which runs about 15 days early and tracks real planting
+poorly (r = 0.18), and that thermal time predicts LATE-season timing worse
+than the mean date. Neither has been fixed here.
 """
 import sys, json
 import numpy as np, pandas as pd
@@ -100,15 +110,19 @@ def main():
         thermal_time=dict(base_c=P.T_BASE, cap_c=P.T_CAP, extreme_c=P.T_EXTREME,
                           method="single sine (Snyder 1985) over the daily curve"),
         stages_gdd_from_planting=P.STAGES,
-        stages_note="calibrated to Illinois NASS crop-progress 50% dates; stage "
-                    "dates reproduce the state average by construction, so "
-                    "agreement with those norms is not evidence",
+        stages_note="written from remembered NASS 50%-progress dates, NOT downloaded "
+                    "data; checked in script 24 against the real series and found "
+                    "within about 5% of the observed thermal requirement "
+                    "(blooming 651, pod setting 883, leaf drop 1504 GDD from "
+                    "observed planting). Late-season timing is not well predicted "
+                    "by thermal time; see script 24",
         planting_rule=dict(earliest_doy=P.EARLIEST_DOY, latest_doy=P.LATEST_DOY,
                            temp_c=P.PLANT_TEMP_C,
                            rule="first day with a 7-day mean at or above temp_c"),
         water_balance=dict(kc=P.KC, depletion_fraction=P.DEPLETION_FRACTION,
                            capacity="SSURGO available water, top metre, mm",
-                           et0="Hargreaves, temperature and latitude only"),
+                           et0="FAO-56 Penman-Monteith, humidity-responsive; "
+                               "Hargreaves retained in _pheno for comparison"),
         county_years=int(len(f)), skipped=int(skipped),
         shared_module="_pheno.py, also used by script 20 for CMIP6 scenarios",
     ), indent=2))

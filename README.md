@@ -182,6 +182,8 @@ Script `17` pulls daily NASA POWER for all 102 county centroids, 1981-2024, 1.64
 
 ### The window has already moved
 
+> **Correction, see [Validated against observed crop progress](#validated-against-observed-crop-progress).** The trends below are what the *model* produces. Against the observed NASS record, leaf drop has not advanced (+0.61 ± 0.64 days per decade against the model's −2.5), planting moved about 1.7 days per decade earlier where this model says it barely moved, and only maturity is clearly contradicted.
+
 | | 1981-1990 | 2015-2024 | Trend |
 | --- | --- | --- | --- |
 | Day of year reaching R6 | 246.6 | 239.4 | **−2.60 / decade** |
@@ -212,11 +214,95 @@ The case for the phenological window was never that it predicts the past better.
 
 ---
 
+## Validated against observed crop progress
+
+Script `23` pulls the actual weekly Illinois soybean progress and condition series from NASS Quick Stats (the key-free bulk file, streamed and filtered from 23.9 million rows). Script `24` compares the phenology against it. **The series are state-level only**: the bulk file has no district or county progress. Planting runs from 1980, blooming, setting pods, leaf drop and harvest from 1981, condition from 1986.
+
+### The dates written from memory were close, and the label on one was wrong
+
+The thermal-time thresholds in script `18` were described as calibrated to NASS norms. They were not: the dates were written from memory and never downloaded. Checked against the real series (mean day of year, 1981-2024):
+
+| Stage | Written from memory | Observed | Error |
+| ----- | ------------------- | -------- | ----- |
+| Planted (50%) | 20 May | 21 May | −1.7 d |
+| Blooming (50%) | 10 July | 16 July | **−6.4 d** |
+| Setting pods (50%) | 28 July | 1 August | −4.6 d |
+| Dropping leaves (50%) | ~20 Sept, called "maturity" | 19 Sept | +0.5 d |
+
+NASS has no "maturity" or "full seed" stage. Leaf drop corresponds to roughly R7, and the "full seed, ~5 September" date had no source at all.
+
+### The thresholds turned out to be about right
+
+Accumulating GDD from each year's *observed* planting date to each observed stage gives the thermal time the crop actually needed:
+
+| Stage | Observed median GDD | Spread across years (CV) | Threshold in use | Error |
+| ----- | ------------------- | ------------------------ | ---------------- | ----- |
+| Blooming | 651 | 8.8% | 610 | −41 |
+| Setting pods | 883 | 7.6% | 860 | −23 |
+| Dropping leaves | 1504 | 8.1% | 1550 | +46 |
+
+All within about 5%, so the calibration survived being checked against data it was not built from.
+
+### But the model runs 10 to 19 days early, and the cause is the planting rule
+
+| Observed | Model | Bias | RMSE | Year-to-year correlation |
+| -------- | ----- | ---- | ---- | ------------------------ |
+| Planted | temperature rule | **−15.5 d** | 18.3 d | **0.18** |
+| Blooming | R1 | −12.3 d | 13.5 d | 0.59 |
+| Setting pods | R3 | −10.3 d | 11.3 d | 0.63 |
+| Dropping leaves | R6 / R8 | −19.2 / −7.1 d | 20.5 / 10.3 d | 0.53 / 0.48 |
+
+This corrects an earlier assessment of the pipeline, that the modelled dates (planting 6 May, R1 on 3 July, R3 on 21 July) were close to Illinois norms. Planting was 15 days early, and the temperature rule barely tracks real planting from year to year (r = 0.18), because farmers plant when fields are workable, not when a running mean crosses 15 °C.
+
+Feeding the model the *observed* planting date removes the bias, which isolates the fault:
+
+| Stage | Bias | RMSE | Observed sd | Correlation | Skill vs the mean date |
+| ----- | ---- | ---- | ----------- | ----------- | ---------------------- |
+| Blooming | −0.1 d | 4.1 d | 6.8 d | 0.86 | +40% |
+| Setting pods | +0.2 d | 4.6 d | 5.9 d | 0.83 | +21% |
+| Dropping leaves | +4.4 d | **19.5 d** | 4.8 d | 0.55 | **−305%** |
+
+**Given the planting date, thermal time predicts flowering and pod set well. It predicts leaf drop worse than simply guessing the average date.** Observed leaf drop varies by only about 5 days from year to year, while accumulated thermal time swings it by nearly 20. Soybean is a photoperiod-sensitive short-day plant, so maturity is set partly by day length, which a thermal-time model does not have. That is agronomic background rather than something tested here, but it fits the data.
+
+![Phenology against NASS observations](figures/fig32_phenology_validation.png)
+
+### The window has not moved the way the model says
+
+Trends in days per decade, 1981-2024:
+
+| Stage | Observed | Model | Gap |
+| ----- | -------- | ----- | --- |
+| Planting | −1.69 ± 1.15 | −0.25 | 1.2 SE |
+| Blooming | −0.54 ± 0.87 | −1.93 | 1.4 SE |
+| Setting pods | −0.98 ± 0.72 | −2.07 | 1.2 SE |
+| **Leaf drop** | **+0.61 ± 0.64** | **−2.5** | **2.7-2.8 SE** |
+
+Only maturity is clearly contradicted, but it is contradicted: observed leaf drop has not advanced, and if anything is a fraction later, while the model has R6 arriving 2.5 days earlier per decade. Observed planting moved earlier by about 7 days over the record. The real system has been adapting through planting date and variety, which offsets warming-driven acceleration, and the model, with a fixed rule and fixed thresholds, contains none of it.
+
+### Farmers' own assessment agrees with the stress variables
+
+August "good + excellent" condition ratings, 39 years: **+0.66** with the state yield anomaly, **−0.69** with extreme degree days, **+0.55** with minimum soil water fraction, **+0.51** with R3-R6 precipitation. The heat and water variables built in this pipeline track an independent human judgement of crop stress.
+
+### What this changes
+
+- **"The crop window has already moved" (Figure 24) is a modelled result, not an observed one.** The observed record shows earlier planting and no advance in maturity.
+- **The size of the scenario shifts in Figure 26 is unvalidated and probably too large**, particularly R6 arriving up to 31 days earlier and seed fill shortening by up to 6.4 days. Those come from thermal time alone, which fails for late-season timing and has no photoperiod control. The early-season part (R1, R3) is supported.
+- **The "no adaptation" assumption is now shown to be strongly biased toward loss**, because adaptation is already visible in the historical record.
+- **What it does not change:** the yield response to heat and water, which the condition ratings corroborate.
+
+### Not yet fixed
+
+The planting rule should be anchored to the observed mean, R1 and R3 thresholds set to 651 and 883, and the end of the yield window defined without leaning on thermal-time maturity. Scripts `18` to `21` would then need rerunning, and their scenario numbers will change.
+
+---
+
 ## Scenarios on a moving crop window
 
 Script `20` reruns the CMIP6 scenarios, but applies the deltas to the **daily** record and recomputes the entire phenology through the same `_pheno` module script `18` uses on observed weather. Warming now does what warming does.
 
 ### None of this was imposed
+
+> **Caveat, see the validation section above.** The mechanism is real, but the *size* of the late-season shifts is unvalidated. Thermal time predicts flowering and pod set well and leaf drop worse than the average date, and it has no photoperiod control. Treat the R1 and R3 shifts as supported and the R6 shifts, and the seed-fill shortening derived from them, as probably too large.
 
 | Scenario | Horizon | Δ Tmax | R6 date | Seed fill | Extreme degree days |
 | -------- | ------- | ------ | ------- | --------- | ------------------- |
