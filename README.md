@@ -351,6 +351,48 @@ Both are honest readings of the same correction. The SR figure is the one to quo
 
 ---
 
+## Ozone: it survives detrending, and still cannot be separated
+
+Script `22` asks of ozone the question that ended the soil work. Soil was absorbed by the county trend because a static attribute cannot explain a target whose county mean is zero. Ozone has the mirror risk: US ozone fell after 1980, so a trend is absorbed too, and what is left is year-to-year variation, which hot stagnant summers drive. It may only restate the heat signal.
+
+Data is EPA AirData, 45 years (1980-2024), Illinois 8-hour ozone, 102-144 monitors covering 18-23 of 102 counties.
+
+**It does survive detrending, unlike soil.** The trend explains only 34-38% of the peak metrics and essentially none of the annual mean, so a residual standard deviation of 4-6 ppb remains. Detrended, the correlation with the yield anomaly *strengthens* rather than vanishing.
+
+| Metric | Trend explains | Detrended r with yield anomaly (44 years) |
+| ------ | -------------- | ------------------------------------------ |
+| 4th-highest 8-h value | 38% | −0.41 |
+| 90th-percentile 8-h value | 34% | **−0.52** |
+| Annual mean | 0.2% | −0.48 |
+
+**But it is not separable from heat and water.** Detrended ozone correlates **+0.62 to +0.74** with extreme degree days and **−0.46 to −0.57** with the water balance, which is unsurprising, since hot dry stagnant summers produce both. Added to the specification it contributes almost nothing.
+
+| Metric | Coefficient, bu/acre per ppb | p | Effect of 1 sd | ΔR² |
+| ------ | ---------------------------- | - | -------------- | --- |
+| 4th-highest | −0.046 | 0.64 | −0.28 | +0.002 |
+| 90th percentile | −0.156 | 0.24 | −0.68 | +0.008 |
+| Annual mean | −0.139 | 0.57 | −0.34 | +0.002 |
+
+A year-level regression with no county replication, 44 observations, gives coefficients of +0.003 to −0.076 with p between 0.67 and 0.98.
+
+![Ozone screen](figures/fig31_ozone_screen.png)
+
+### A null here does not mean ozone does nothing
+
+The detectable-effect floor is about **0.21 bu/acre per ppb**. The literature implies roughly **0.13 to 0.38**, from two rough anchors: a 10% suppression over 25-35 ppb above background, and SoyFACE's +25% ozone treatment costing 10 ± 11%, which is itself consistent with zero. The range straddles the floor, so this design cannot tell "ozone does nothing" from "ozone does what the literature says".
+
+Read the sign and the scale as consistent with the literature and the significance as inconclusive.
+
+### What it means for the projections
+
+Ozone is **not built into script 20**, because there is no independent coefficient to put there. The consequence runs the other way. Because ozone tracks heat and drought, part of what the fitted **EDD and water coefficients** measure may be ozone damage. If ozone concentrations in a warmer future do not scale with heat as they did historically, extrapolating those coefficients would misattribute the loss. This is a hypothesis this data cannot test, and it applies equally to the FACE CO₂ benefit, whose ozone-protection component cannot be separated from fertilisation here.
+
+Two things would settle it: county-varying, growing-season ozone exposure (AOT40 or W126, from the hourly EPA files, roughly ten times heavier than the annual summaries used here), and an ozone-explicit process crop model.
+
+**Limits of this screen.** Annual metrics rather than growing-season exposure; monitors urban-biased and covering under a quarter of counties; the honest sample size is 44 years, not the 3,779 county-years.
+
+---
+
 ## Does climate actually predict?
 
 Validation is strictly temporal. **No random splits anywhere.** They fail twice over here: they admit future information, and because counties within a year share weather, they place near-duplicates of test rows into training.
