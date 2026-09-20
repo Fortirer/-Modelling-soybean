@@ -1,0 +1,4 @@
+tercile,counties,n,mean_edd,edd,se,edd_separate_fit,water_separate_fit,water_separate_se
+south,31,1329,29.3431,-0.1206,0.0062,-0.0905,11.7067,1.3643
+central,30,1283,24.9325,-0.1101,0.0053,-0.1191,3.591,1.4041
+north,30,1290,15.7825,-0.1197,0.0096,-0.1272,2.9904,1.5177
