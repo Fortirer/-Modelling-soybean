@@ -16,8 +16,8 @@
   "min_mature_rate": 0.9,
   "ensemble": "ensemble-median CMIP6 delta; spread not propagated here",
   "model": "yield_anom ~ season_gdd + season_edd + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)",
-  "model_r2": 0.30398537741386034,
+  "model_r2": 0.3239762898996267,
   "not_identified": "predicted yield is linear in maturity group because season_gdd is identified from seasons varying at one maturity group; no optimum is reported",
   "needs": "a crop model carrying yield potential, per Peng et al. 2020",
-  "runtime_min": 3.8
+  "runtime_min": 4.9
 }

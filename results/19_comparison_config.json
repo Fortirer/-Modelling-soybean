@@ -22,6 +22,7 @@
     "climate_normal_tmax"
   ],
   "process_features": [
+    "win_gdd",
     "win_edd",
     "win_hot_days",
     "win_vpd_mean",
@@ -33,12 +34,12 @@
     "wb_stress_days",
     "wb_min_water_frac",
     "wb_season_deficit_mm",
-    "seedfill_days",
-    "podfill_days",
+    "window_days",
+    "season_gdd",
     "season_edd",
     "season_prcp_mm",
     "plant_doy",
-    "r6_doy"
+    "end_doy"
   ],
   "excluded": {
     "win_gdd": "constant by construction; R3 and R6 are fixed points on the thermal-time axis"
@@ -48,6 +49,6 @@
     1981,
     2024
   ],
-  "rows": 3779,
-  "test_obs": 2048
+  "rows": 3902,
+  "test_obs": 2082
 }

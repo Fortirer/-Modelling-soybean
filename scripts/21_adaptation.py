@@ -10,6 +10,20 @@ thermal time instead of maturing early into an empty autumn. The room exists:
 at the current state-average maturity the median county-year reaches R8
 fifty-five days before the first killing frost.
 
+CAVEAT ADDED AFTER SCRIPT 24 -- READ THIS FIRST
+  Every phenological number below (frost margin, share of years maturing before
+  frost, seed-fill length, the longest viable group) comes from thermal-time
+  MATURITY, which script 24 showed to be unreliable: given observed planting it
+  predicts leaf drop with an RMSE of 19.5 days against an observed sd of 4.8,
+  worse than guessing the average date, and observed leaf drop has not advanced.
+  Soybean maturity is partly photoperiod-controlled and this model has no
+  photoperiod. So this script runs the LEGACY thermal end rule on purpose
+  (end_rule="thermal"), because its frost arithmetic needs a thermal-time R8, and
+  its conclusions about how much frost margin exists inherit that weakness. The
+  planting rule and R1/R3 thresholds are the corrected ones from script 25, which
+  moves planting about two weeks later than the version these results first
+  described, so the frost margins are tighter than first reported.
+
 THIS SCRIPT DELIBERATELY STOPS SHORT OF PICKING A MATURITY GROUP
 
   The first version of this script did pick one, and the answer was worthless.
@@ -95,7 +109,8 @@ def main():
             climates.append((s, h, med[(med.scenario == s) & (med.horizon == h)]))
 
     obs = P.add_daily_terms(daily, lat)
-    base35, _ = P.build_features(obs, taw, P.stages_for_mg(P.BASELINE_MG))
+    base35, _ = P.build_features(obs, taw, P.stages_for_mg(P.BASELINE_MG),
+                                 end_rule="thermal")
     d0 = panel.merge(base35, on=["fips5", "year"], how="inner")
     sr = smf.ols(SR, data=d0).fit(cov_type="cluster", cov_kwds={"groups": d0.fips5})
     keep = set(d0.fips5)
@@ -106,7 +121,7 @@ def main():
     for scen, hz, delta in climates:
         dd = obs if delta is None else P.add_daily_terms(perturb_daily(daily, delta), lat)
         for mg in MG_LIST:
-            f, _ = P.build_features(dd, taw, P.stages_for_mg(mg))
+            f, _ = P.build_features(dd, taw, P.stages_for_mg(mg), end_rule="thermal")
             j = panel.merge(f, on=["fips5", "year"], how="inner")
             j = j[j.fips5.isin(keep)]
             j = j.assign(pred=sr.predict(j).values)

@@ -1,44 +1,47 @@
-"""20 - CMIP6 scenarios on a moving crop window, with CO2 made explicit.
-Tables 21-23, Figures 26-28.
+"""20 - CMIP6 scenarios on a calibrated, moving crop window, with CO2 explicit.
+Tables 21-22, Figures 26-28.
 
 What changes relative to script 13
   Script 13 applied CMIP6 deltas to monthly aggregates and re-predicted, with
-  July and August fixed. Warming therefore made a fixed window hotter and did
-  nothing else. Here the deltas are applied to the DAILY record and the whole
-  phenology is recomputed through _pheno, the same module script 18 uses on
-  observed weather. Warming now does what warming does: thermal time runs
-  faster, stages arrive earlier, seed fill shortens, and the R3-R6 window that
-  the yield model reads has moved on its own. Nothing in this script tells it
-  to; it falls out of the thermal-time accounting.
+  July and August fixed. Here the deltas are applied to the DAILY record and the
+  whole phenology is recomputed through _pheno, the module script 18 uses on
+  observed weather, so planting, R1 and R3 respond to the warmed weather and the
+  yield window moves with them.
+
+WHAT THIS VERSION CORRECTS
+  An earlier version let thermal time set the END of the window, so warming
+  brought maturity 17 to 31 days earlier and shortened seed fill by up to 6
+  days. Checked against the observed NASS record (scripts 23-24), thermal time
+  predicts leaf drop worse than the plain average date, and observed leaf drop has
+  not advanced. Both ends of the window are now regressions on the observed
+  pod-setting and leaf-drop dates (script 25), moved by a county-relative driver
+  anomaly. The result is a small shift in the window and, if anything, a slight
+  LENGTHENING: warm seasons advance pod set more than maturity.
+
+  Two drivers are run, because the 44-year record cannot separate them and they
+  extrapolate differently: "r3" (default) and "gdd" (END_DRIVER=gdd), the latter
+  written to the same tables with a _gdd suffix and no figures.
 
 Two estimators, for the same reason as script 13
-  Boosted trees fit best in sample but predict a constant outside their
-  training range, which made script 13 report its SMALLEST loss for its
-  HOTTEST scenario. The parametric estimator here is the Schlenker-Roberts
-  specification: yield on GDD, EDD, precipitation and its square, with county
-  fixed effects. EDD enters LINEARLY and that is the point of the construction
-  -- the nonlinearity lives in the degree-day accounting, not the functional
-  form, so extrapolating it is a straight line in a variable with a physical
-  threshold rather than a fitted curve in raw temperature. That is a much
-  weaker assumption than script 13's quadratic, though still an assumption.
+  Boosted trees fit best in sample but predict a constant outside their training
+  range. The parametric estimator is Schlenker-Roberts: yield on GDD, EDD and
+  precipitation, EDD entering linearly so the nonlinearity lives in the degree-day
+  accounting rather than the functional form.
 
-CO2, which script 13 omitted entirely
-  Soybean is a C3 legume and the most CO2-responsive major crop, and SoyFACE,
-  the free-air enrichment facility behind the definitive soybean numbers, sits
-  in Champaign County, this study's focal unit. Projecting warming losses while
-  silently holding CO2 at present levels is a one-sided bias.
+CO2, which script 13 omitted
+  Soybean is a C3 legume and the most CO2-responsive major crop, and SoyFACE sits
+  in Champaign County. This script does NOT claim to know the CO2 response. It
+  reports three explicit variants (none, logarithmic FACE, saturating at 550 ppm)
+  so the size of the assumption is visible. The FACE response is also known to
+  shrink under heat and to interact with drought; neither is represented.
 
-  This script does NOT claim to know the CO2 response. It reports three
-  explicit variants so the size of the assumption is visible:
-      none        beta = 0, script 13's implicit and indefensible assumption
-      face        logarithmic, scaled to roughly +15% seed yield at 550 ppm
-      saturating  the same curve, capped at its 550 ppm value
-
-  Read the spread between them as the uncertainty this introduces, not as a
-  forecast. The FACE response is also known to shrink under heat and to
-  interact with drought, neither of which is represented.
+WHAT THIS STILL CANNOT DO
+  The window slopes are weather-driven interannual estimates at today's level of
+  adaptation, extrapolated to far more warming than the record contains. Observed
+  history contains adaptation (earlier planting, varieties) that a fixed rule
+  cannot represent, and no adaptation is modelled here.
 """
-import sys, json, time
+import sys, json, time, os
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 import statsmodels.formula.api as smf
@@ -46,6 +49,11 @@ from sklearn.ensemble import GradientBoostingRegressor
 from _cfg import RAW, PROC, FINAL, RES, FIG, SEED, FOCAL_COUNTY
 from _viz import *
 import _pheno as P
+
+# which end-of-window driver to run. The default writes the headline tables and
+# figures; any other writes suffixed tables only, as a sensitivity.
+DRIVER = os.environ.get("END_DRIVER", P.END_DRIVER)
+SUFFIX = "" if DRIVER == P.END_DRIVER else f"_{DRIVER}"
 
 # ---- CO2, ppm --------------------------------------------------------------
 # APPROXIMATE SSP concentration-pathway means. These are round numbers, not
@@ -131,15 +139,19 @@ def main():
 
     # ---- observed baseline, through the same module -----------------------
     obs = P.add_daily_terms(daily, lat)
-    base_f, _ = P.build_features(obs, taw)
+    # scenario windows must be measured against the OBSERVED-climate baseline, or
+    # warming would cancel itself out of the anomaly
+    baseline = P.county_baseline(obs, DRIVER)
+    print(f"[20] window driver: {DRIVER}  |  baseline built for {len(baseline)} counties")
+    base_f, _ = P.build_features(obs, taw, driver=DRIVER, baseline=baseline)
     d0 = panel.merge(base_f, on=["fips5", "year"], how="inner")
     print(f"[20] baseline county-years : {len(d0):,}")
 
-    PROC_F = ["win_edd", "win_hot_days", "win_vpd_mean", "win_prcp_mm",
+    PROC_F = ["win_gdd", "win_edd", "win_hot_days", "win_vpd_mean", "win_prcp_mm",
               "win_et0_mm", "win_water_deficit_mm", "win_tmax_mean",
               "wb_stress_days", "wb_min_water_frac", "wb_season_deficit_mm",
-              "seedfill_days", "podfill_days", "season_edd", "season_prcp_mm",
-              "season_gdd", "plant_doy", "r6_doy"]
+              "window_days", "season_edd", "season_prcp_mm",
+              "season_gdd", "plant_doy", "end_doy"]
 
     gbm = GradientBoostingRegressor(n_estimators=200, max_depth=3,
                                     learning_rate=.05, random_state=SEED)
@@ -216,15 +228,17 @@ def main():
             if sub.empty:
                 continue
             pert = P.add_daily_terms(perturb_daily(daily, sub), lat)
-            fx, _ = P.build_features(pert, taw)
+            fx, _ = P.build_features(pert, taw, driver=DRIVER, baseline=baseline)
             j = d0[["fips5", "year", "county", "yield_bu_ac",
                     "pred_gbm", "pred_sr"]].merge(fx, on=["fips5", "year"], how="inner")
             dg = gbm.predict(j[PROC_F]) - j.pred_gbm.values
             ds = sr.predict(j).values - j.pred_sr.values
             b = d0.set_index(["fips5", "year"])
-            shift_r6 = float(j.set_index(["fips5", "year"]).r6_doy.sub(b.r6_doy).mean())
-            shift_sf = float(j.set_index(["fips5", "year"]).seedfill_days
-                             .sub(b.seedfill_days).mean())
+            jj = j.set_index(["fips5", "year"])
+            shift_end = float(jj.end_doy.sub(b.end_doy).mean())
+            shift_win = float(jj.window_days.sub(b.window_days).mean())
+            shift_plant = float(jj.plant_doy.sub(b.plant_doy).mean())
+            shift_r3 = float(jj.r3_doy.sub(b.r3_doy).mean())
             oor = float((j.season_edd > obs_edd_max).mean() * 100)
             per_model.append(dict(
                 scenario=scen, horizon=hz, model=mod,
@@ -232,17 +246,19 @@ def main():
                 edd_mean=float(j.season_edd.mean()),
                 edd_ratio=float(j.season_edd.mean() / d0.season_edd.mean()),
                 out_of_range_pct=oor,
-                r6_shift_days=shift_r6, seedfill_shift_days=shift_sf,
+                end_shift_days=shift_end, window_shift_days=shift_win,
+                plant_shift_days=shift_plant, r3_shift_days=shift_r3,
                 dTmax_JA_C=float(sub[sub.month.isin([7, 8])].d_tasmax_C.mean())))
             pheno_rows.append(dict(scenario=scen, horizon=hz, model=mod,
-                                   r6_shift=shift_r6, seedfill_shift=shift_sf))
+                                   end_shift=shift_end, window_shift=shift_win))
             print(f"[20] {scen} {hz:12} {mod:15} "
-                  f"R6 {shift_r6:+5.1f}d  seedfill {shift_sf:+5.1f}d  "
+                  f"plant {shift_plant:+5.1f}d  R3 {shift_r3:+5.1f}d  "
+                  f"end {shift_end:+5.1f}d  window {shift_win:+5.1f}d  "
                   f"EDD x{j.season_edd.mean()/d0.season_edd.mean():4.1f}  "
                   f"SR {ds.mean():+6.2f}  GBM {dg.mean():+6.2f}", flush=True)
 
     PM = pd.DataFrame(per_model)
-    PM.round(4).to_csv(RES / "table22_pheno_scenario_model_spread.csv", index=False)
+    PM.round(4).to_csv(RES / f"table22_pheno_scenario_model_spread{SUFFIX}.csv", index=False)
 
     # ---- headline table, with the CO2 layer made explicit ------------------
     rows = []
@@ -251,8 +267,10 @@ def main():
         sr_med = float(np.median(g.delta_sr))
         rec = dict(scenario=scen, horizon=hz, n_models=len(g), co2_ppm=ppm,
                    dTmax_JA_C=g.dTmax_JA_C.mean(),
-                   r6_shift_days=g.r6_shift_days.mean(),
-                   seedfill_shift_days=g.seedfill_shift_days.mean(),
+                   plant_shift_days=g.plant_shift_days.mean(),
+                   r3_shift_days=g.r3_shift_days.mean(),
+                   end_shift_days=g.end_shift_days.mean(),
+                   window_shift_days=g.window_shift_days.mean(),
                    edd_ratio=g.edd_ratio.mean(),
                    out_of_range_pct=g.out_of_range_pct.mean(),
                    climate_gbm_bu=float(np.median(g.delta_gbm)),
@@ -264,13 +282,14 @@ def main():
             rec[f"net_{mode}_bu"] = sr_med + gain
         rows.append(rec)
     T = pd.DataFrame(rows).sort_values(["scenario", "horizon"])
-    T.round(4).to_csv(RES / "table21_pheno_scenario_summary.csv", index=False)
+    T.round(4).to_csv(RES / f"table21_pheno_scenario_summary{SUFFIX}.csv", index=False)
 
     print("\n[20] WHAT WARMING DOES TO THE CROP CALENDAR (ensemble mean)")
-    print(T[["scenario", "horizon", "dTmax_JA_C", "r6_shift_days",
-             "seedfill_shift_days", "edd_ratio", "out_of_range_pct"]]
-          .rename(columns={"dTmax_JA_C": "dTmax", "r6_shift_days": "R6_shift",
-                           "seedfill_shift_days": "seedfill", "edd_ratio": "EDDx",
+    print(T[["scenario", "horizon", "dTmax_JA_C", "plant_shift_days", "r3_shift_days",
+             "end_shift_days", "window_shift_days", "edd_ratio", "out_of_range_pct"]]
+          .rename(columns={"dTmax_JA_C": "dTmax", "plant_shift_days": "plant",
+                           "r3_shift_days": "R3", "end_shift_days": "end",
+                           "window_shift_days": "window", "edd_ratio": "EDDx",
                            "out_of_range_pct": "oor_%"}).round(2).to_string(index=False))
 
     print("\n[20] YIELD EFFECT, bu/acre  (climate, then CO2 as a separate layer)")
@@ -297,7 +316,13 @@ def main():
 
     json.dump(dict(
         method="CMIP6 deltas applied to DAILY weather, phenology recomputed "
-               "through _pheno so the crop window moves with the climate",
+               "through _pheno; the yield window's start and end are regressions on "
+               "observed NASS dates moved by a county-relative driver anomaly",
+        window_driver=DRIVER, window_fit=P.WINDOW_FIT,
+        window_caveat="slopes are weather-driven interannual estimates at today's "
+                      "level of adaptation, extrapolated far beyond the record; the "
+                      "window-length response is small and only the r3 driver has "
+                      "out-of-sample support (script 25)",
         estimators=dict(
             schlenker_roberts=SR,
             sr_note="EDD enters linearly; the nonlinearity is in the degree-day "
@@ -316,26 +341,28 @@ def main():
         dewpoint_assumption=DEW_NOTE, precipitation_assumption=PRCP_NOTE,
         observed_season_edd_max=obs_edd_max,
         models=MODELS, runtime_min=round((time.time() - t_start) / 60, 1),
-    ), open(RES / "20_pheno_scenario_config.json", "w"), indent=2)
+    ), open(RES / f"20_pheno_scenario_config{SUFFIX}.json", "w"), indent=2)
 
-    draw_figures(T)
-
+    if not SUFFIX:
+        draw_figures(T)
+        print("[20] wrote table21, table22, fig26, fig27, fig28")
+    else:
+        print(f"[20] sensitivity run ({DRIVER}): wrote suffixed tables only, no figures")
     print(f"\n[20] runtime {(time.time()-t_start)/60:.1f} min")
-    print("[20] wrote table21, table22, fig26, fig27, fig28")
 
 
 def draw_figures(T):
     """Redraw from the summary table alone, so figures can be adjusted without
     repeating the 32 phenology rebuilds. Run with FIGURES_ONLY=1."""
-    # ---------- Figure 26: warming moves and shortens the window ------------
+    # ---------- Figure 26: what warming does to the calibrated window --------
     f, axes = plt.subplots(1, 3, figsize=(13.5, 4.7), dpi=200)
     f.patch.set_facecolor(SURFACE)
     lab = [f"{s.upper()}\n{h.replace('_century','')}"
            for s, h in zip(T.scenario, T.horizon)]
     xp = np.arange(len(T))
     for ax_, (v, yl, col, fmt) in zip(axes, [
-            (T.r6_shift_days, "Shift in R6 date (days)", S2, "{:+.1f}"),
-            (T.seedfill_shift_days, "Change in seed fill (days)", S1, "{:+.1f}"),
+            (T.end_shift_days, "Shift in end of yield window (days)", S2, "{:+.1f}"),
+            (T.window_shift_days, "Change in window length (days)", S1, "{:+.1f}"),
             (T.edd_ratio, "Extreme degree days, multiple of today", S4, "x{:.1f}")]):
         ax_.set_facecolor(SURFACE)
         ax_.bar(xp, v, color=col, width=.58)
@@ -355,15 +382,17 @@ def draw_figures(T):
             ax_.spines[s_].set_visible(False)
         ax_.tick_params(colors=MUTED, labelsize=8.5)
         ax_.set_ylabel(yl, fontsize=9.5, color=INK2)
-    f.suptitle("Figure 26. Warming moves the crop, not just the weather",
-               fontsize=14.5, color=INK, x=.02, ha="left", y=1.06, fontweight="semibold")
-    f.text(.02, .975, "Ensemble mean across 8 CMIP6 models. None of this is imposed: "
-           "it falls out of recomputing thermal time on perturbed daily weather.",
-           fontsize=9.6, color=INK2)
+    f.suptitle("Figure 26. What warming does to the calibrated yield window",
+               fontsize=14.5, color=INK, x=.02, ha="left", y=1.10, fontweight="semibold")
+    f.text(.02, .945, "Ensemble mean of 8 CMIP6 models. Both ends of the window are regressions "
+           "on observed NASS dates (script 25), so pod setting moves much more than maturity.\n"
+           "Slopes are interannual estimates at today's adaptation, extrapolated far beyond "
+           "the record; observed decadal trends were smaller (Figure 32).",
+           fontsize=9.6, color=INK2, va="bottom")
     f.tight_layout(rect=[0, 0, 1, .91])
-    f.savefig(FIG / "fig26_warming_moves_the_crop.png", facecolor=SURFACE,
+    f.savefig(FIG / "fig26_window_response.png", facecolor=SURFACE,
               bbox_inches="tight")
-    plt.close(f); print("   figure -> fig26_warming_moves_the_crop.png")
+    plt.close(f); print("   figure -> fig26_window_response.png")
 
     # ---------- Figure 27: climate loss against CO2 gain --------------------
     f, ax = fig(11, 6.4)

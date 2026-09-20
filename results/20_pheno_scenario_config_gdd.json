@@ -1,6 +1,6 @@
 {
   "method": "CMIP6 deltas applied to DAILY weather, phenology recomputed through _pheno; the yield window's start and end are regressions on observed NASS dates moved by a county-relative driver anomaly",
-  "window_driver": "r3",
+  "window_driver": "gdd",
   "window_fit": {
     "r3": {
       "start": [
@@ -58,5 +58,5 @@
     "MPI-ESM1-2-LR",
     "MRI-ESM2-0"
   ],
-  "runtime_min": 4.5
+  "runtime_min": 5.8
 }

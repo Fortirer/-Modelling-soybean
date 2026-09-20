@@ -18,6 +18,16 @@ FOUR QUESTIONS, in order, because each one can change the next
      corrected by recalibrating and correlation cannot.
   4. Do farmers' condition ratings agree with the model's stress variables?
 
+ORDER OF RUNNING, AND WHAT IS IN-SAMPLE
+  This script was first run BEFORE the recalibration of script 25, and found the
+  problems that motivated it. It is now run against the recalibrated phenology.
+  Read the output accordingly: the empirical window start and end (start_doy,
+  end_doy) are regressions on the very observations compared against here, and the
+  planting threshold and R1/R3/R7 thresholds were fitted to the observed means, so
+  agreement on MEAN dates is by construction. What is not by construction is the
+  year-to-year correlation, the trend comparison, and the leave-one-out skill
+  reported by script 25.
+
 WHAT THESE COMPARISONS CANNOT DO
   NASS publishes progress at the STATE level only, as the date by which half the
   acreage reached a stage. The model works per county. State-mean model dates
@@ -40,10 +50,11 @@ STAGE = {"PCT PLANTED": "planted", "PCT BLOOMING": "blooming",
 # what I wrote into script 18's header from memory, as day of year
 REMEMBERED = {"planted": ("20 May", 140), "blooming": ("10 July", 191),
               "pods": ("28 July", 209), "leaves": ("~20 Sept, called maturity", 263)}
-MODEL_FOR = {"planted": ["plant_doy"], "blooming": ["r1_doy"], "pods": ["r3_doy"],
-             "leaves": ["r6_doy", "r8_doy"]}
+MODEL_FOR = {"planted": ["plant_doy"], "blooming": ["r1_doy"],
+             "pods": ["r3_doy", "start_doy"],
+             "leaves": ["end_doy", "r6_doy", "r8_doy"]}
 STAGE_THRESH = {"blooming": P.STAGES["R1"], "pods": P.STAGES["R3"],
-                "leaves": P.STAGES["R8"]}          # current model thresholds, GDD
+                "leaves": P.STAGES["R7"]}          # current model thresholds, GDD
 
 
 def date50(g):
@@ -123,8 +134,8 @@ def main():
 
     # ================= 3. year-by-year tracking =================================
     ph = pd.read_csv(PROC / "phenology_features.csv", dtype={"fips5": str})
-    mod = ph.groupby("year")[["plant_doy", "r1_doy", "r3_doy", "r5_doy", "r6_doy", "r8_doy"]] \
-            .mean().reset_index()
+    mod = ph.groupby("year")[["plant_doy", "r1_doy", "r3_doy", "start_doy", "end_doy",
+                              "r6_doy", "r8_doy"]].mean().reset_index()
     m = yrs.merge(mod, on="year")
     print("\n[24] 3. DOES THE MODEL TRACK OBSERVED TIMING YEAR BY YEAR?  (1981-2024)")
     from scipy.stats import linregress

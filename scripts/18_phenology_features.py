@@ -50,15 +50,23 @@ PARAMETER PROVENANCE, READ THIS BEFORE QUOTING ANY RESULT
   one set of thresholds is applied everywhere. Calibrating per county, or
   against observed county phenology, remains undone.
 
-UPDATE, script 24: the dates above were written from MEMORY and never
+UPDATE, scripts 23-25: the dates above were written from MEMORY and never
 downloaded, so the description of these thresholds as "calibrated to NASS
-norms" overstated what was done. Script 23 has since pulled the real NASS
-series and script 24 checked them. The thresholds turned out to be within
-about 5% of the observed thermal requirement (blooming 651 GDD, pod setting
-883, leaf drop 1504, from observed planting). The larger problems are the
-planting rule below, which runs about 15 days early and tracks real planting
-poorly (r = 0.18), and that thermal time predicts LATE-season timing worse
-than the mean date. Neither has been fixed here.
+norms" overstated what was done. Script 23 pulled the real NASS series,
+script 24 checked the phenology against it, and script 25 made the fixes:
+
+  * R1, R3 and R7 thresholds are now the OBSERVED median thermal requirement
+    from observed planting (651, 883 and 1504 GDD), not remembered numbers.
+  * Planting is anchored to the observed mean (threshold 19 C, bias -1.4 days,
+    where the old 15 C rule planted 15.5 days early).
+  * The yield window is no longer R3 to thermal-time R6. Thermal time predicts
+    late-season timing worse than the average date does, and a statewide GDD
+    threshold puts R3 absurdly late in cool northern county-years. Both ends are
+    now regressions on the observed pod-setting and leaf-drop dates, moved by a
+    county-relative anomaly (see _pheno.py and script 25).
+
+What remains unvalidated: everything at county level, R5/R6/R8 (NASS has no
+counterpart), and the damping slope's extrapolation to large warming.
 """
 import sys, json
 import numpy as np, pandas as pd
@@ -87,17 +95,18 @@ def main():
     print(f"[18] counties           : {f.fips5.nunique()}   "
           f"years {f.year.min()}-{f.year.max()}")
 
-    print("\n[18] PHENOLOGY, MEAN DAY OF YEAR ACROSS THE RECORD")
-    for c in ["plant_doy", "r1_doy", "r3_doy", "r5_doy", "r6_doy", "r8_doy"]:
-        if f[c].notna().any():
-            when = pd.Timestamp("2001-01-01") + pd.Timedelta(days=f[c].mean() - 1)
-            print(f"     {c:10} {f[c].mean():6.1f}   ({when:%d %b})")
-    print(f"     {'podfill':10} {f.podfill_days.mean():6.1f} days")
-    print(f"     {'seedfill':10} {f.seedfill_days.mean():6.1f} days")
+    print("\n[18] MODELLED PHENOLOGY, MEAN DAY OF YEAR ACROSS THE RECORD")
+    for c in ["plant_doy", "r1_doy", "r3_doy", "end_doy"]:
+        when = pd.Timestamp("2001-01-01") + pd.Timedelta(days=f[c].mean() - 1)
+        print(f"     {c:10} {f[c].mean():6.1f}   ({when:%d %b})")
+    print(f"     {'window':10} {f.window_days.mean():6.1f} days  (R3 to the damped end)")
+    print("     observed NASS means for comparison: planted 141.7, blooming 197.4, "
+          "pods 213.6, leaf drop 262.5")
 
     early, late = f[f.year <= 1990], f[f.year >= 2015]
-    print("\n[18] HAS THE WINDOW ALREADY MOVED?  1981-1990 vs 2015-2024")
-    for c in ["plant_doy", "r3_doy", "r6_doy", "podfill_days", "seedfill_days"]:
+    print("\n[18] MODELLED WINDOW, 1981-1990 vs 2015-2024   "
+          "(observed leaf drop has NOT advanced; see script 24)")
+    for c in ["plant_doy", "r3_doy", "end_doy", "window_days"]:
         print(f"     {c:14} {early[c].mean():7.1f} -> {late[c].mean():7.1f}   "
               f"({late[c].mean() - early[c].mean():+.1f})")
 
@@ -110,15 +119,21 @@ def main():
         thermal_time=dict(base_c=P.T_BASE, cap_c=P.T_CAP, extreme_c=P.T_EXTREME,
                           method="single sine (Snyder 1985) over the daily curve"),
         stages_gdd_from_planting=P.STAGES,
-        stages_note="written from remembered NASS 50%-progress dates, NOT downloaded "
-                    "data; checked in script 24 against the real series and found "
-                    "within about 5% of the observed thermal requirement "
-                    "(blooming 651, pod setting 883, leaf drop 1504 GDD from "
-                    "observed planting). Late-season timing is not well predicted "
-                    "by thermal time; see script 24",
+        stages_note="R1, R3 and R7 are the OBSERVED median thermal requirement from "
+                    "observed NASS planting to blooming, setting pods and leaf drop "
+                    "(scripts 23-25). VE, R5, R6, R8 have no NASS counterpart and "
+                    "are unvalidated; they are retained for script 21 only",
+        window=dict(rule="both ends are regressions on observed NASS pod-setting and "
+                         "leaf-drop dates, moved by a county-relative driver anomaly",
+                    driver=P.END_DRIVER, fit=P.WINDOW_FIT,
+                    why="thermal time predicts late-season timing worse than the mean "
+                        "date (script 24), and a statewide GDD threshold puts thermal "
+                        "R3 absurdly late in cool northern county-years (script 25)"),
         planting_rule=dict(earliest_doy=P.EARLIEST_DOY, latest_doy=P.LATEST_DOY,
                            temp_c=P.PLANT_TEMP_C,
-                           rule="first day with a 7-day mean at or above temp_c"),
+                           rule="first day with a 7-day mean at or above temp_c",
+                           note="anchored to the observed mean planting date; a "
+                                "statistical device, not a physiological threshold"),
         water_balance=dict(kc=P.KC, depletion_fraction=P.DEPLETION_FRACTION,
                            capacity="SSURGO available water, top metre, mm",
                            et0="FAO-56 Penman-Monteith, humidity-responsive; "

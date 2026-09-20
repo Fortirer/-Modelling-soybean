@@ -117,6 +117,8 @@ Losses concentrate in the southwest, where baseline yields are already the lowes
 
 ## CMIP6 scenario projections
 
+> **First-generation scenarios, superseded.** This section describes script `13`, which applied CMIP6 deltas to monthly aggregates with July and August fixed. It is kept for the extrapolation lesson it taught, that boosted trees return their smallest loss for the hottest scenario, and for the comparison it allows. The current projections are in [Scenarios on a calibrated yield window](#scenarios-on-a-calibrated-yield-window).
+
 Scripts `12` and `13` replace the uniform shifts above with change factors taken from CMIP6 under named SSP pathways. Monthly means (`Amon`) for `tas`, `tasmax` and `pr` come from the AWS Open Data registry (`s3://cmip6-pds`, anonymous access) for **8 models**: ACCESS-ESM1-5, CanESM5, EC-Earth3, GFDL-ESM4, INM-CM5-0, MIROC6, MPI-ESM1-2-LR, MRI-ESM2-0.
 
 Raw model output is never fed to the yield model — it carries systematic bias, and the yield model was fitted on nClimDiv scales. Instead each GCM's **change** between a 1985-2014 baseline and the target window is applied to the observed county record (additive for temperature, multiplicative for precipitation), bilinearly interpolated to all 102 county centroids, and every derived feature is rebuilt exactly as script `04` builds it.
@@ -174,53 +176,39 @@ The useful finding sits in the middle row. Soil explains **55%** of how sharply 
 
 Scripts `17`-`19` replace two assumptions the pipeline inherited without testing. Both break under a changed climate.
 
-**July and August are not the critical window. R3 to R6 is.** Those stages happen to fall in July and August in today's Illinois, which is why the fixed window has worked. Under warming, thermal time accumulates faster, the crop reaches R6 earlier, and seed fill is shorter. A calendar window represents neither effect, so the CMIP6 scenarios in script `13` are asking the wrong question. It also does not travel: July and August are winter in Brazil.
+**July and August are not the critical window. R3 to R7 is**, pod set through the end of seed accumulation. Those stages fall in July and August in today's Illinois, which is why the fixed window worked, but a calendar window cannot move with the crop and it does not travel: July and August are winter in Brazil.
 
 **Monthly means erase the extremes that do the damage.** Schlenker & Roberts (2009) show soybean yield rising with temperature to about 30 °C then falling steeply, with damage tracking the *distribution* of daily temperature. In a monthly dataset, an August averaging 30 °C with no day above 34 and one with five days at 38 are the same number.
 
-Script `17` pulls daily NASA POWER for all 102 county centroids, 1981-2024, 1.64 million records. Script `18` derives degree days by single-sine integration (Snyder 1985), giving GDD(10,30) and EDD(>30) separately, plus vapour pressure deficit and a daily soil water balance whose bucket size is the SSURGO available water from script `15`. Everything is computable from temperature, dewpoint, precipitation and latitude alone, so the same code runs on Brazilian municipalities.
+Script `17` pulls daily NASA POWER for all 102 county centroids, 1981-2024, 1.64 million records. Script `18` derives degree days by single-sine integration (Snyder 1985), giving GDD(10,30) and EDD(>30) separately, plus vapour pressure deficit and a daily soil water balance driven by FAO-56 Penman-Monteith ET₀, with the bucket size taken from SSURGO. Everything is computable from temperature, dewpoint, precipitation and latitude, so the same code runs on Brazilian municipalities.
 
-### The window has already moved
-
-> **Correction, see [Validated against observed crop progress](#validated-against-observed-crop-progress).** The trends below are what the *model* produces. Against the observed NASS record, leaf drop has not advanced (+0.61 ± 0.64 days per decade against the model's −2.5), planting moved about 1.7 days per decade earlier where this model says it barely moved, and only maturity is clearly contradicted.
-
-| | 1981-1990 | 2015-2024 | Trend |
-| --- | --- | --- | --- |
-| Day of year reaching R6 | 246.6 | 239.4 | **−2.60 / decade** |
-| Seed-fill duration (days) | 24.1 | 22.3 | **−0.71 / decade** |
-| Planting day of year | 125.6 | 126.0 | +0.4 total |
-
-Maturity has advanced a week over the record while planting barely moved, so this is summer warming accelerating development *after* sowing, not earlier sowing.
-
-![The crop window has already moved](figures/fig24_window_is_moving.png)
-
-**But extreme heat in the crop window has gone down, not up** (−0.66 EDD per decade). That is the US Corn Belt summer "warming hole", and it deserves emphasis: the CMIP6 scenarios project large increases in exactly the variable that has been falling here for forty years.
+**How the window is defined turned out to matter more than anything else here, and the first two versions were wrong.** See the next section: it is now calibrated to the observed NASS record, not to remembered dates or to thermal-time maturity.
 
 ### Does it predict better? Mostly no
 
 | Feature set | n | RMSE | R² | vs calendar |
 | ----------- | - | ---- | -- | ----------- |
-| Both | 37 | 4.761 | 0.305 | **+0.78%** |
-| Calendar (script 08) | 20 | 4.798 | 0.294 | — |
-| Process (script 18) | 17 | 5.133 | 0.192 | **−6.98%** |
+| Both | 38 | 4.857 | 0.279 | **+0.14%** |
+| Calendar (script 08) | 20 | 4.863 | 0.277 | — |
+| Process (script 18) | 18 | 5.273 | 0.150 | **−8.43%** |
 
-Expanding window, rolling origin, 2001-2024, 2,048 test observations.
+Expanding window, rolling origin, 2001-2024, 2,082 test observations. The process features lose on their own and add almost nothing in combination.
 
-The process features **lose** on their own and add almost nothing in combination. One result does stand out: the season water-balance deficit correlates with yield anomaly at **r = −0.533**, the strongest single predictor anywhere in this study, ahead of the previous best, July-August precipitation at +0.481.
+They do supply the strongest single predictors. Correlation with the yield anomaly: hot days **−0.496**, season water-balance deficit **−0.496**, extreme degree days −0.487, peak VPD −0.471, against +0.467 for the best calendar variable. The season deficit read −0.566 under the earlier, uncalibrated window, so that figure belonged to a window that has since been replaced.
 
-**This comparison is confounded and should not be read as settled.** The process features come from NASA POWER at roughly half a degree; the calendar features come from nClimDiv county polygons. Part of what the table measures is POWER versus nClimDiv, not phenology versus calendar. A clean test needs the calendar features rebuilt from POWER, which has not been done.
+**This comparison is confounded and should not be read as settled.** The process features come from NASA POWER at roughly half a degree; the calendar features come from nClimDiv county polygons. Part of the gap is data source, not formulation. A clean test needs the calendar features rebuilt from POWER, which has not been done. The case for the phenological window was never hindcast accuracy. It is that it can represent a moving window and a threshold heat response, and the calendar version structurally cannot.
 
-The case for the phenological window was never that it predicts the past better. It is that it can represent a moving, shortening window and a threshold heat response, and the calendar version structurally cannot. That matters for projection, not for hindcast.
+![The modelled yield window](figures/fig24_modelled_window.png)
 
 ---
 
 ## Validated against observed crop progress
 
-Script `23` pulls the actual weekly Illinois soybean progress and condition series from NASS Quick Stats (the key-free bulk file, streamed and filtered from 23.9 million rows). Script `24` compares the phenology against it. **The series are state-level only**: the bulk file has no district or county progress. Planting runs from 1980, blooming, setting pods, leaf drop and harvest from 1981, condition from 1986.
+Script `23` pulls the actual weekly Illinois soybean progress and condition series from NASS Quick Stats (the key-free bulk file, 1.05 GB streamed and filtered from 23.9 million rows to 11,350). Scripts `24` and `25` test the phenology against it and calibrate it. **The series are state-level only**: the bulk file has no district or county progress. Planting runs from 1980, blooming, setting pods, leaf drop and harvest from 1981, condition from 1986.
 
-### The dates written from memory were close, and the label on one was wrong
+### What the first check found
 
-The thermal-time thresholds in script `18` were described as calibrated to NASS norms. They were not: the dates were written from memory and never downloaded. Checked against the real series (mean day of year, 1981-2024):
+The thermal-time thresholds had been described as calibrated to NASS norms. They were not: the dates were written from memory and never downloaded, so the stage dates agreed with them by construction. Against the real series (mean day of year, 1981-2024):
 
 | Stage | Written from memory | Observed | Error |
 | ----- | ------------------- | -------- | ----- |
@@ -229,175 +217,151 @@ The thermal-time thresholds in script `18` were described as calibrated to NASS 
 | Setting pods (50%) | 28 July | 1 August | −4.6 d |
 | Dropping leaves (50%) | ~20 Sept, called "maturity" | 19 Sept | +0.5 d |
 
-NASS has no "maturity" or "full seed" stage. Leaf drop corresponds to roughly R7, and the "full seed, ~5 September" date had no source at all.
+NASS has no "maturity" or "full seed" stage. Leaf drop corresponds to roughly R7, and the "full seed, ~5 September" date had no source.
 
-### The thresholds turned out to be about right
+The thresholds themselves were within about 5% of the observed thermal requirement (GDD from each year's observed planting date: blooming **651**, setting pods **883**, leaf drop **1504**). The real problems were elsewhere:
 
-Accumulating GDD from each year's *observed* planting date to each observed stage gives the thermal time the crop actually needed:
+- **Modelled planting ran 15.5 days early** and tracked real planting at r = 0.18, because farmers plant when fields are workable, not when a running temperature mean crosses a threshold. R1 and R3 ran 12 and 10 days early. An earlier assessment that these dates were "close to Illinois norms" was wrong.
+- **Thermal time predicts late-season timing worse than the average date.** Given observed planting, it predicts flowering (r = 0.86, RMSE 4.1 days) and pod set (r = 0.83, RMSE 4.6) well, but leaf drop with an RMSE of **19.5 days against an observed sd of 4.8**, a skill of −305% against guessing the mean. Soybean is a photoperiod-sensitive short-day plant, so maturity is set partly by day length, which a thermal-time model lacks. That is agronomic background rather than something tested here, but it fits the data.
+- **The observed window barely varies.** The interval from pod setting to leaf drop averages 49.1 days with a standard deviation of **3.5 days** and a minimum of 40.3.
 
-| Stage | Observed median GDD | Spread across years (CV) | Threshold in use | Error |
-| ----- | ------------------- | ------------------------ | ---------------- | ----- |
-| Blooming | 651 | 8.8% | 610 | −41 |
-| Setting pods | 883 | 7.6% | 860 | −23 |
-| Dropping leaves | 1504 | 8.1% | 1550 | +46 |
+### What was changed (script 25)
 
-All within about 5%, so the calibration survived being checked against data it was not built from.
+- **Planting** is anchored to the observed mean: a 19 °C seven-day-mean threshold gives a bias of −1.4 days where the old 15 °C planted 15.5 days early. Year-to-year skill also improved (r = 0.45 against 0.26). A 19 °C running mean is a statistical device, not a physiological threshold.
+- **R1, R3 and R7 thresholds** are the observed medians above, not remembered numbers.
+- **Both ends of the yield window** are regressions on the observed pod-setting and leaf-drop dates, moved by a county-relative driver anomaly. Thermal-time R7 was tried first and abandoned: under the corrected, later planting it was never reached in **614 of 4,004 county-years (15.3%)**, concentrated in a few cool counties (8 of 91 reached it in under half of years), and dropping them was not random. It skewed the surviving planting mean four days early. Thermal R3 as the window start was also abandoned, because a single statewide GDD threshold put it as late as day 285 in cool county-years (Cook, Boone, Stephenson and Winnebago in 1992, 2009 and 1994 among them), leaving windows of 2 to 8 days.
 
-### But the model runs 10 to 19 days early, and the cause is the planting rule
+Four always-defined drivers were compared for predicting observed leaf drop, leave-one-out over 44 years:
 
-| Observed | Model | Bias | RMSE | Year-to-year correlation |
-| -------- | ----- | ---- | ---- | ------------------------ |
-| Planted | temperature rule | **−15.5 d** | 18.3 d | **0.18** |
-| Blooming | R1 | −12.3 d | 13.5 d | 0.59 |
-| Setting pods | R3 | −10.3 d | 11.3 d | 0.63 |
-| Dropping leaves | R6 / R8 | −19.2 / −7.1 d | 20.5 / 10.3 d | 0.53 / 0.48 |
+| Driver | RMSE (days) | Skill vs the mean date |
+| ------ | ----------- | ---------------------- |
+| Climatology (the mean, every year) | 5.42 | −2% |
+| Thermal R7 anomaly (imputed) | 4.72 | 11% |
+| **Thermal R3 anomaly** (default) | 4.77 | 10% |
+| GDD planting to day 250 | 4.77 | 10% |
+| **GDD 1 May to 15 Sept** (alternative) | 4.71 | 11% |
 
-This corrects an earlier assessment of the pipeline, that the modelled dates (planting 6 May, R1 on 3 July, R3 on 21 July) were close to Illinois norms. Planting was 15 days early, and the temperature rule barely tracks real planting from year to year (r = 0.18), because farmers plant when fields are workable, not when a running mean crosses 15 °C.
+Every driver beats the plain average by about the same modest margin, so **the record cannot choose between them**. They extrapolate differently, so the scenarios run two.
 
-Feeding the model the *observed* planting date removes the bias, which isolates the fault:
+### What the record says about the window's length
 
-| Stage | Bias | RMSE | Observed sd | Correlation | Skill vs the mean date |
-| ----- | ---- | ---- | ----------- | ----------- | ---------------------- |
-| Blooming | −0.1 d | 4.1 d | 6.8 d | 0.86 | +40% |
-| Setting pods | +0.2 d | 4.6 d | 5.9 d | 0.83 | +21% |
-| Dropping leaves | +4.4 d | **19.5 d** | 4.8 d | 0.55 | **−305%** |
+Both drivers agree on the sign, and it is the opposite of what the earlier version reported. Warm seasons advance pod setting *more* than they advance maturity, so the window gets slightly **longer**, not shorter:
 
-**Given the planting date, thermal time predicts flowering and pod set well. It predicts leaf drop worse than simply guessing the average date.** Observed leaf drop varies by only about 5 days from year to year, while accumulated thermal time swings it by nearly 20. Soybean is a photoperiod-sensitive short-day plant, so maturity is set partly by day length, which a thermal-time model does not have. That is agronomic background rather than something tested here, but it fits the data.
+| Driver | Pod-set slope | Leaf-drop slope | Window-length slope | Out-of-sample skill |
+| ------ | ------------- | --------------- | ------------------- | ------------------- |
+| R3 anomaly (days) | +0.49 ± 0.09 | +0.27 ± 0.09 | **−0.22 ± 0.06**, p < 0.001 | 10% |
+| GDD 1 May-15 Sept | −0.030 ± 0.007 | −0.021 ± 0.006 | **+0.0097 ± 0.0049**, p = 0.055 | **0%** |
+
+Read this as small and weakly supported. Only the R3 driver has real out-of-sample skill for window length, and the GDD driver adds none. The earlier finding that warming shortens seed fill came from thermal-time maturity, which the record rejects.
+
+### Where it stands after recalibration
+
+| Observed | Model | Bias | RMSE | Year-to-year r | Trend, observed | Trend, model | Gap |
+| -------- | ----- | ---- | ---- | -------------- | --------------- | ------------ | --- |
+| Planted | temperature rule | −1.4 d | 9.6 d | 0.45 | −1.69 ± 1.15 | −2.24 | 0.4 SE |
+| Blooming | thermal R1 | −1.6 d | 6.4 d | 0.62 | −0.54 ± 0.87 | **−3.17** | **2.3 SE** |
+| Setting pods | thermal R3 | −0.8 d | 6.0 d | 0.66 | −0.98 ± 0.72 | **−3.53** | **2.3 SE** |
+| Setting pods | window start* | 0.0 d | 4.4 d | 0.66 | −0.98 ± 0.72 | −1.73 | 0.9 SE |
+| Leaf drop | window end* | 0.0 d | 4.6 d | 0.49 | +0.61 ± 0.64 | −0.78 | **2.1 SE** |
+
+Trends in days per decade, 1981-2024. *Fitted to these same observations, so bias and RMSE are in-sample and agreement on mean dates is by construction. What is not by construction is the year-to-year correlation and the trends.
+
+**The planting trend is reproduced without being fitted**, which is a real check. **The flowering and pod-set trends are not**: the model advances them about 2.3 standard errors faster than observed, and even the empirical window end trends earlier (−0.8) where leaf drop actually moved slightly later (+0.6 ± 0.6). Interannual slopes overstate the response over decades. The real system adapted through planting date and variety across the record, and a fixed rule contains none of that.
 
 ![Phenology against NASS observations](figures/fig32_phenology_validation.png)
 
-### The window has not moved the way the model says
+**Farmers' assessment corroborates the stress variables.** August "good + excellent" ratings, 39 years: **+0.66** with the state yield anomaly, **−0.69** with extreme degree days, **+0.51** with minimum soil water fraction, **+0.28** with window precipitation. The precipitation correlation fell from +0.51 when the window was recalibrated, and is now the weakest of the four.
 
-Trends in days per decade, 1981-2024:
+### Still unresolved
 
-| Stage | Observed | Model | Gap |
-| ----- | -------- | ----- | --- |
-| Planting | −1.69 ± 1.15 | −0.25 | 1.2 SE |
-| Blooming | −0.54 ± 0.87 | −1.93 | 1.4 SE |
-| Setting pods | −0.98 ± 0.72 | −2.07 | 1.2 SE |
-| **Leaf drop** | **+0.61 ± 0.64** | **−2.5** | **2.7-2.8 SE** |
-
-Only maturity is clearly contradicted, but it is contradicted: observed leaf drop has not advanced, and if anything is a fraction later, while the model has R6 arriving 2.5 days earlier per decade. Observed planting moved earlier by about 7 days over the record. The real system has been adapting through planting date and variety, which offsets warming-driven acceleration, and the model, with a fixed rule and fixed thresholds, contains none of it.
-
-### Farmers' own assessment agrees with the stress variables
-
-August "good + excellent" condition ratings, 39 years: **+0.66** with the state yield anomaly, **−0.69** with extreme degree days, **+0.55** with minimum soil water fraction, **+0.51** with R3-R6 precipitation. The heat and water variables built in this pipeline track an independent human judgement of crop stress.
-
-### What this changes
-
-- **"The crop window has already moved" (Figure 24) is a modelled result, not an observed one.** The observed record shows earlier planting and no advance in maturity.
-- **The size of the scenario shifts in Figure 26 is unvalidated and probably too large**, particularly R6 arriving up to 31 days earlier and seed fill shortening by up to 6.4 days. Those come from thermal time alone, which fails for late-season timing and has no photoperiod control. The early-season part (R1, R3) is supported.
-- **The "no adaptation" assumption is now shown to be strongly biased toward loss**, because adaptation is already visible in the historical record.
-- **What it does not change:** the yield response to heat and water, which the condition ratings corroborate.
-
-### Not yet fixed
-
-The planting rule should be anchored to the observed mean, R1 and R3 thresholds set to 651 and 883, and the end of the yield window defined without leaning on thermal-time maturity. Scripts `18` to `21` would then need rerunning, and their scenario numbers will change.
+- **County level is unvalidated.** NASS publishes nothing finer, and the county-relative anomalies mean every county's average window sits on the same dates, which is surely wrong for a state spanning three degrees of latitude.
+- **The trend overstatement above**, which the scenarios inherit.
+- **R5, R6 and R8 have no NASS counterpart** and remain unvalidated; they survive only for script `21`.
 
 ---
 
-## Scenarios on a moving crop window
+## Scenarios on a calibrated yield window
 
-Script `20` reruns the CMIP6 scenarios, but applies the deltas to the **daily** record and recomputes the entire phenology through the same `_pheno` module script `18` uses on observed weather. Warming now does what warming does.
+Script `20` reruns the CMIP6 scenarios on the daily record and recomputes the whole phenology through the same `_pheno` module script `18` uses on observed weather. Scenario windows are measured against the *observed-climate* baseline, otherwise warming would cancel itself out of the anomaly.
 
-### None of this was imposed
+### What warming does to the calendar
 
-> **Caveat, see the validation section above.** The mechanism is real, but the *size* of the late-season shifts is unvalidated. Thermal time predicts flowering and pod set well and leaf drop worse than the average date, and it has no photoperiod control. Treat the R1 and R3 shifts as supported and the R6 shifts, and the seed-fill shortening derived from them, as probably too large.
+| Scenario | Horizon | Δ Tmax Jul-Aug | Planting | R3 | Window end | Window length | Extreme degree days | Beyond record |
+| -------- | ------- | -------------- | -------- | -- | ---------- | ------------- | ------------------- | ------------- |
+| SSP2-4.5 | 2040-69 | +2.54 °C | −7.7 d | −13.8 d | −3.7 d | +3.1 d | ×2.9 | 9% |
+| SSP2-4.5 | 2070-99 | +3.08 °C | −10.2 d | −17.7 d | −4.7 d | +4.0 d | ×3.5 | 13% |
+| SSP5-8.5 | 2040-69 | +3.04 °C | −10.2 d | −17.5 d | −4.7 d | +3.9 d | ×3.6 | 14% |
+| SSP5-8.5 | 2070-99 | +5.44 °C | −14.6 d | −26.1 d | −7.0 d | +5.9 d | **×7.3** | **49%** |
 
-| Scenario | Horizon | Δ Tmax | R6 date | Seed fill | Extreme degree days |
-| -------- | ------- | ------ | ------- | --------- | ------------------- |
-| SSP2-4.5 | 2040-69 | +2.54 °C | **−17.6 d** | **−4.3 d** | **×2.2** |
-| SSP2-4.5 | 2070-99 | +3.08 °C | −21.5 d | −4.9 d | ×2.7 |
-| SSP5-8.5 | 2040-69 | +3.04 °C | −21.3 d | −4.9 d | ×2.6 |
-| SSP5-8.5 | 2070-99 | +5.44 °C | **−30.7 d** | **−6.4 d** | **×4.8** |
+Pod setting advances up to 26 days, maturity up to 7, so the window lengthens by 3 to 6 days and accumulates more hot days. The alternative GDD driver moves the window end further (−5.6 to −11.6 days) and the length by nearly the same amount (+2.7 to +5.5).
 
-The crop reaches full seed up to a month earlier and fills for six fewer days. Nothing in the code instructs it to; it falls out of thermal time accumulating faster. Script `13` could not represent any of this, because July and August stay where they are no matter how hot it gets.
+![What warming does to the calibrated window](figures/fig26_window_response.png)
 
-![Warming moves the crop](figures/fig26_warming_moves_the_crop.png)
+### The climate effect is larger than earlier versions, and the range is enormous
 
-### The extrapolation problem is largely solved
+Schlenker-Roberts specification, EDD entering linearly, water balance included. Fitted coefficients, now identified from real variation: **−0.116 bu/acre per degree-day above 30 °C**, +4.24 per unit of soil water fraction, +0.010 per GDD. R² = 0.336, n = 3,902.
 
-The estimator is the Schlenker-Roberts specification: yield on GDD, EDD, precipitation and its square, with county fixed effects. **EDD enters linearly**, which is the entire point of the construction — the nonlinearity lives in the degree-day accounting, not the functional form. Extrapolating is then a straight line in a variable with a physical threshold, rather than a fitted curve in raw temperature.
+| Scenario | Horizon | Median, r3 driver | Range across 8 models | Median, GDD driver | Boosted trees |
+| -------- | ------- | ----------------- | --------------------- | ------------------ | ------------- |
+| SSP2-4.5 | 2040-69 | −1.48 | −8.17 to −0.48 | −1.38 | +0.34 |
+| SSP2-4.5 | 2070-99 | −2.04 | −8.91 to −0.94 | −1.95 | +0.79 |
+| SSP5-8.5 | 2040-69 | −2.39 | −10.40 to −0.71 | −2.25 | +0.84 |
+| SSP5-8.5 | 2070-99 | **−8.56** | **−24.89 to −6.07** | −7.99 | −0.36 |
 
-Fitted on observed data, the coefficient is **−0.0836 bu/acre per degree-day above 30 °C** (p ≈ 4e-93).
+Bu/acre. **Do not quote the median alone.** Under SSP5-8.5 late-century the eight models span a fourfold range, and CanESM5's −24.9 comes with extreme degree days at ×12.7 today's level, far outside anything in the 1981-2024 record (49% of county-years exceed the observed maximum). The two window drivers give medians within 0.6 bu/acre of each other everywhere, so **the choice that the record could not make does not matter for yield**. The boosted trees still saturate out of range and move little, as before.
 
-Out-of-range county-years fall from **49% in script 13 to 5-22%** here. The boosted trees still saturate (−0.13 to −0.41 bu/acre regardless of scenario), which confirms the original diagnosis rather than fixing it.
+**This is larger than the previous version** (−1.3 to −4.7), and the reason is the finding above: with the window no longer shortening, warming buys more hot days inside it.
 
-| | Script 13, fixed window | Script 20, moving window |
-| --- | --- | --- |
-| SSP5-8.5 late, trees | −0.17 | −0.41 |
-| SSP5-8.5 late, parametric | −8.70 (quadratic) | **−5.28** (Schlenker-Roberts) |
+**Two corrections to earlier versions.** The earlier `season_gdd` coefficient (+0.0335, p = 0.038) was fitted to daily-discretisation noise. Under the thermal end rule `season_gdd` had a standard deviation of **4.25 GDD** around 1,396 and 97.8% of values sat within ±15 of the R6 threshold, because season length was defined by that threshold. It was constant by construction. It now has a standard deviation of 201 GDD. And the earlier EDD coefficients (−0.084, later −0.077) are superseded by −0.116.
 
-The climate effect across scenarios is **−1.5 to −5.3 bu/acre**, inside the range script 13 bracketed but on far weaker assumptions.
-
-### CO₂ changes the sign, and that is the result
-
-Soybean is a C3 legume and the most CO₂-responsive major crop. SoyFACE, the free-air enrichment facility behind the definitive soybean numbers, sits in Champaign County, this study's focal unit. Script `13` held CO₂ at present levels without saying so.
+### CO₂ still changes the sign
 
 | Scenario | Horizon | Climate | No CO₂ | Saturating | FACE |
 | -------- | ------- | ------- | ------ | ---------- | ---- |
-| SSP2-4.5 | 2040-69 | −1.54 | −1.54 | +3.97 | +3.97 |
-| SSP2-4.5 | 2070-99 | −1.93 | −1.93 | +4.88 | +5.80 |
-| SSP5-8.5 | 2040-69 | −2.07 | −2.07 | +4.74 | +5.65 |
-| SSP5-8.5 | 2070-99 | **−5.28** | **−5.28** | **+1.53** | **+9.81** |
+| SSP2-4.5 | 2040-69 | −1.48 | −1.48 | +4.02 | +4.02 |
+| SSP2-4.5 | 2070-99 | −2.04 | −2.04 | +4.76 | +5.67 |
+| SSP5-8.5 | 2040-69 | −2.39 | −2.39 | +4.41 | +5.32 |
+| SSP5-8.5 | 2070-99 | **−8.56** | **−8.56** | **−1.76** | **+6.50** |
 
 ![Three CO2 assumptions](figures/fig28_co2_assumption_range.png)
 
-**Do not read +9.81 as a projection.** Read the spread. Under SSP5-8.5 late-century the answer runs from −5.3 to +9.8 bu/acre depending on nothing but the CO₂ assumption, a range wider than the climate signal itself. Whether climate change is bad for Illinois soybean cannot be answered from this pipeline without committing to a CO₂ response, and the honest statement is that this study does not know it.
-
-The logarithmic FACE curve is extrapolated to 890 ppm, far beyond the ~550-600 ppm where FACE experiments have data, which is why the saturating variant is the more defensible of the two non-zero options.
+Under SSP5-8.5 late-century the answer runs from −8.6 to +6.5 depending on the CO₂ assumption alone, and the saturating variant, the more defensible non-zero option because the FACE curve is extrapolated to 890 ppm far beyond its data, now gives a **net loss**. Whether climate change is bad for Illinois soybean cannot be answered from this pipeline without committing to a CO₂ response, and it does not know one.
 
 ### What these scenarios still do not include
 
-- **The CO₂ response is applied as a flat multiplier.** FACE work shows it shrinks under heat and interacts with drought. Neither is represented, and both would reduce the benefit precisely in the scenarios where it is largest.
-- **CO₂ concentrations are round numbers**, not the published CMIP6 GHG concentration series. Replace them before quoting anything.
-- **Dewpoint is shifted with temperature**, holding relative humidity roughly constant. Models projecting declining land humidity would give a larger VPD rise, so this is conservative.
-- **A monthly precipitation ratio scales every wet day equally.** Rainfall intensity changes; wet-day frequency cannot. No delta method can change the shape of the rainfall distribution.
-- **No adaptation.** No shift in maturity group, planting date or cultivar — and a farmer facing a month-earlier R6 would change all three. This is the largest remaining omission.
+- **Adaptation.** The observed record shows earlier planting and no advance in maturity, so adaptation is already in the data. The window slopes are interannual estimates at today's level of adaptation, extrapolated far beyond it, and the model's flowering and pod-set trends already overshoot observation by 2.3 standard errors. **The losses above are probably too large for that reason.**
+- **Extrapolation of EDD.** Up to half of county-years in the hottest scenario lie beyond the observed maximum, where the linear EDD term is an assumption, not a measurement.
+- **The CO₂ response is a flat multiplier**, though FACE shows it shrinks under heat and interacts with drought. CO₂ concentrations are round numbers, not the published CMIP6 series.
+- **Ozone**, whose confounding with heat cannot be separated here (see below).
+- **Dewpoint** is rebuilt from projected relative humidity, and a monthly precipitation ratio cannot change wet-day frequency.
 
 ---
 
 ## Adaptation: what the grower can do, and what this model cannot say
 
-Every scenario above assumes a grower watches R6 arrive a month earlier, every season for seventy-five years, and changes nothing. Script `21` removes that assumption, and in doing so runs into the limit of the whole statistical approach.
+Every scenario assumes a grower changes nothing. Script `21` asks what a longer maturity group does, and runs into the limit of the whole approach.
 
-### Frost stops being the constraint
+> **Caveat, read first.** Every phenological number here comes from thermal-time *maturity*, which the validation above shows to be unreliable for late-season timing, and this script deliberately keeps that rule because its frost arithmetic needs a thermal-time R8. Its conclusions inherit that weakness. It also runs on the corrected planting, about two weeks later than the version first reported.
 
-| Climate | Longest viable MG | Frost margin at MG 3.5 | Seed fill at MG 3.5 | Seed fill at longest | EDD at MG 3.5 | EDD at longest |
-| ------- | ----------------- | ---------------------- | ------------------- | -------------------- | ------------- | -------------- |
-| Today | **3.5** | 51 d | 23.2 d | 23.2 d | 19 | 19 |
-| SSP2-4.5 mid | ≥5.0 | 79 d | 19.2 d | 21.8 d | 36 | 44 |
-| SSP2-4.5 late | ≥5.0 | 85 d | 18.7 d | 21.0 d | 42 | 51 |
-| SSP5-8.5 mid | ≥5.0 | 85 d | 18.5 d | 20.8 d | 43 | 52 |
-| SSP5-8.5 late | ≥5.0 | 110 d | 17.0 d | 18.9 d | 75 | 90 |
+### Frost stops being the constraint under warming
 
-"Longest viable" is the longest maturity group still reaching R8 before the killing frost in 90% of years. Values of 5.0 are censored at the top of the tested range; the true ceiling is higher.
+| Climate | Longest viable MG | Frost margin at MG 3.5 | Mature before frost at MG 3.5 | Seed fill at MG 3.5 | at longest |
+| ------- | ----------------- | ---------------------- | ----------------------------- | ------------------- | ---------- |
+| Today | **2.5** | 45 d | 84% | 24.5 d | 21.4 d |
+| SSP2-4.5 mid | ≥5.0 | 74 d | 99% | 19.4 d | 22.4 d |
+| SSP2-4.5 late | ≥5.0 | 81 d | 100% | 18.8 d | 21.3 d |
+| SSP5-8.5 mid | ≥5.0 | 81 d | 100% | 18.6 d | 21.1 d |
+| SSP5-8.5 late | ≥5.0 | 107 d | 99% | 17.0 d | 19.0 d |
 
-Today the frost constraint binds at **MG 3.5**, which is what Illinois growers actually plant. That the frost rule lands on the observed practice, using only daily temperature and thermal time, is a coherence check worth noting — nothing in the calculation was told what growers do.
+"Longest viable" is the longest group maturing before the killing frost in 90% of years; 5.0 is censored at the top of the tested range. The qualitative conclusion holds: under any scenario frost stops binding and even MG 5.0 matures almost every year.
 
-Under every scenario frost essentially stops binding. The margin at the current maturity grows from 51 days to 85-110, and even MG 5.0 matures in 97-100% of years.
+**A result I reported earlier does not survive.** With the corrected planting the frost constraint binds at **MG 2.5** today, not 3.5. The earlier claim that it "lands on what Illinois growers actually plant" was presented as a coherence check, but the figure for what growers plant was never sourced, and the check is gone. It should not be cited.
 
-![What a longer variety buys and costs](figures/fig29_mg_tradeoff.png)
+### Why no maturity group is recommended, and a correction to why
 
-### Adaptation recovers about half the lost seed fill, and buys more heat
+Predicted yield across MG 2.0 to 5.0 at today's climate is now nearly flat: **+0.08, +0.04, +0.02, −0.04, −0.08, −0.13, −0.24**. It used to rise a clean +1.7 per half group. Both were artefacts of the same defect: under the thermal end rule the season length is *defined* by the R6 threshold, so `season_gdd` is constant by construction (sd 4.25 GDD). The coefficient was fitted to noise, and the earlier explanation, that the coefficient is identified from seasons varying at one maturity group, was wrong. The variable barely varied at all.
 
-Warming cuts seed fill at MG 3.5 from 23.2 days to 17.0-19.2. Moving to the longest viable variety returns it to 18.9-21.8 — roughly half the loss, never all of it. Under SSP5-8.5 late-century even MG 5.0 fills for 18.9 days against today's 23.2.
-
-The price is exposure. Extreme degree days rise about 20% on top of the climate signal: under SSP5-8.5 late, from 75 at MG 3.5 to 90 at MG 5.0. A longer variety keeps the crop in the field through the hottest, driest end of summer. That is a real trade-off, and it is visible without any yield model, because all three panels above come from thermal-time accounting on daily weather.
-
-### Why no maturity group is recommended
-
-The first version of this script did pick one. The answer was worthless, and it is worth showing why.
-
-Predicted yield across MG 2.0 to 5.0 at today's climate: **−5.28, −3.52, −1.77, −0.03, +1.66, +3.36, +5.07.** First differences: +1.76, +1.76, +1.74, +1.69, +1.70, +1.71 — standard deviation 0.029. A straight line.
-
-It is the fitted `season_gdd` coefficient multiplied by the thermal time each group adds, and nothing else. The "optimum" was always the longest variety frost permitted, which is a property of the regression rather than of soybean.
-
-The reason is identification. `season_gdd` varies in the training data because *seasons* vary, at one maturity group. Nothing in the record varies maturity group while holding season fixed, so that coefficient cannot be read as the value of a longer variety.
-
-![Why no maturity group is recommended](figures/fig30_mg_not_identified.png)
-
-**This is where the statistical approach runs out of road.** The phenological consequences of a variety choice are computable and trustworthy. Converting them into a yield optimum needs a model that carries yield potential — light interception, biomass accumulation, partitioning — which is exactly the argument Peng et al. (2020) make for process-based crop models. APSIM or DSSAT answers this question; a regression fitted to one maturity group cannot.
+The conclusion stands and is stronger: **no maturity-group optimum can be obtained from this regression.** The phenological consequences of a variety choice are computable. Converting them to a yield optimum needs a model carrying yield potential, which is the argument Peng et al. (2020) make for process-based crop models.
 
 ---
 
@@ -418,6 +382,8 @@ The analysis was audited against published work rather than recollection. Four t
 Entered alongside EDD it takes a **positive** coefficient, +7.05 bu/acre per kPa — backwards. VPD and EDD correlate at **+0.912** and are not separable. The better-fitting `wb_season_deficit_mm` was rejected for a related reason: it correlates +0.789 with EDD and drives the EDD coefficient from −0.084 to −0.018, absorbing the heat channel it should sit beside. `wb_min_water_frac` is bounded on [0,1], correlates −0.484, and leaves EDD at −0.077 with every sign physiological.
 
 ### The correction made losses smaller, not larger
+
+> **Superseded.** This table describes the state of the pipeline after the humidity correction but before the phenology was validated and recalibrated against NASS. The current scenario numbers are in [Scenarios on a calibrated yield window](#scenarios-on-a-calibrated-yield-window); the SSP5-8.5 late-century parametric estimate is now −8.56 bu/acre.
 
 | Scenario | Horizon | SR before | SR after | GBM before | GBM after |
 | -------- | ------- | --------- | -------- | ---------- | --------- |
@@ -601,7 +567,28 @@ python 10_generate_results.py        # figures 17-18, manifest, column profile
 python 11_robustness.py              # table 9
 ```
 
-Runs end to end in a few minutes. Random seed fixed at 42 in `00_config.py`.
+That reproduces the original study in a few minutes. Random seed fixed at 42 in `00_config.py`. The extensions add public downloads, which are the slow part and need a network connection; none needs an API key:
+
+```bash
+python 12_cmip6_deltas.py            # CMIP6 deltas, AWS Open Data (~20 min)
+python 13_cmip6_scenarios.py         # first-generation scenarios (superseded by 20)
+python 14_download_soil.py           # SSURGO via Soil Data Access (~3 min)
+python 15_soil_features.py
+python 16_soil_models.py
+python 17_download_daily_weather.py  # NASA POWER daily, 102 counties (~3.5 min)
+python 23_download_crop_progress.py  # NASS bulk file, 1.05 GB streamed (~6 min)
+python 24_validate_phenology.py      # first pass: checks the phenology against NASS
+python 25_calibrate_phenology.py     # planting anchor and window calibration
+python 18_phenology_features.py      # phenology, VPD, water balance
+python 24_validate_phenology.py      # second pass: against the recalibrated model
+python 19_phenology_vs_calendar.py
+python 20_cmip6_phenology_scenarios.py                 # default window driver
+END_DRIVER=gdd python 20_cmip6_phenology_scenarios.py  # sensitivity, no figures
+python 21_adaptation.py
+python 22_ozone_screen.py            # EPA AirData, 45 annual files (~20 min)
+```
+
+**Order matters and is slightly circular.** Script `24` reads observed data to produce the thermal requirements script `25` needs, and reads the modelled phenology from script `18` for its comparisons, so it runs once before calibration and once after. Script `25` checks that the constants in `scripts/_pheno.py` agree with what it recomputes, and reports a mismatch if they have drifted.
 
 ---
 
@@ -613,10 +600,10 @@ soybean_climate_illinois/
 │   ├── raw/          NASS export, nClimDiv extracts, state totals, county boundaries
 │   ├── processed/    production_clean.csv, climate_features.csv
 │   └── final/        soybean_illinois_climate_1980_2025.csv   <- ANALYTICAL PANEL
-├── scripts/          00_config.py, _cfg.py, _viz.py, 01..11
-├── figures/          fig01 .. fig18 (PNG, 200 dpi)
+├── scripts/          00_config.py, _cfg.py, _viz.py, _pheno.py, 01..25
+├── figures/          fig01 .. fig32 (PNG, 200 dpi)
 ├── models/           regenerable, gitignored
-├── results/          FINAL_REPORT.md, DATA_DICTIONARY.md, table1..table9, provenance JSON
+├── results/          FINAL_REPORT.md, DATA_DICTIONARY.md, table1..table34, provenance JSON
 └── README.md
 ```
 

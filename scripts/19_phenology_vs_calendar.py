@@ -1,7 +1,8 @@
 """19 - Does a moving crop window beat a fixed calendar window? Tables 18-19,
 Figures 24-25.
 
-Script 18 replaced July-August with a thermal-time R3-R6 window and added the
+Script 18 replaced July-August with a phenological R3-to-leaf-drop window, both
+ends calibrated to the observed NASS record (scripts 23-25), and added the
 variables soybean physiology actually responds to: extreme degree days above
 30 C, vapour pressure deficit, and a soil water balance. This script asks
 whether any of that earns its place, under exactly the validation protocol of
@@ -11,9 +12,10 @@ The comparison is deliberately unfair to the new features in one respect: the
 calendar set has 20 features tuned over the life of this repo, the process set
 has 13 and has never been tuned at all.
 
-win_gdd is excluded from modelling. R3 and R6 are DEFINED as fixed points on
-the thermal-time axis, so the GDD between them is a constant by construction
-(543.7 +/- 6.2). Feeding it to a model would be feeding it the definition.
+NOTE ON win_gdd. An earlier version excluded it, because with R3 and R6 defined
+as fixed points on the thermal-time axis the GDD between them was a constant by
+construction (543.7 +/- 6.2). The window is no longer built that way, so
+win_gdd varies (sd about 91) and is included.
 """
 import sys, json
 import numpy as np, pandas as pd
@@ -38,12 +40,12 @@ print("[19] rows lost are 1980 and 2025, outside the NASA POWER record pulled in
 cfg = json.load(open(RES / "08_ml_config.json"))
 CALENDAR, TARGET = cfg["features"], cfg["target"]
 
-# process-based set: nothing here is a calendar month, and nothing is win_gdd
-PROCESS = ["win_edd", "win_hot_days", "win_vpd_mean", "win_vpd_max",
+# process-based set: nothing here is a calendar month
+PROCESS = ["win_gdd", "win_edd", "win_hot_days", "win_vpd_mean", "win_vpd_max",
            "win_prcp_mm", "win_et0_mm", "win_water_deficit_mm", "win_tmax_mean",
            "wb_stress_days", "wb_min_water_frac", "wb_season_deficit_mm",
-           "seedfill_days", "podfill_days", "season_edd", "season_prcp_mm",
-           "plant_doy", "r6_doy"]
+           "window_days", "season_gdd", "season_edd", "season_prcp_mm",
+           "plant_doy", "end_doy"]
 PROCESS = [c for c in PROCESS if c in d.columns]
 print(f"[19] calendar features {len(CALENDAR)} | process features {len(PROCESS)}")
 
@@ -112,15 +114,14 @@ if len(pr):
     print(f"[19] best process feature: {imp.feature[pr[0]]} at rank {int(pr[0])+1} of {len(F)}")
 print(f"[19] process features in the top 10: {int((imp.head(10).kind=='process').sum())}")
 
-# ---------- Figure 24: the window is already moving ---------------------------
-yr = d.groupby("year").agg(r3=("r3_doy", "mean"), r6=("r6_doy", "mean"),
-                           seedfill=("seedfill_days", "mean"),
+# ---------- Figure 24: the modelled window ------------------------------------
+yr = d.groupby("year").agg(end=("end_doy", "mean"), win=("window_days", "mean"),
                            edd=("win_edd", "mean")).reset_index()
 f, axes = plt.subplots(1, 3, figsize=(13.5, 4.6), dpi=200)
 f.patch.set_facecolor(SURFACE)
-panels = [("r6_doy", yr.r6, "Day of year reaching R6", S2),
-          ("seedfill", yr.seedfill, "Seed-fill duration (days)", S1),
-          ("edd", yr.edd, "Extreme degree days >30 °C in R3–R6", S4)]
+panels = [("end", yr.end, "Day of year, end of the yield window", S2),
+          ("win", yr.win, "Length of the yield window (days)", S1),
+          ("edd", yr.edd, "Extreme degree days >30 °C in the window", S4)]
 for ax_, (_, v, yl, col) in zip(axes, panels):
     ax_.set_facecolor(SURFACE)
     ax_.plot(yr.year, v, color=col, lw=1.3, marker="o", ms=3.2)
@@ -134,15 +135,15 @@ for ax_, (_, v, yl, col) in zip(axes, panels):
     ax_.tick_params(colors=MUTED, labelsize=8.5)
     ax_.set_ylabel(yl, fontsize=9.5, color=INK2)
     ax_.set_xlabel("Year", fontsize=9.5, color=INK2)
-f.suptitle("Figure 24. The crop window has already moved",
+f.suptitle("Figure 24. The modelled yield window, 1981-2024",
            fontsize=14.5, color=INK, x=.02, ha="left", y=1.06, fontweight="semibold")
-f.text(.02, .975, "State means from thermal-time phenology, 1981-2024. Warming shifts "
-       "maturity earlier and shortens seed fill, which a fixed July-August window "
-       "cannot represent.", fontsize=9.6, color=INK2)
+f.text(.02, .975, "State means of the calibrated model. The window ends near the observed "
+       "leaf-drop date, which has not advanced over the record (Figure 32); this figure "
+       "shows what the model does, not what was observed.", fontsize=9.6, color=INK2)
 f.tight_layout(rect=[0, 0, 1, .91])
-f.savefig(FIG / "fig24_window_is_moving.png", facecolor=SURFACE, bbox_inches="tight")
+f.savefig(FIG / "fig24_modelled_window.png", facecolor=SURFACE, bbox_inches="tight")
 plt.close(f)
-print("   figure -> fig24_window_is_moving.png")
+print("   figure -> fig24_modelled_window.png")
 
 # ---------- Figure 25: process vs calendar importance -------------------------
 f, ax = fig(10.5, 7)
