@@ -241,6 +241,32 @@ def main():
         raise SystemExit("[12] no deltas computed - nothing written")
 
     d = pd.DataFrame(rows)
+    # A store can open successfully but interpolate to NaN for a handful of
+    # county-months (an edge grid cell, or a baseline of exactly 0 for the
+    # precipitation ratio) without ever raising, so the per-store try/except
+    # cannot catch it. A downstream model (script 20) errors hard on NaN input,
+    # so drop it here at the (model, scenario, horizon) level -- partial
+    # coverage within a combo is not usable for a county-level reconstruction
+    # anyway -- and log it exactly like a request that failed outright.
+    bad_cols = ["d_tas_C", "d_tasmax_C", "pr_ratio", "d_hurs_pct"]
+    has_nan = d.groupby(["model", "scenario", "horizon"])[bad_cols].apply(
+        lambda g: bool(g.isna().any().any()))
+    nan_combos = has_nan[has_nan].index.tolist()
+    if nan_combos:
+        for model, scen, hz in nan_combos:
+            n_bad = int(d[(d.model == model) & (d.scenario == scen) & (d.horizon == hz)][bad_cols]
+                       .isna().any(axis=1).sum())
+            print(f"[12] {model:15} {scen} {hz:12} DROPPED: {n_bad} of "
+                  f"{len(d[(d.model==model)&(d.scenario==scen)&(d.horizon==hz)])} rows "
+                  f"interpolated to NaN (store opened fine; a specific grid cell did not)",
+                  flush=True)
+            skipped.append(dict(model=model, stage=f"{scen}/{hz}",
+                                error=f"{n_bad} county-months interpolated to NaN"))
+        mask = pd.Series(True, index=d.index)
+        for model, scen, hz in nan_combos:
+            mask &= ~((d.model == model) & (d.scenario == scen) & (d.horizon == hz))
+        d = d[mask].reset_index(drop=True)
+
     d.to_csv(PROC / "cmip6_deltas.csv", index=False)
     n_models = d.model.nunique()
     print(f"\n[12] wrote {len(d):,} rows  ({n_models} models x {d.scenario.nunique()} "

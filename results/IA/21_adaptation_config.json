@@ -1,0 +1,23 @@
+{
+  "mg_list": [
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0
+  ],
+  "baseline_mg": 3.5,
+  "frac_per_mg": 0.08,
+  "frac_per_mg_note": "ASSUMPTION, not calibrated; all MG results scale with it",
+  "parameterisation": "reproductive thresholds scaled away from emergence, so stage INTERVALS stretch; an earlier version added a constant offset, which shifted the sequence without lengthening seed fill and voided the exercise",
+  "killing_frost_c": -2.2,
+  "min_mature_rate": 0.9,
+  "ensemble": "ensemble-median CMIP6 delta; spread not propagated here",
+  "model": "yield_anom ~ season_gdd + season_edd + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)",
+  "model_r2": 0.24001278116859492,
+  "not_identified": "predicted yield is linear in maturity group because season_gdd is identified from seasons varying at one maturity group; no optimum is reported",
+  "needs": "a crop model carrying yield potential, per Peng et al. 2020",
+  "runtime_min": 4.1
+}
