@@ -19,5 +19,5 @@
   "model_r2": 0.24001278116859492,
   "not_identified": "predicted yield is linear in maturity group because season_gdd is identified from seasons varying at one maturity group; no optimum is reported",
   "needs": "a crop model carrying yield potential, per Peng et al. 2020",
-  "runtime_min": 4.1
+  "runtime_min": 13.7
 }
