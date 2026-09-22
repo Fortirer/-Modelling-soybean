@@ -1,0 +1,17 @@
+{
+  "source": "EPA AirData annual_conc_by_monitor, parameter 44201, Illinois",
+  "years": [
+    1980,
+    2024
+  ],
+  "failed_years": [],
+  "design": "state-level annual series; county fixed effects only, since year effects would absorb it; errors clustered by year",
+  "limits": [
+    "annual metrics, not AOT40 or W126 growing-season exposure",
+    "about 23 of 102 counties have a monitor, urban-biased",
+    "effective sample size is the number of years, about 44",
+    "low power: see the detectable-effect line in the script output"
+  ],
+  "verdict": "not built into the pipeline; collinear with heat and water and indistinguishable from them in this data",
+  "runtime_min": 0.0
+}

@@ -1,0 +1,40 @@
+{
+  "counties": 92,
+  "features": [
+    "soil_clay_topsoil",
+    "soil_sand_topsoil",
+    "soil_silt_topsoil",
+    "soil_om_topsoil",
+    "soil_awc_topsoil",
+    "soil_ph_topsoil",
+    "soil_bd_topsoil",
+    "soil_ksat_topsoil",
+    "soil_cec_topsoil",
+    "soil_clay_subsoil",
+    "soil_sand_subsoil",
+    "soil_silt_subsoil",
+    "soil_om_subsoil",
+    "soil_awc_subsoil",
+    "soil_ph_subsoil",
+    "soil_bd_subsoil",
+    "soil_ksat_subsoil",
+    "soil_cec_subsoil",
+    "soil_aws_0_100cm",
+    "soil_slope",
+    "soil_drain_poorly_pct",
+    "soil_drain_somewhat_poorly_pct",
+    "soil_drain_well_pct",
+    "soil_drain_mod_well_pct",
+    "soil_mollisol_pct"
+  ],
+  "n_features": 25,
+  "horizon_records": 71374,
+  "depth_bands": {
+    "topsoil": "0-30 cm",
+    "subsoil": "30-100 cm"
+  },
+  "weighting": "horizon overlap thickness x comppct_r x muacres",
+  "null_handling": "dropped per property, weights renormalised",
+  "aws_note": "soil_aws_0_100cm is cm of plant-available water in the top metre",
+  "nulls_total": 0
+}
