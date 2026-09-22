@@ -31,6 +31,7 @@
   },
   "models_delivered": [
     "ACCESS-ESM1-5",
+    "CanESM5",
     "EC-Earth3",
     "GFDL-ESM4",
     "INM-CM5-0",
@@ -38,7 +39,7 @@
     "MPI-ESM1-2-LR",
     "MRI-ESM2-0"
   ],
-  "n_models": 7,
+  "n_models": 8,
   "skipped": [
     {
       "model": "UKESM1-0-LL",
@@ -72,5 +73,6 @@
     "Monthly means only; no change in day-to-day or within-month extremes.",
     "Palmer drought indices (PDSI, Z-index) are NOT perturbed - CMIP6 does not supply them and deriving them needs a water-balance model. Scenario results therefore understate drought-driven yield loss.",
     "No agronomic adaptation, cultivar change or planting-date shift is assumed."
-  ]
+  ],
+  "note_canesm5_recovery": "CanESM5 was originally dropped for interpolating to NaN at 11 northern-tier Iowa counties (coarse ~2.8deg grid, county lat > sliced grid range, and xarray/scipy's default nearest-interp fills out-of-bounds with NaN rather than extrapolating). Fixed with kwargs=dict(fill_value=None) on the nearest-fallback interp call in script 12, and recovered via this standalone re-fetch of CanESM5 alone."
 }

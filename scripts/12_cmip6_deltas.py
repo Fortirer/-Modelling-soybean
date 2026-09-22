@@ -49,7 +49,10 @@ VARS      = ["tas", "tasmax", "pr", "hurs"]
 BASELINE  = (1985, 2014)                      # historical reference period
 HORIZONS  = {"mid_century": (2040, 2069), "late_century": (2070, 2099)}
 SCENARIOS = ["ssp245", "ssp585"]
-BOX_PAD   = 2.0    # degrees of padding around the state's own county extent
+BOX_PAD   = 3.0    # degrees of padding around the state's own county extent; wide enough
+                    # to keep the coarsest CMIP6 grid (~2.8 degrees, e.g. CanESM5) inside
+                    # true interpolation range rather than needing the nearest-neighbour
+                    # extrapolation fallback for most counties
 
 
 def centroids():
@@ -158,9 +161,22 @@ def monthly_clim(xr, fs, path, y0, y1, pts, box):
         lat=("county", pts.lat.values), lon=("county", tlon), method="linear"
     )
     arr = out.transpose("month", "county").values
-    if np.isnan(arr).any():                      # coarse grid, fall back to nearest
+    if np.isnan(arr).any():
+        # A coarse-grid model (e.g. CanESM5, ~2.8 degree) can leave a county
+        # outside the linear interpolant's convex hull, typically a state's
+        # northern or western edge relative to that model's own grid offset.
+        # xarray/scipy's default for method="nearest" is ALSO to fill
+        # out-of-bounds points with NaN rather than clamp to the nearest grid
+        # cell -- "nearest" here means "nearest among the bracketing points",
+        # not "nearest neighbour extrapolation". kwargs=dict(fill_value=None)
+        # is what actually turns on nearest-neighbour extrapolation in scipy's
+        # interpn, which is the fallback this function is meant to provide.
+        # Without it, a whole model can go silently (no exception) all-NaN for
+        # a handful of edge counties in every month and every scenario, which
+        # first showed up as CanESM5 dropping out of the Iowa ensemble.
         near = clim.interp(lat=("county", pts.lat.values), lon=("county", tlon),
-                           method="nearest").transpose("month", "county").values
+                           method="nearest",
+                           kwargs=dict(fill_value=None)).transpose("month", "county").values
         arr = np.where(np.isnan(arr), near, arr)
     return arr
 
