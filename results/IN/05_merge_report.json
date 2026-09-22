@@ -1,0 +1,19 @@
+{
+  "production_rows": 3985,
+  "climate_rows": 12144,
+  "merged_rows": 3985,
+  "unmatched_climate": 0,
+  "counties": 92,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 79,
+  "rows_in_balanced_panel": 3527,
+  "focal_county": "TIPPECANOE",
+  "focal_rows": 45,
+  "focal_year_range": [
+    1980,
+    2025
+  ],
+  "trend_slope_min": 0.367,
+  "trend_slope_max": 0.778
+}

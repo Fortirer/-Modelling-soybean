@@ -1,0 +1,18 @@
+model,split,RMSE,MAE,R2,MAPE,bias,err_sd,validation,skill_vs_baseline_%
+Baseline: trend only (anomaly=0),test,4.3479,3.4799,-0.1171,100.0,-1.4075,4.1138,fixed split,
+Linear Regression,validation,3.4842,2.6514,0.1372,215.0187,0.7864,3.3942,fixed split,
+Linear Regression,test,3.7947,2.9825,0.1491,373.7354,-0.7605,3.7177,fixed split,
+Ridge,validation,3.4821,2.6497,0.1382,214.0501,0.7793,3.3938,fixed split,
+Ridge,test,3.7958,2.9841,0.1486,374.4556,-0.7697,3.7169,fixed split,
+Random Forest,validation,3.2318,2.5555,0.2577,218.042,-0.3183,3.216,fixed split,
+Random Forest,test,3.8048,3.0547,0.1446,234.3958,-0.7187,3.7363,fixed split,
+Gradient Boosting,validation,3.2214,2.4796,0.2624,224.2645,-0.2973,3.2077,fixed split,
+Gradient Boosting,test,3.8277,3.049,0.1343,244.1411,-0.8345,3.7356,fixed split,
+HistGBM (XGB-class),validation,3.2118,2.537,0.2668,200.0324,-0.4793,3.1759,fixed split,
+HistGBM (XGB-class),test,3.881,3.1055,0.11,218.1641,-0.5343,3.844,fixed split,
+Gradient Boosting,rolling test,4.0813,3.0659,0.4005,231.8516,0.5364,4.0459,expanding window,22.65
+HistGBM (XGB-class),rolling test,4.1519,3.16,0.3796,251.8932,0.4673,4.1255,expanding window,21.31
+Random Forest,rolling test,4.177,3.1457,0.3721,248.3459,0.5879,4.1354,expanding window,20.83
+Ridge,rolling test,4.2039,3.158,0.3639,293.5585,0.4083,4.184,expanding window,20.32
+Linear Regression,rolling test,4.2042,3.1586,0.3638,294.1136,0.4068,4.1845,expanding window,20.32
+Baseline: trend only (anomaly=0),rolling test,5.2762,4.0411,-0.0019,100.0,0.2322,5.2711,expanding window,0.0
