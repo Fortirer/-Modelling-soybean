@@ -416,6 +416,20 @@ Soil answers three different questions with three different answers, and reporti
 
 The last row is arithmetic, not disappointment. The modelling target is the residual of each county's own trend, so its county mean is zero by construction, and a static county attribute has no main effect left to explain. Soil does not say what this year's anomaly will be. It says which counties suffer most when a bad year arrives, which is what a projection needs. Soil alone predicts worse than assuming no anomaly (−2.2% skill).
 
+#### Irrigation
+
+A second static county attribute, checked the same way. Illinois soybean is overwhelmingly rainfed: script 29 pulls county irrigated-acreage from the NASS Census of Agriculture (2017 and 2022, the only two years it is published), and the statewide mean is 1.9% of harvested acres. It is not spread evenly — the irrigated share concentrates on the Illinois River sand-plain counties, up to 43% in the highest county — which makes it a plausible candidate to explain part of the county-level heterogeneity Section 5.8 could not attribute to soil.
+
+It does, a little. Regressed against the script 09 sensitivity coefficients (log of irrigated percentage, 91 counties):
+
+| County sensitivity coefficient | R² | Coefficient | p |
+|---|---|---|---|
+| yield response to moisture (bu/SD) | 0.067 | −0.265 | 0.013 |
+| yield response to heat (bu/SD) | 0.007 | −0.079 | 0.415 |
+| composite sensitivity index | 0.003 | −0.016 | 0.631 |
+
+More irrigated counties respond **less** to natural moisture variation (−0.265 per log-point, p = 0.013), which is the expected sign: irrigation buffers a dry August. It says nothing about heat response or the yield level, both statistically indistinguishable from zero. The R² is small (0.067), and the result survives the obvious check: restricted to the 59 counties whose irrigated-acreage figure was never disclosure-suppressed (suppressed values are coded 0 rather than dropped, which could otherwise manufacture the correlation), the coefficient holds (−0.279, p = 0.011). Not built into the scenarios: script 20 applies one pooled moisture response to every county, irrigated or not, so the SSP5-8.5 losses are if anything slightly overstated for the small share of acreage that is irrigated today.
+
 ### 5.3 Daily weather and process variables
 
 Monthly means erase the extremes that do the damage. Schlenker and Roberts (2009) show soybean yield rising with temperature to about 30 °C and then falling steeply, with damage tracking the distribution of daily temperature. Script 17 pulls daily NASA POWER for every county centroid. Script 18 derives degree days by single-sine integration (Snyder, 1985), giving GDD between 10 and 30 °C and extreme degree days (EDD) above 30 °C separately, plus vapour pressure deficit and a daily soil water balance. Evapotranspiration is FAO-56 Penman-Monteith, not Hargreaves: Hargreaves uses temperature alone and cannot respond to the humidity change that CMIP6 projects, so an early version that perturbed humidity changed nothing downstream. The water-balance bucket is the SSURGO available water of Section 5.2.
@@ -792,6 +806,9 @@ Scripts 01 to 11 reproduce Part I. The extensions add public downloads, none of 
 | 25 | Calibration of planting and yield window | tables 32-34 |
 | 26 | County-level validation | tables 35-38 |
 | 27 | This report | FINAL_REPORT.md, Illinois_Soybean_Climate_Report.docx |
+| 28 | IPCC AR6 SPM-style summary figure | fig34 |
+| 29 | County irrigated-acreage download, NASS Census of Agriculture | irrigation_features.csv |
+| 30 | Irrigation vs climate sensitivity | tables 39-40b |
 
 Random seed 42 throughout. Every figure is 200 dpi PNG in `figures/`, and every table is a CSV in `results/`.
 

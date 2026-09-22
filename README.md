@@ -170,6 +170,8 @@ Soil answers three different questions with three very different answers, and re
 
 The useful finding sits in the middle row. Soil explains **55%** of how sharply a county's yield responds to climate, and **51%** of its response to heat, where topsoil organic matter is the strongest single predictor. Soil does not tell you what this year's anomaly will be. It tells you which counties suffer most when one arrives, which is exactly what the CMIP6 scenarios above need.
 
+**Irrigation, checked the same way (scripts `29`-`30`).** Illinois soybean is 98%+ rainfed statewide (NASS Census of Agriculture, 2017 and 2022 — the only two years it is published), but the small irrigated share concentrates on the Illinois River sand-plain counties, up to 43% of harvested acres in the highest one. Regressed against the script 09 sensitivity coefficients, more-irrigated counties respond significantly less to natural moisture variation (coefficient −0.26, p = 0.013, R² = 0.07 — small but the expected sign, and it survives restricting to the 59 counties whose irrigated-acreage figure was never Census-disclosure-suppressed). No relationship with heat sensitivity or the yield level. Not built into the CMIP6 scenarios, which apply one pooled moisture response to every county — a minor, one-directional overstatement of loss for the acreage that is irrigated today.
+
 ---
 
 ## The crop does not follow the calendar
@@ -600,7 +602,10 @@ END_DRIVER=gdd python 20_cmip6_phenology_scenarios.py  # sensitivity, no figures
 python 21_adaptation.py
 python 22_ozone_screen.py            # EPA AirData, 45 annual files (~20 min)
 python 26_county_validation.py       # district holdout, window test, heat by latitude
-python 27_build_reports.py           # FINAL_REPORT.md and the Word report
+python 29_download_irrigation.py     # NASS Census of Agriculture, county irrigated acreage
+python 30_irrigation_models.py       # irrigation vs climate sensitivity
+python 27_build_reports.py           # FINAL_REPORT.md and the Word report (run last)
+python 28_ipcc_style_summary.py      # standalone fig34, AR6 SPM-style scenario summary
 ```
 
 **Order matters and is slightly circular.** Script `24` reads observed data to produce the thermal requirements script `25` needs, and reads the modelled phenology from script `18` for its comparisons, so it runs once before calibration and once after. Script `25` checks that the constants in `scripts/_pheno.py` agree with what it recomputes, and reports a mismatch if they have drifted.
@@ -615,11 +620,11 @@ soybean_climate_illinois/
 │   ├── raw/          NASS export, nClimDiv extracts, state totals, county boundaries
 │   ├── processed/    production_clean.csv, climate_features.csv
 │   └── final/        soybean_illinois_climate_1980_2025.csv   <- ANALYTICAL PANEL
-├── scripts/          00_config.py, _cfg.py, _viz.py, _pheno.py, _mdocx.py, 01..27
-├── figures/          fig01 .. fig33 (PNG, 200 dpi)
+├── scripts/          00_config.py, _cfg.py, _viz.py, _pheno.py, _mdocx.py, 01..30
+├── figures/          fig01 .. fig34 (PNG, 200/300 dpi)
 ├── models/           regenerable, gitignored
 ├── results/          FINAL_REPORT.md (v2.0), Illinois_Soybean_Climate_Report.docx, archive/ (v1.0),
-│                     DATA_DICTIONARY.md, table1..table38, provenance JSON
+│                     DATA_DICTIONARY.md, table1..table40b, provenance JSON
 └── README.md
 ```
 

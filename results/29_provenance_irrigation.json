@@ -1,0 +1,17 @@
+{
+  "source": "USDA NASS Census of Agriculture, bulk files qs.census2017.txt.gz / qs.census2022.txt.gz",
+  "urls": [
+    "https://www.nass.usda.gov/datasets/qs.census2017.txt.gz",
+    "https://www.nass.usda.gov/datasets/qs.census2022.txt.gz"
+  ],
+  "accessed": "2026-09-22",
+  "access_note": "public bulk files, no API key",
+  "filter": "COMMODITY_DESC=SOYBEANS; STATE_ALPHA=IL; PRODN_PRACTICE_DESC contains IRRIGATED; STATISTICCAT_DESC=AREA HARVESTED",
+  "census_years": [
+    2017,
+    2022
+  ],
+  "counties": 102,
+  "counties_with_suppressed_values": 36,
+  "note": "Census disclosure suppression withholds irrigated acreage for counties below a threshold; irrigated_frac_avg understates true share for those counties, flagged in any_suppressed rather than imputed."
+}

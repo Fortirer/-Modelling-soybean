@@ -1,0 +1,4 @@
+target,n,r2,coef_irrigated_log,se,p_value
+yield response to moisture (bu/SD),91,0.06666,-0.26456,0.10494,0.01348
+yield response to heat (bu/SD),91,0.00748,-0.07923,0.09673,0.4149
+composite sensitivity index,91,0.0026,-0.01606,0.03334,0.6312

@@ -113,6 +113,10 @@ SOIL = pd.read_csv(PROC / "soil_features.csv")
 Q1 = rd("table14_soil_explains_level.csv").set_index("target")
 Q2 = rd("table15_soil_explains_sensitivity.csv").set_index("target")
 Q3 = rd("table17_soil_prediction_gain.csv").set_index("features")
+IRR = pd.read_csv(PROC / "irrigation_features.csv")
+Q2i = rd("table40_irrigation_explains_sensitivity.csv").set_index("target")
+Q40b = rd("table40b_irrigation_robustness.csv").set_index("test")
+C30 = jd("30_irrigation_config.json")
 O26 = rd("table26_ozone_trend.csv").set_index("metric")
 O27 = rd("table27_ozone_screen.csv")
 P14, P17 = jd("14_provenance_soil.json"), jd("17_provenance_daily_weather.json")
@@ -259,6 +263,17 @@ Soil answers three different questions with three different answers, and reporti
 ![Figure 22. Soil against county yield level](figures/fig22_soil_vs_yield_level.png)
 
 The last row is arithmetic, not disappointment. The modelling target is the residual of each county's own trend, so its county mean is zero by construction, and a static county attribute has no main effect left to explain. Soil does not say what this year's anomaly will be. It says which counties suffer most when a bad year arrives, which is what a projection needs. Soil alone predicts worse than assuming no anomaly ({pc(Q3.loc['soil only','skill_vs_baseline_pct'],1,True)} skill).
+
+#### Irrigation
+
+A second static county attribute, checked the same way. Illinois soybean is overwhelmingly rainfed: script 29 pulls county irrigated-acreage from the NASS Census of Agriculture (2017 and 2022, the only two years it is published), and the statewide mean is {n(C30['statewide_irrigated_fraction_pct'],1)}% of harvested acres. It is not spread evenly — the irrigated share concentrates on the Illinois River sand-plain counties, up to {n(IRR.irrigated_frac_avg.max()*100,0)}% in the highest county — which makes it a plausible candidate to explain part of the county-level heterogeneity Section 5.8 could not attribute to soil.
+
+It does, a little. Regressed against the script 09 sensitivity coefficients (log of irrigated percentage, {C30['counties_matched_to_table7']} counties):
+
+{tbl(['County sensitivity coefficient', 'R²', 'Coefficient', 'p'], [
+    [r.Index, n(r.r2,3), n(getattr(r,'coef_irrigated_log'),3,True), n(r.p_value,3)] for r in Q2i.itertuples()])}
+
+More irrigated counties respond **less** to natural moisture variation ({n(Q2i.loc['yield response to moisture (bu/SD)'].coef_irrigated_log,3)} per log-point, p = {Q2i.loc['yield response to moisture (bu/SD)'].p_value:.3f}), which is the expected sign: irrigation buffers a dry August. It says nothing about heat response or the yield level, both statistically indistinguishable from zero. The R² is small ({n(Q2i.loc['yield response to moisture (bu/SD)'].r2,3)}), and the result survives the obvious check: restricted to the {int(Q40b.loc['log irrigated pct vs moisture sensitivity, unsuppressed counties only'].n)} counties whose irrigated-acreage figure was never disclosure-suppressed (suppressed values are coded 0 rather than dropped, which could otherwise manufacture the correlation), the coefficient holds ({n(Q40b.loc['log irrigated pct vs moisture sensitivity, unsuppressed counties only'].coef,3)}, p = {Q40b.loc['log irrigated pct vs moisture sensitivity, unsuppressed counties only'].p:.3f}). Not built into the scenarios: script 20 applies one pooled moisture response to every county, irrigated or not, so the SSP5-8.5 losses are if anything slightly overstated for the small share of acreage that is irrigated today.
 """
 
 
@@ -620,6 +635,9 @@ def appendix_b():
         ["25", "Calibration of planting and yield window", "tables 32-34"],
         ["26", "County-level validation", "tables 35-38"],
         ["27", "This report", "FINAL_REPORT.md, Illinois_Soybean_Climate_Report.docx"],
+        ["28", "IPCC AR6 SPM-style summary figure", "fig34"],
+        ["29", "County irrigated-acreage download, NASS Census of Agriculture", "irrigation_features.csv"],
+        ["30", "Irrigation vs climate sensitivity", "tables 39-40b"],
     ]
     return f"""## Appendix B. Reproduction
 
