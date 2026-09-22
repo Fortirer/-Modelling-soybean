@@ -27,11 +27,10 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent))
-from _cfg import RAW, PROC, RES
+from _cfg import RAW, PROC, RES, STATE, STATE_FIPS
 
 BASE = "https://www.nass.usda.gov/datasets/"
 FILES = {2017: "qs.census2017.txt.gz", 2022: "qs.census2022.txt.gz"}
-STATE = "IL"
 COMMODITY = "SOYBEANS"
 OUT_RAW = RAW / "nass_il_soybean_irrigation.csv"
 ATTEMPTS = 3
@@ -121,7 +120,7 @@ def main():
 
     # ---- build the county covariate ---------------------------------------------
     cty = d[d.AGG_LEVEL_DESC == "COUNTY"].copy()
-    cty["fips5"] = "17" + cty.COUNTY_CODE.str.zfill(3)
+    cty["fips5"] = STATE_FIPS + cty.COUNTY_CODE.str.zfill(3)
     piv = (cty.pivot_table(index=["fips5", "CENSUS_YEAR"], columns="series",
                             values="VALUE_NUM", aggfunc="sum")
               .reset_index())
@@ -157,7 +156,7 @@ def main():
     print(avg.sort_values("irrigated_frac_avg", ascending=False).head(10).to_string(index=False))
     print(f"\n[29] counties with any (D)-suppressed irrigated-acreage value: "
           f"{int(avg.any_suppressed.sum())} of {len(avg)}")
-    print(f"[29] statewide irrigated fraction (Illinois total, unweighted county mean): "
+    print(f"[29] statewide irrigated fraction ({STATE} total, unweighted county mean): "
           f"{avg.irrigated_frac_avg.mean()*100:.2f}%")
 
     (RES / "29_provenance_irrigation.json").write_text(json.dumps(dict(

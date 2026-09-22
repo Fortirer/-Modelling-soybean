@@ -1,0 +1,6 @@
+driver,slope,rmse_days,skill_pct
+0 climatology,,4.6787,-2.3256
+D1 thermal R7 anomaly (imputed),0.0743,4.0816,10.7344
+D2 thermal R3 anomaly  [default],0.2447,4.1981,8.1871
+D3 GDD planting -> day 250,-0.0158,4.1363,9.5372
+D4 GDD 1 May -> 15 Sep [alternative],-0.0199,3.9561,13.4784

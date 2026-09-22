@@ -114,9 +114,14 @@ def main():
           f"(bias {best.bias_days:+.1f} d, r = {best.r_yearly:.2f})")
 
     # ---------------- B. window end -------------------------------------------
-    C = R[R["T"] == P.PLANT_TEMP_C].copy()
+    # Uses the threshold this run just selected (best.threshold_c), not whatever
+    # _pheno.py happened to have loaded at import time -- on a state's first
+    # calibration run that is still the Illinois fallback, and using it here
+    # would silently keep every new state anchored to Illinois's planting rule.
+    BEST_T = float(best.threshold_c)
+    C = R[R["T"] == BEST_T].copy()
     unreached = int((~C.r7_reached).sum())
-    print(f"\n[25] at the configured {P.PLANT_TEMP_C:.0f} C: thermal R7 is never reached in "
+    print(f"\n[25] at the selected {BEST_T:.0f} C: thermal R7 is never reached in "
           f"{unreached:,} of {len(C):,} county-years ({unreached / len(C) * 100:.1f}%), "
           f"which is why it is not used to end the window")
     for c in ["r7", "r3", "g250", "gmay"]:
@@ -206,14 +211,19 @@ def main():
           "   WARNING: _pheno.py has drifted from the calibration; update it")
 
     json.dump(dict(
-        planting=dict(threshold_c=float(P.PLANT_TEMP_C),
-                      bias_days=float(TA.set_index("threshold_c").bias_days[P.PLANT_TEMP_C]),
-                      r_yearly=float(TA.set_index("threshold_c").r_yearly[P.PLANT_TEMP_C]),
+        planting=dict(threshold_c=BEST_T,
+                      bias_days=float(TA.set_index("threshold_c").bias_days[BEST_T]),
+                      r_yearly=float(TA.set_index("threshold_c").r_yearly[BEST_T]),
                       note="a statistical device; real planting is limited by field "
                            "workability, not by a 19 C running mean"),
         window=dict(rule="both ends are regressions on observed NASS pod-setting and "
                          "leaf-drop dates, moved by a county-relative driver anomaly",
-                    default_driver=P.END_DRIVER, fit=P.WINDOW_FIT,
+                    default_driver=P.END_DRIVER,
+                    # freshly recomputed from THIS run's data, not P.WINDOW_FIT (which
+                    # is whatever was loaded at import time -- the previous state's
+                    # calibration, or the Illinois fallback, on a state's first run)
+                    fit={"r3": {"start": wf[("r3_a", "pods")], "end": wf[("r3_a", "leaves")]},
+                         "gdd": {"start": wf[("gmay_a", "pods")], "end": wf[("gmay_a", "leaves")]}},
                     end_skill_pct={r["driver"]: r["skill_pct"] for r in rows_b},
                     length_response={f"{r['driver']}": dict(slope=r["slope"], se=r["se"], p=r["p"])
                                      for r in rows_c if r["series"] == "WINDOW LENGTH"},

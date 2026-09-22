@@ -16,10 +16,9 @@ the weighting choices stay visible and reviewable.
 import sys, json, time, urllib.request, urllib.error
 import pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import RAW, RES
+from _cfg import RAW, RES, STATE, STATE_FIPS, STATE_NAME
 
 SDA_URL = "https://sdmdataaccess.sc.egov.usda.gov/Tabular/post.rest"
-STATE, STATE_FIPS = "IL", "17"
 
 COLUMNS = """
        mu.mukey, mu.muacres, c.cokey, c.comppct_r, c.majcompflag, c.slope_r,
@@ -66,7 +65,7 @@ def main():
     # county surveys only: two letters plus three digits
     areas = [(a, n) for a, n in areas
              if len(a) == 5 and a[:2] == STATE and a[2:].isdigit()]
-    print(f"[14] Illinois county soil survey areas : {len(areas)}")
+    print(f"[14] {STATE_NAME.title()} county soil survey areas : {len(areas)}")
 
     frames, failed = [], []
     for i, (asym, aname) in enumerate(areas, 1):

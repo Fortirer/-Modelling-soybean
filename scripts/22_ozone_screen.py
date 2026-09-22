@@ -39,7 +39,7 @@ import sys, io, json, zipfile, urllib.request, urllib.error, time
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 import statsmodels.formula.api as smf
-from _cfg import RAW, PROC, FINAL, RES, FIG
+from _cfg import RAW, PROC, FINAL, RES, FIG, STATE_NAME
 from _viz import *
 
 CACHE = RAW / "epa_ozone_cache"
@@ -53,14 +53,14 @@ PPB = 1000.0            # ppm -> ppb
 
 
 def fetch_year(y):
-    """Illinois 8-hour ozone summary for one year; cached, so reruns are free."""
+    """State 8-hour ozone summary for one year; cached, so reruns are free."""
     cf = CACHE / f"{y}.csv"
     if cf.exists():
         return pd.read_csv(cf)
     with urllib.request.urlopen(URL.format(y=y), timeout=300) as f:
         z = zipfile.ZipFile(io.BytesIO(f.read()))
     d = pd.read_csv(z.open(z.namelist()[0]), low_memory=False)
-    o = d[(d["Parameter Code"] == 44201) & (d["State Name"] == "Illinois")]
+    o = d[(d["Parameter Code"] == 44201) & (d["State Name"] == STATE_NAME.title())]
     o = o[o["Metric Used"].str.contains("8 hour running average|8-hour running average",
                                         regex=True, na=False)]
     if not len(o):
@@ -196,7 +196,7 @@ def main():
     ax.plot(o3.year, o3.o3_90pct_ppm * PPB, color=S2, lw=1.4, marker="o", ms=3)
     b = np.polyfit(o3.year, o3.o3_90pct_ppm * PPB, 1)
     ax.plot(o3.year, np.polyval(b, o3.year), color=INK, lw=1.6, ls="--")
-    ax.set_ylabel("Illinois 90th-percentile 8-h ozone (ppb)", fontsize=9.5, color=INK2)
+    ax.set_ylabel(f"{STATE_NAME.title()} 90th-percentile 8-h ozone (ppb)", fontsize=9.5, color=INK2)
     ax.text(.04, .06, f"{b[0]:+.2f} ppb/yr", transform=ax.transAxes, fontsize=10, color=INK2)
     ax = axes[1]; ax.set_facecolor(SURFACE)
     ax.scatter(yl.o3_90pct_ppm_dt * PPB, yl.anom, color=S1, s=30, alpha=.8,

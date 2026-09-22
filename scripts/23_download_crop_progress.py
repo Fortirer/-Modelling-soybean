@@ -28,12 +28,11 @@ HOW
 import sys, io, json, gzip, time, urllib.request, urllib.error, collections
 import pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import RAW, RES
+from _cfg import RAW, RES, STATE
 
-URL = "https://www.nass.usda.gov/datasets/qs.crops_20260919.txt.gz"
+URL = "https://www.nass.usda.gov/datasets/qs.crops_20260922.txt.gz"
 OUT = RAW / "nass_il_soybean_progress.csv"
 PARTIAL = RAW / "nass_il_soybean_progress.csv.partial"
-STATE = "IL"
 COMMODITY = "SOYBEANS"
 KEEP_CATS = ("PROGRESS", "CONDITION")       # also matches "PROGRESS, 5 YEAR AVG" etc.
 ATTEMPTS = 3

@@ -11,7 +11,9 @@ models/*.pkl
 models/**/*.pkl
 
 # S3 path lookup cache for script 12: a local speed-up, rebuilt on demand
+# (data/processed/**/ covers the per-state subfolders, e.g. data/processed/IA/)
 data/processed/cmip6_path_index.json
+data/processed/**/cmip6_path_index.json
 
 # OS
 .DS_Store
@@ -19,7 +21,10 @@ Thumbs.db
 
 # Daily weather pull for script 17: 30 MB, regenerated in ~3.5 min by
 # `python scripts/17_download_daily_weather.py` from a documented public API
+# (data/raw/**/ covers the per-state subfolders, e.g. data/raw/IA/)
 data/raw/power_daily.csv.gz
+data/raw/**/power_daily.csv.gz
 
 # Per-year EPA download cache for script 22; the assembled annual series is kept
 data/raw/epa_ozone_cache/
+data/raw/**/epa_ozone_cache/

@@ -13,7 +13,37 @@ One set of thresholds is applied statewide although maturity group varies, and
 NASS publishes no district or county progress, so county-level timing has never
 been validated.
 """
+import json
+from pathlib import Path
 import numpy as np, pandas as pd
+
+# ---- state-specific calibration, loaded dynamically -------------------------
+# The block below (STAGES R1/R3/R7, WINDOW_FIT, PLANT_TEMP_C) was originally
+# hand-copied from results/25_calibration_config.json once, for Illinois, and
+# script 25 only checked the two stayed in sync. That does not generalize: a
+# second state's calibration must not silently overwrite Illinois's. Instead
+# this module loads results/<STATE>/25_calibration_config.json at import time
+# -- RES is already state-namespaced by 00_config.py -- and falls back to the
+# Illinois defaults documented below when that file does not exist yet (i.e.
+# before scripts 23-25 have been run for a new state). This IS the circularity
+# the README describes: script 18 runs once on the fallback defaults, script 25
+# calibrates against the observed record and writes that file, then script 18
+# is re-run and picks up the state's own thresholds automatically.
+def _load_calibration():
+    try:
+        sys_path_added = str(Path(__file__).parent)
+        import sys
+        if sys_path_added not in sys.path:
+            sys.path.insert(0, sys_path_added)
+        from _cfg import RES, STATE
+        p = RES / "25_calibration_config.json"
+        if p.exists():
+            return STATE, json.loads(p.read_text())
+    except Exception:
+        pass
+    return None, None
+
+_CAL_STATE, _CAL = _load_calibration()
 
 # thermal time, degC-days base 10 capped 30, accumulated from planting.
 #   R1, R3, R7  OBSERVED: median GDD from each year's observed planting date to
@@ -23,8 +53,16 @@ import numpy as np, pandas as pd
 #   VE, R5, R6, R8  NOT validated. NASS has no counterpart. Retained only because
 #               script 21 (maturity groups) needs a thermal-time R8 and frost
 #               comparison, and because R5/R6 feed the legacy seed-fill columns.
-STAGES = {"VE": 110, "R1": 651, "R3": 883, "R5": 1110, "R6": 1390,
-          "R7": 1504, "R8": 1550}
+_DEFAULT_STAGES = {"VE": 110, "R1": 651, "R3": 883, "R5": 1110, "R6": 1390,
+                   "R7": 1504, "R8": 1550}
+if _CAL and _CAL.get("thermal_requirement_gdd"):
+    # VE, R5, R6, R8 have no NASS counterpart in any state and are kept at the
+    # Illinois placeholder values (documented above); only R1/R3/R7 are ever
+    # calibrated, from this state's own observed crop-progress record.
+    STAGES = dict(_DEFAULT_STAGES)
+    STAGES.update({k: float(v) for k, v in _CAL["thermal_requirement_gdd"].items()})
+else:
+    STAGES = dict(_DEFAULT_STAGES)
 T_BASE, T_CAP, T_EXTREME = 10.0, 30.0, 30.0
 HEAT_DAY_C = 34.0
 
@@ -70,10 +108,15 @@ HEAT_DAY_C = 34.0
 # the scenarios extrapolate them to far more warming than the record contains.
 #
 # WINDOW_FIT[driver] = {"start": (intercept, slope), "end": (intercept, slope)}
-WINDOW_FIT = {
+_DEFAULT_WINDOW_FIT = {
     "r3":  {"start": (213.3743, 0.49089), "end": (262.5674, 0.26635)},
     "gdd": {"start": (213.3832, -0.03038), "end": (262.5456, -0.02063)},
 }
+if _CAL and _CAL.get("window", {}).get("fit"):
+    WINDOW_FIT = {drv: {end: tuple(v) for end, v in ends.items()}
+                 for drv, ends in _CAL["window"]["fit"].items()}
+else:
+    WINDOW_FIT = _DEFAULT_WINDOW_FIT
 END_DRIVER = "r3"
 GDD_WINDOW_DOY = (121, 258)              # 1 May to 15 September, for the "gdd" driver
 
@@ -114,7 +157,8 @@ def stages_for_mg(mg):
 # a physiological planting threshold, since real planting is limited by field
 # workability, so treat it as a statistical device. It also improved year-to-year
 # skill (r = 0.45 against 0.26 at 15 C), but that is still weak.
-EARLIEST_DOY, LATEST_DOY, PLANT_TEMP_C = 121, 175, 19.0
+EARLIEST_DOY, LATEST_DOY = 121, 175
+PLANT_TEMP_C = float(_CAL["planting"]["threshold_c"]) if _CAL and _CAL.get("planting") else 19.0
 
 # water balance
 KC = {"initial": 0.40, "mid": 1.15, "late": 0.50}
@@ -448,8 +492,9 @@ def build_features(d, taw, stages=None, end_rule="empirical", driver=None,
 
 
 def centroid_lat(raw_dir):
+    from _cfg import STATE
     rows = []
-    for line in (raw_dir / "il_county_boundaries.txt").read_text().splitlines():
+    for line in (raw_dir / f"{STATE.lower()}_county_boundaries.txt").read_text().splitlines():
         if not line.strip():
             continue
         fips, coords = line.split("|", 1)

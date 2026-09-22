@@ -1,0 +1,10 @@
+{
+  "source": "results/29_provenance_irrigation.json (NASS Census of Agriculture 2017, 2022)",
+  "counties_with_irrigation_record": 99,
+  "counties_matched_to_table7": 96,
+  "counties_with_any_suppressed_value": 39,
+  "counties_reporting_any_irrigated_acreage": 38,
+  "statewide_irrigated_fraction_pct": 0.5721189228871535,
+  "q2_note": "log1p(irrigated pct) against county climate-sensitivity coefficients from script 09; heavy right skew handled with a log transform, not because a linear response is expected",
+  "caveat": "irrigated_frac_avg is coded 0, not missing, for counties whose irrigated-acreage line was disclosure-suppressed; the robustness check drops those counties entirely"
+}

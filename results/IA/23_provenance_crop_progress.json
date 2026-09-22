@@ -1,0 +1,16 @@
+{
+  "source": "USDA NASS Quick Stats bulk file, qs.crops",
+  "url": "https://www.nass.usda.gov/datasets/qs.crops_20260922.txt.gz",
+  "accessed": "2026-09-22",
+  "access_note": "public bulk file, no API key; streamed and filtered, 23,900,353 rows scanned",
+  "filter": "COMMODITY_DESC=SOYBEANS; STATE_ALPHA=IA; STATISTICCAT_DESC startswith ['PROGRESS', 'CONDITION']",
+  "rows_kept": 11542,
+  "years": [
+    1980,
+    2026
+  ],
+  "levels": [
+    "STATE"
+  ],
+  "replaces": "the remembered 50%-progress dates written into script 18's header"
+}

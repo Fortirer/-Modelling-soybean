@@ -29,7 +29,7 @@ subset is transferred.
 import sys, json, warnings
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import RAW, PROC, RES
+from _cfg import RAW, PROC, RES, STATE
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -49,13 +49,21 @@ VARS      = ["tas", "tasmax", "pr", "hurs"]
 BASELINE  = (1985, 2014)                      # historical reference period
 HORIZONS  = {"mid_century": (2040, 2069), "late_century": (2070, 2099)}
 SCENARIOS = ["ssp245", "ssp585"]
-BOX       = dict(lat=(33.0, 46.0), lon=(-95.0, -83.0))   # generous, for interpolation
+BOX_PAD   = 2.0    # degrees of padding around the state's own county extent
 
 
 def centroids():
-    """County centroid (lon, lat) from the staged polygon file, keyed by fips5."""
+    """County centroid (lon, lat) from the staged polygon file, keyed by fips5.
+
+    Filename is state-aware (il_county_boundaries.txt / ia_county_boundaries.txt
+    / ...); script 10 auto-builds it for any state that doesn't have one staged.
+    """
+    fname = RAW / f"{STATE.lower()}_county_boundaries.txt"
+    if not fname.exists():
+        raise SystemExit(f"[12] {fname} not found. Run script 10 first (or any script "
+                         f"that calls its build_boundary_file()) to auto-fetch it.")
     rows = []
-    for line in (RAW / "il_county_boundaries.txt").read_text().splitlines():
+    for line in fname.read_text().splitlines():
         if not line.strip():
             continue
         fips, coords = line.split("|", 1)
@@ -123,7 +131,7 @@ def find_store(fs, model, exp, member, var):
     return best
 
 
-def monthly_clim(xr, fs, path, y0, y1, pts):
+def monthly_clim(xr, fs, path, y0, y1, pts, box):
     """Monthly climatology over [y0,y1] interpolated to the county centroids.
 
     Returns a (12, n_county) array, month index 1-12 on axis 0.
@@ -135,10 +143,10 @@ def monthly_clim(xr, fs, path, y0, y1, pts):
     # longitude convention: CMIP6 is usually 0-360
     lon360 = float(da.lon.max()) > 180.0
     tlon = pts.lon.values % 360 if lon360 else pts.lon.values
-    blon = tuple(v % 360 for v in BOX["lon"]) if lon360 else BOX["lon"]
+    blon = tuple(v % 360 for v in box["lon"]) if lon360 else box["lon"]
 
     da = da.sortby("lat").sortby("lon")
-    da = da.sel(lat=slice(*BOX["lat"]), lon=slice(*sorted(blon)))
+    da = da.sel(lat=slice(*box["lat"]), lon=slice(*sorted(blon)))
 
     yr = da.time.dt.year
     da = da.isel(time=((yr >= y0) & (yr <= y1)).values)
@@ -160,8 +168,18 @@ def monthly_clim(xr, fs, path, y0, y1, pts):
 def main():
     global INDEX_CACHE
     import xarray as xr, s3fs
-    fs = s3fs.S3FileSystem(anon=True)
+    from botocore.config import Config
+    # An earlier run hung indefinitely on one store's read with no error and no
+    # progress (CPU near zero, network apparently stalled) -- s3fs/botocore has
+    # no read timeout by default. Bounded timeouts turn a silent hang into a
+    # retryable exception the per-store try/except already handles.
+    fs = s3fs.S3FileSystem(anon=True, config_kwargs=dict(
+        connect_timeout=30, read_timeout=60,
+        retries=dict(max_attempts=3, mode="standard")))
     pts = centroids()
+    box = dict(lat=(float(pts.lat.min()) - BOX_PAD, float(pts.lat.max()) + BOX_PAD),
+              lon=(float(pts.lon.min()) - BOX_PAD, float(pts.lon.max()) + BOX_PAD))
+    print(f"[12] interpolation box     : lat {box['lat']}  lon {box['lon']}")
     INDEX_CACHE = build_index(fs, PROC / "cmip6_path_index.json")
 
     rows, skipped = [], []
@@ -173,7 +191,7 @@ def main():
                 p = find_store(fs, model, "historical", member, v)
                 if p is None:
                     raise FileNotFoundError(f"historical/{v}")
-                base[v] = monthly_clim(xr, fs, p, *BASELINE, pts)
+                base[v] = monthly_clim(xr, fs, p, *BASELINE, pts, box)
             print(f"[12] {model:15} baseline {BASELINE[0]}-{BASELINE[1]} ok", flush=True)
         except Exception as e:
             print(f"[12] {model:15} SKIPPED baseline: {e}", flush=True)
@@ -189,7 +207,7 @@ def main():
                         p = find_store(fs, model, scen, member, v)
                         if p is None:
                             raise FileNotFoundError(f"{scen}/{v}")
-                        fut[v] = monthly_clim(xr, fs, p, y0, y1, pts)
+                        fut[v] = monthly_clim(xr, fs, p, y0, y1, pts, box)
                 except Exception as e:
                     print(f"[12] {model:15} {scen} {hz:12} SKIPPED: {e}", flush=True)
                     skipped.append(dict(model=model, stage=f"{scen}/{hz}", error=str(e)))

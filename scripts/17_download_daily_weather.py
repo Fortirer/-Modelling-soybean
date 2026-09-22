@@ -31,7 +31,7 @@ Variables, chosen so that everything script 18 derives is computable anywhere:
 import sys, json, time, urllib.request, urllib.error
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import RAW, RES
+from _cfg import RAW, RES, STATE
 
 API = "https://power.larc.nasa.gov/api/temporal/daily/point"
 VARS = ["T2M_MAX", "T2M_MIN", "T2M", "T2MDEW", "PRECTOTCORR", "ALLSKY_SFC_SW_DWN"]
@@ -54,11 +54,11 @@ unchanged, only the centroid table differs.
 def centroids():
     """County centroid (lon, lat) from the staged polygon file, keyed by fips5.
 
-    Replace this function alone to run the script over another region; nothing
-    below depends on the points being Illinois counties.
+    Filename is state-aware; nothing below depends on the points being Illinois
+    counties, which is the point of choosing a global source (POWER).
     """
     rows = []
-    for line in (RAW / "il_county_boundaries.txt").read_text().splitlines():
+    for line in (RAW / f"{STATE.lower()}_county_boundaries.txt").read_text().splitlines():
         if not line.strip():
             continue
         fips, coords = line.split("|", 1)
