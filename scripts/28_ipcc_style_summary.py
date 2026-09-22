@@ -56,13 +56,16 @@ plt.rcParams.update({
     "ytick.color": "#4A4A4A",
 })
 
-fig = plt.figure(figsize=(10.5, 10.6), dpi=300)
-gs = fig.add_gridspec(2, 1, height_ratios=[1.35, 1], hspace=0.55, top=0.84, bottom=0.095)
+fig = plt.figure(figsize=(10.5, 11.2), dpi=300)
+gs = fig.add_gridspec(2, 1, height_ratios=[1.35, 1], hspace=0.60, top=0.80, bottom=0.09)
 
 # =============================================================== Panel (a) ==========
 ax = fig.add_subplot(gs[0])
-ax.set_title("(a) Projected change in Illinois soybean yield, climate effect only",
-             loc="left", fontsize=12.5, fontweight="bold", pad=26)
+# Built as two stacked text objects (not ax.set_title + a second line) so the bold heading
+# and the grey subtitle can use different sizes/weights without matplotlib's title linespacing
+# fighting the axes above it.
+ax.text(0, 1.16, "(a) Projected change in Illinois soybean yield, climate effect only",
+        transform=ax.transAxes, fontsize=12.5, fontweight="bold", color="#1F2A37")
 ax.text(0, 1.075, "Relative to observed 1981–2024. Median across 8 CMIP6 models, Schlenker-Roberts "
                    "specification, R3-driver window.",
         transform=ax.transAxes, fontsize=9, color="#55606B")
@@ -128,21 +131,21 @@ ax3.set_ylim(-vmax * 1.15, vmax * 1.15)
 ax2.set_ylim(0, 1)
 ax2.set_yticks([])
 ax2.set_xlim(years.min() - 0.5, years.max() + 0.5)
-ax2.set_xlabel("Year")
+ax2.set_xlabel("Year", labelpad=8)
 for s in ("top", "left"):
     ax2.spines[s].set_visible(False)
 ax3.spines["top"].set_visible(False)
 ax3.legend(loc="lower left", frameon=False, fontsize=9)
 
 sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(-vmax, vmax))
-cax = fig.add_axes([0.125, 0.055, 0.775, 0.018])
+cax = fig.add_axes([0.125, 0.030, 0.775, 0.016])
 cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
 cb.set_label("Yield anomaly, bu/acre (stripe colour)", fontsize=9)
 cb.ax.tick_params(labelsize=8)
 
 fig.suptitle("Illinois soybean yield and the climate signal: projected change against observed variability",
-             fontsize=14.5, fontweight="bold", y=0.995, x=0.125, ha="left")
-fig.text(0.125, 0.965,
+             fontsize=14.5, fontweight="bold", y=0.975, x=0.125, ha="left")
+fig.text(0.125, 0.950,
           "Panel design follows the IPCC AR6 Summary for Policymakers convention (SPM.7 / WG2 SPM.2): "
           "a range bar with a scenario-coloured band and a marked central estimate, read against the observed "
           "record. Source: scripts 20 and 05–05; all numbers read from results/ at build time.",
