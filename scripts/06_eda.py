@@ -1,18 +1,30 @@
 """06 - Exploratory data analysis. Figures 1-9, Tables 1-3."""
-import sys, numpy as np, pandas as pd
+import sys, io, gzip, urllib.request, numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import FINAL, FIG, RES, FOCAL_COUNTY
+from _cfg import FINAL, RAW, FIG, RES, STATE, STATE_NAME, FOCAL_COUNTY, FOCAL_FIPS
 from _viz import *
 
+STATE_TITLE = STATE_NAME.title()
 d = pd.read_csv(FINAL/"soybean_illinois_climate_1980_2025.csv",dtype={"county_ansi":str,"fips5":str})
-st = pd.read_csv(FINAL.parent/"raw/nass_il_state_totals.csv")
+
+ST_FILE = RAW/"nass_il_state_totals.csv"
+if not ST_FILE.exists() and STATE != "IL":
+    # auto-download: same bulk crops file as script 01, this time AGG_LEVEL_DESC=STATE
+    print(f"[06] {ST_FILE.name} not found; deriving state totals from the county panel "
+          f"(acres_harvested x yield summed by year) instead of a second bulk-file pull")
+    st = (d.groupby("year")
+            .apply(lambda g: pd.Series({"production_bu": g.production_bu.sum()}),
+                   include_groups=False)
+            .reset_index())
+else:
+    st = pd.read_csv(ST_FILE)
 F = d[d.is_focal==1].sort_values("year")
 
 # ---------------- Table 1: dataset characteristics --------------------------
 t1 = pd.DataFrame([
  ("Spatial unit","County (USDA NASS / Census FIPS)"),
- ("Number of counties","102"),
- ("Focal unit",f"{FOCAL_COUNTY} County, FIPS 17019"),
+ ("Number of counties",str(d.county.nunique())),
+ ("Focal unit",f"{FOCAL_COUNTY} County, FIPS {FOCAL_FIPS}"),
  ("Temporal coverage","1980-2025 (46 years)"),
  ("Panel observations",f"{len(d):,}"),
  ("Balanced-panel rule","counties with >= 42 of 46 years"),
@@ -51,9 +63,11 @@ print(f"[06] tables 1-3 written | {len(t3)} climate variables screened")
 
 # ================= FIGURES ==================================================
 # F1 national/state production over time
+ST_SUBTITLE = ("State total, official USDA NASS estimate" if ST_FILE.exists()
+              else "State total, summed from the county panel (no separately staged state-level file)")
 f,ax=fig(); ax.plot(st.year,st.production_bu/1e6,color=S1,lw=2.2,marker="o",ms=4)
-style(ax,"Figure 1. Illinois soybean production, 1980 to 2025",
-      "State total, official USDA NASS estimate","Year","Production (million bushels)",src=SRC)
+style(ax,f"Figure 1. {STATE_TITLE} soybean production, 1980 to 2025",
+      ST_SUBTITLE,"Year","Production (million bushels)",src=SRC)
 save(f,FIG/"fig01_state_production_timeseries.png")
 
 # F2 production by county, recent decade
@@ -73,15 +87,15 @@ for c,g in d.groupby("county"):
     ax.plot(g.year,g.yield_bu_ac,color="#c9c8c2",lw=.6,alpha=.55,zorder=1)
 ax.plot(F.year,F.yield_bu_ac,color=FOCAL,lw=2.6,zorder=3,label=f"{FOCAL_COUNTY} County")
 sm=d.groupby("year").apply(lambda g: (g.production_bu.sum()/g.acres_harvested.sum()),include_groups=False)
-ax.plot(sm.index,sm.values,color=S1,lw=2.4,ls="--",zorder=2,label="Illinois (acreage-weighted)")
+ax.plot(sm.index,sm.values,color=S1,lw=2.4,ls="--",zorder=2,label=f"{STATE_TITLE} (acreage-weighted)")
 style(ax,"Figure 3. County soybean yield trajectories, 1980 to 2025",
-      "102 counties in gray","Year","Yield (bu/acre)",legend=True,src=SRC)
+      f"{d.county.nunique()} counties in gray","Year","Yield (bu/acre)",legend=True,src=SRC)
 save(f,FIG/"fig03_county_yield_trends.png")
 
 # F4 temperature trend
 f,ax=fig()
 ts=d.groupby("year").tmax_critical.mean()
-ax.plot(ts.index,ts.values,color=S2,lw=2.0,marker="o",ms=3.5,label="Illinois mean")
+ax.plot(ts.index,ts.values,color=S2,lw=2.0,marker="o",ms=3.5,label=f"{STATE_TITLE} mean")
 ax.plot(F.year,F.tmax_critical,color=FOCAL,lw=1.4,alpha=.8,label=f"{FOCAL_COUNTY}")
 b=np.polyfit(ts.index,ts.values,1); ax.plot(ts.index,np.polyval(b,ts.index),color=INK2,ls=":",lw=1.6,
         label=f"trend {b[0]*10:+.2f} °F/decade")
@@ -96,7 +110,7 @@ ax.bar(ps.index,ps.values,color=S3,width=.72)
 b=np.polyfit(ps.index,ps.values,1); ax.plot(ps.index,np.polyval(b,ps.index),color=INK2,ls=":",lw=1.8,
         label=f"trend {b[0]*10:+.2f} in/decade")
 style(ax,"Figure 5. July-August precipitation, 1980 to 2025",
-      "Illinois county mean","Year","Precipitation (inches)",legend=True,src=SRC)
+      f"{STATE_TITLE} county mean","Year","Precipitation (inches)",legend=True,src=SRC)
 save(f,FIG/"fig05_precipitation_trend.png")
 
 # F6 temperature-yield relationship

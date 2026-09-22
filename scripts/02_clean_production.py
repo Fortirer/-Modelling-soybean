@@ -5,7 +5,7 @@ aggregate rows, unit verification, and the identity check.
 """
 import sys, json, numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _cfg import RAW, PROC, RES
+from _cfg import RAW, PROC, RES, STATE_FIPS
 
 SENTINELS = {"(D)","(S)","(Z)","(NA)","(X)","-",""}
 
@@ -53,7 +53,7 @@ def main():
     d["yield_kg_ha"]      = d.yield_bu_ac * (KG_PER_BU/HA_PER_ACRE)
     d["production_tonnes"]= d.production_bu * KG_PER_BU/1000.0
     d["area_harvested_ha"]= d.acres_harvested * HA_PER_ACRE
-    d["fips5"] = "17" + d.county_ansi
+    d["fips5"] = STATE_FIPS + d.county_ansi
 
     keep = ["state","state_ansi","county","county_ansi","fips5","ag_district",
             "ag_district_code","year","produced_soy","acres_planted","acres_harvested",

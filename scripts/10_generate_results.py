@@ -1,15 +1,45 @@
 """10 - Figure 17 (choropleth), final dataset, data dictionary, results index."""
-import sys, json, numpy as np, pandas as pd
+import sys, json, urllib.request, numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from matplotlib.collections import PolyCollection
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
-from _cfg import FINAL, RAW, RES, FIG, FOCAL_COUNTY, PROVENANCE, GROW_MONTHS, CRITICAL_MONTHS
+from _cfg import FINAL, RAW, RES, FIG, STATE, STATE_FIPS, FOCAL_COUNTY, FOCAL_FIPS, PROVENANCE, GROW_MONTHS, CRITICAL_MONTHS
 from _viz import *
 
+BOUNDARY_FILE = RAW / f"{STATE.lower()}_county_boundaries.txt"
+# public mirror of the Census cartographic boundary file (20m), keyed by 5-digit
+# FIPS; used only to auto-build a boundary file for a state that doesn't have
+# one manually staged yet (Illinois already does)
+GEOJSON_URL = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json"
+
+
+def build_boundary_file():
+    print(f"[10] {BOUNDARY_FILE.name} not found; fetching county polygons for "
+          f"STATE={STATE} from the public Census cartographic-boundary mirror", flush=True)
+    with urllib.request.urlopen(GEOJSON_URL, timeout=300) as resp:
+        gj = json.load(resp)
+    n = 0
+    with open(BOUNDARY_FILE, "w") as out:
+        for feat in gj["features"]:
+            fips = feat["id"]
+            if not fips.startswith(STATE_FIPS):
+                continue
+            geom = feat["geometry"]
+            rings = geom["coordinates"] if geom["type"] == "Polygon" else \
+                    max(geom["coordinates"], key=lambda poly: len(poly[0]))
+            ring = rings[0] if geom["type"] == "Polygon" else rings[0]
+            coords = " ".join(f"{lon:.4f},{lat:.4f}" for lon, lat in ring)
+            out.write(f"{fips}|{coords}\n")
+            n += 1
+    print(f"[10] wrote {n} county polygons -> {BOUNDARY_FILE}")
+
+
 # ---------- load boundaries ---------------------------------------------------
+if not BOUNDARY_FILE.exists():
+    build_boundary_file()
 polys={}
-for line in open(RAW/"il_county_boundaries.txt"):
+for line in open(BOUNDARY_FILE):
     fips,coords = line.strip().split("|")
     polys[fips]=np.array([[float(x) for x in p.split(",")] for p in coords.split()])
 print(f"[10] boundaries: {len(polys)} counties, {sum(len(v) for v in polys.values())} vertices")
@@ -39,7 +69,7 @@ f,ax=plt.subplots(figsize=(8.4,10.6),dpi=200); f.patch.set_facecolor(SURFACE); a
 lim=max(abs(m[COL].min()),abs(m[COL].max()))
 pc=choropleth(ax, vals, DIV, -lim, lim, COL)
 # outline focal county
-fp=polys.get("17019")
+fp=polys.get(FOCAL_FIPS)
 if fp is not None:
     ax.plot(np.append(fp[:,0],fp[0,0]),np.append(fp[:,1],fp[0,1]),color="#111111",lw=2.2,zorder=5)
     cx,cy=fp[:,0].mean(),fp[:,1].mean()
@@ -52,7 +82,9 @@ cb.set_label("Change in predicted yield (bu/acre)",fontsize=10,color=INK2)
 cb.ax.tick_params(colors=MUTED,labelsize=9); cb.outline.set_visible(False)
 ax.text(0,1.045,"Figure 17. Simulated yield change under +1 °C and -10% precipitation",
         transform=ax.transAxes,fontsize=14.2,color=INK,va="bottom",fontweight="semibold")
-ax.text(0,1.008,"Sensitivity experiment, not a climate projection. 91 counties in the balanced panel; 11 counties without sufficient data are unshaded.",
+n_panel = m.fips5.nunique(); n_unshaded = len(polys) - n_panel
+ax.text(0,1.008,f"Sensitivity experiment, not a climate projection. {n_panel} counties in the balanced "
+        f"panel; {n_unshaded} counties without sufficient data are unshaded.",
         transform=ax.transAxes,fontsize=9.4,color=INK2,va="bottom")
 ax.text(1,-.02,SRC,transform=ax.transAxes,fontsize=8,color=MUTED,ha="right",va="top")
 f.tight_layout(); f.savefig(FIG/"fig17_scenario_map.png",facecolor=SURFACE,bbox_inches="tight"); plt.close(f)

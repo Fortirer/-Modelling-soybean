@@ -6,7 +6,9 @@ __pycache__/
 venv/
 
 # Trained model binaries: large and fully regenerable by running the scripts
+# (models/**/*.pkl covers the per-state subfolders, e.g. models/IA/)
 models/*.pkl
+models/**/*.pkl
 
 # S3 path lookup cache for script 12: a local speed-up, rebuilt on demand
 data/processed/cmip6_path_index.json
