@@ -1,0 +1,62 @@
+{
+  "method": "CMIP6 deltas applied to DAILY weather, phenology recomputed through _pheno; the yield window's start and end are regressions on observed NASS dates moved by a county-relative driver anomaly",
+  "window_driver": "r3",
+  "window_fit": {
+    "r3": {
+      "start": [
+        215.1470844109983,
+        0.5199500518533979
+      ],
+      "end": [
+        260.8075921714592,
+        0.4202527627096555
+      ]
+    },
+    "gdd": {
+      "start": [
+        215.06132146435365,
+        -0.03432192349472401
+      ],
+      "end": [
+        260.7501213025372,
+        -0.03134738095567445
+      ]
+    }
+  },
+  "window_caveat": "slopes are weather-driven interannual estimates at today's level of adaptation, extrapolated far beyond the record; the window-length response is small and only the r3 driver has out-of-sample support (script 25)",
+  "estimators": {
+    "schlenker_roberts": "yield_anom ~ season_gdd + season_edd + wb_min_water_frac + win_prcp_mm + I(win_prcp_mm**2) + C(fips5)",
+    "sr_note": "EDD enters linearly; the nonlinearity is in the degree-day construction, so extrapolation is a straight line in a variable with a physical threshold",
+    "gbm": "gradient boosting on process features; saturates out of range"
+  },
+  "co2_ppm": {
+    "baseline|baseline": 370.0,
+    "ssp245|mid_century": 510.0,
+    "ssp245|late_century": 580.0,
+    "ssp585|mid_century": 580.0,
+    "ssp585|late_century": 890.0
+  },
+  "co2_ppm_note": "APPROXIMATE round numbers, not the published CMIP6 GHG concentration series; replace before quoting",
+  "co2_response": {
+    "beta": 0.3783910721214918,
+    "reference_ppm": 370.0,
+    "form": "1 + beta * ln(C/C_ref)",
+    "calibration": "roughly +15% seed yield at 550 ppm, FACE",
+    "saturating_cap_ppm": 550.0,
+    "omitted": "CO2 response shrinks under heat and interacts with drought; neither is represented"
+  },
+  "dewpoint_assumption": "relative humidity is taken from the CMIP6 hurs delta and dewpoint is recomputed from the perturbed temperature range, rather than shifting dewpoint with temperature. An earlier version did the latter, which holds RH roughly constant and looks conservative but is not: VPD is the larger of the two warming channels for yield (Lobell et al.) and CMIP6 projects RH DECLINING over North America, so holding it fixed suppressed the dominant damage mechanism",
+  "precipitation_assumption": "a monthly ratio scales every wet day equally, so rainfall intensity changes but wet-day frequency does not; delta methods cannot represent a change in the rainfall distribution",
+  "observed_season_edd_max": 97.65943043887287,
+  "models": [
+    "ACCESS-ESM1-5",
+    "CanESM5",
+    "EC-Earth3",
+    "GFDL-ESM4",
+    "INM-CM5-0",
+    "MIROC6",
+    "MPI-ESM1-2-LR",
+    "MRI-ESM2-0"
+  ],
+  "runtime_min": 3.1
+}
