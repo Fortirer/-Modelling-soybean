@@ -1,0 +1,14 @@
+check,n,r2,dY_dT,dY_dP,p_TMX,p_PCP,p_interaction
+"Reference: balanced panel, two-way FE",2897,0.5913,-0.3121,0.338,0.0,0.19262,0.56486
+All 102 counties (no balance rule),3341,,,,,,
+Fully balanced only (28 counties),966,0.6154,-0.2599,0.3448,0.0,0.33819,0.55262
+Trim 1% extreme yield years,2839,0.581,-0.3338,0.3372,0.00034,0.96775,0.52952
+Trim 2% extreme precip years,2781,0.5928,-0.2073,0.3448,0.0,0.01703,0.14484
+"Drop 1988, 2003, 2012",2703,0.5532,-0.2027,0.3306,0.00073,0.33936,0.84159
+Early period only (1980-2002),1491,0.5867,-0.1115,0.1683,0.00111,0.00047,0.00519
+Late period only (2003-2025),1406,0.609,-0.6091,0.4894,1e-05,0.88329,0.54579
+County FE only (no year FE),2897,0.2166,0.3712,0.7539,0.0,0.00776,1e-05
+Alternative indicator: growing-season precip,2897,0.6133,-0.2323,0.2742,1e-05,0.0,0.0
+Target: log yield,2897,0.8356,-0.0048,0.0075,0.0,0.00086,0.0065
+Target: raw yield (trend uncontrolled),2897,0.8745,-0.4368,0.3092,0.0,0.10545,0.42041
+Target: yield growth (%),2832,0.4652,-2.1311,-0.0551,5e-05,0.21786,0.24292

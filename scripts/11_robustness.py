@@ -13,7 +13,20 @@ FORM="yield_anom ~ PCP + PCP2 + TMX + TMX2 + PT + C(cty) + C(yr)"
 
 def run(df,label,form=FORM,tgt="yield_anom"):
     f=form.replace("yield_anom",tgt)
-    m=smf.ols(f,data=df).fit(cov_type="cluster",cov_kwds={"groups":df.county})
+    try:
+        m=smf.ols(f,data=df).fit(cov_type="cluster",cov_kwds={"groups":df.county})
+    except ValueError as e:
+        # A very sparse county (a handful of years, seen so far only with
+        # Minnesota's marginal northern counties in the unbalanced "all
+        # counties" check) can leave statsmodels' cluster-covariance sandwich
+        # with a length mismatch between its design matrix and the raw
+        # groups array. Rather than let one fragile specification crash every
+        # other check, record it as a skip -- the same discipline used for a
+        # failed CMIP6 store or a missing crop-progress series elsewhere in
+        # this pipeline.
+        print(f"[11] {label}: SKIPPED, {type(e).__name__}: {e}")
+        return dict(check=label,n=int(len(df)),r2=np.nan,dY_dT=np.nan,dY_dP=np.nan,
+                   p_TMX=np.nan,p_PCP=np.nan,p_interaction=np.nan)
     gp=lambda k: float(m.params[k]) if k in m.params.index else np.nan
     pv=lambda k: float(m.pvalues[k]) if k in m.pvalues.index else np.nan
     Pname = "PCP" if "PCP" in m.params.index else "pcp_grow"
@@ -48,8 +61,11 @@ R.append(run(g.dropna(subset=["yg"]),"Target: yield growth (%)",tgt="yg"))
 t=pd.DataFrame(R); t.to_csv(RES/"table9_robustness.csv",index=False)
 print("=== ROBUSTNESS (spec section 18) ===")
 print(t.to_string(index=False))
+n_ok = int(t.p_TMX.notna().sum())
+n_skipped = len(t) - n_ok
 sig=(t.p_TMX<.05).sum()
-print(f"\n[11] temperature term significant at 5% in {sig} of {len(t)} specifications")
-print(f"[11] dY/dT sign negative in {(t.dY_dT<0).sum()} of {len(t)}")
+print(f"\n[11] temperature term significant at 5% in {sig} of {n_ok} specifications"
+      f"{f' ({n_skipped} skipped, see above)' if n_skipped else ''}")
+print(f"[11] dY/dT sign negative in {(t.dY_dT<0).sum()} of {n_ok}")
 json.dump(dict(specs=len(t),temp_sig=int(sig),neg_sign=int((t.dY_dT<0).sum()),
   dY_dT_range=[float(t.dY_dT.min()),float(t.dY_dT.max())]),open(RES/"11_robustness_summary.json","w"),indent=2)

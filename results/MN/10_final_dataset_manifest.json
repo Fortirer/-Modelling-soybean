@@ -1,0 +1,48 @@
+{
+  "provenance": {
+    "production": {
+      "source": "USDA NASS Quick Stats",
+      "url": "https://quickstats.nass.usda.gov/",
+      "accessed": null,
+      "params": "source_desc=SURVEY; sector_desc=CROPS; commodity_desc=SOYBEANS; agg_level_desc=COUNTY; state_name=MINNESOTA; domain_desc=TOTAL; period=YEAR; year=1980..2025",
+      "note": "Illinois: query-tool CSV export, no API key. Other states: the same public bulk file used by script 23 (qs.crops_<date>.txt.gz), streamed and filtered -- see script 01."
+    },
+    "climate": {
+      "source": "NOAA NCEI nClimDiv, county-level monthly",
+      "url": "https://www.ncei.noaa.gov/pub/data/cirs/climdiv/",
+      "accessed": null,
+      "files": [
+        "climdiv-pcpncy",
+        "climdiv-tmpccy",
+        "climdiv-tmaxcy",
+        "climdiv-tmincy",
+        "climdiv-pdsicy",
+        "climdiv-zndxcy"
+      ],
+      "spatial_resolution": "county polygon (pre-aggregated by NCEI from station network)",
+      "temporal_resolution": "monthly",
+      "units": "precipitation inches; temperature degrees Fahrenheit; Palmer indices dimensionless",
+      "note": "ERA5 analogue. NCEI performs the gridding and polygon aggregation upstream, so no area-weighting step is executed in this pipeline. See README Limitations."
+    },
+    "geography": {
+      "source": "USDA NASS county ANSI (FIPS) codes and Agricultural Statistics Districts",
+      "note": "fips5 = '27' + county_ansi. Joins to Census TIGER."
+    }
+  },
+  "growing_season": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "critical_window": [
+    7,
+    8
+  ],
+  "rows": 3341,
+  "cols": 90,
+  "counties": 84,
+  "focal": "RENVILLE"
+}

@@ -1,0 +1,27 @@
+{
+  "source": "NOAA NCEI nClimDiv, county-level monthly",
+  "url": "https://www.ncei.noaa.gov/pub/data/cirs/climdiv/",
+  "accessed": null,
+  "files": [
+    "climdiv-pcpncy",
+    "climdiv-tmpccy",
+    "climdiv-tmaxcy",
+    "climdiv-tmincy",
+    "climdiv-pdsicy",
+    "climdiv-zndxcy"
+  ],
+  "spatial_resolution": "county polygon (pre-aggregated by NCEI from station network)",
+  "temporal_resolution": "monthly",
+  "units": "precipitation inches; temperature degrees Fahrenheit; Palmer indices dimensionless",
+  "note": "ERA5 analogue. NCEI performs the gridding and polygon aggregation upstream, so no area-weighting step is executed in this pipeline. See README Limitations.",
+  "fixed_width_layout": {
+    "state_code": "cols 1-2 (NOAA climdiv code, not Census FIPS)",
+    "county_fips": "cols 3-5",
+    "element": "cols 6-7",
+    "year": "cols 8-11",
+    "months": "12 fields of width 7 (f7.2)",
+    "missing": "precip <= -9 treated as null; temp/PDSI/Z-index <= -99 treated as null"
+  },
+  "recipe": "Reproduce:\n  base=https://www.ncei.noaa.gov/pub/data/cirs/climdiv/\n  for f in climdiv-pcpncy climdiv-tmpccy climdiv-tmaxcy climdiv-tmincy \\\n           climdiv-pdsicy climdiv-zndxcy ; do\n      curl -O ${base}${f}-v1.0.0-<latest-date>\n  done\nFilter lines beginning with the state's NOAA climdiv code (see\ncounty-readme.txt STATE CODE TABLE -- these do NOT match Census FIPS).\nVersion-date suffix changes monthly; list the directory for the current one.",
+  "climdiv_state_code": "21"
+}
