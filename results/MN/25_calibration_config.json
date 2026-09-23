@@ -1,0 +1,67 @@
+{
+  "planting": {
+    "threshold_c": 16.0,
+    "bias_days": -0.9640738331435728,
+    "r_yearly": NaN,
+    "note": "a statistical device; real planting is limited by field workability, not by a 19 C running mean"
+  },
+  "window": {
+    "rule": "both ends are regressions on observed NASS pod-setting and leaf-drop dates, moved by a county-relative driver anomaly",
+    "default_driver": "r3",
+    "fit": {
+      "r3": {
+        "start": [
+          215.1470844109983,
+          0.5199500518533979
+        ],
+        "end": [
+          260.8075921714592,
+          0.4202527627096555
+        ]
+      },
+      "gdd": {
+        "start": [
+          215.06132146435365,
+          -0.03432192349472401
+        ],
+        "end": [
+          260.7501213025372,
+          -0.03134738095567445
+        ]
+      }
+    },
+    "end_skill_pct": {
+      "0 climatology": -2.3255813953488857,
+      "D1 thermal R7 anomaly (imputed)": 35.46456100996311,
+      "D2 thermal R3 anomaly  [default]": 29.379143714799184,
+      "D3 GDD planting -> day 250": 35.191452430356776,
+      "D4 GDD 1 May -> 15 Sep [alternative]": 38.63686040871856
+    },
+    "length_response": {
+      "r3 (days)": {
+        "slope": -0.09969728914374261,
+        "se": 0.06275759679355894,
+        "p": 0.12002280668908731
+      },
+      "gdd (GDD)": {
+        "slope": 0.002974542539049563,
+        "se": 0.004388708636731471,
+        "p": 0.5018183571641076
+      }
+    },
+    "thermal_r7_unreached_pct": 14.300699300699302,
+    "note": "every driver beats the plain average leaf-drop date by about 10%, and the record cannot choose between them; they agree that warm seasons make the window slightly LONGER"
+  },
+  "thermal_requirement_gdd": {
+    "R1": 523.0,
+    "R3": 737.0,
+    "R7": 1164.0
+  },
+  "constants_consistent": false,
+  "limits": [
+    "state-level observation only",
+    "44 years, leave-one-out",
+    "interannual slopes extrapolated far beyond the observed range",
+    "county-relative anomalies: every county's mean window ends on the same date, since NASS has no county maturity data"
+  ]
+}

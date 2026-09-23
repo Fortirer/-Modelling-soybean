@@ -1,0 +1,4 @@
+stage,n,bias_days,rmse_days,observed_sd_days,corr,skill_pct
+blooming,43,0.1,3.3,5.8,0.92,43.0
+pods,41,1.5,5.1,6.0,0.88,15.0
+leaves,36,0.8,17.3,4.4,0.7,-290.0

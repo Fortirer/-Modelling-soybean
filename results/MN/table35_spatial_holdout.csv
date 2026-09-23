@@ -1,0 +1,7 @@
+features,holdout,n,rmse,baseline_rmse,skill_pct
+calendar,none (script 19),1484,5.4407,5.5277,1.5744
+calendar,district,1484,5.449,5.5277,1.4232
+process,none (script 19),1484,5.366,5.5277,2.9252
+process,district,1484,5.3327,5.5277,3.5274
+both,none (script 19),1484,5.2652,5.5277,4.748
+both,district,1484,5.3988,5.5277,2.3311

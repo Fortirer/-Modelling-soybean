@@ -1,0 +1,65 @@
+{
+  "thermal_time": {
+    "base_c": 10.0,
+    "cap_c": 30.0,
+    "extreme_c": 30.0,
+    "method": "single sine (Snyder 1985) over the daily curve"
+  },
+  "stages_gdd_from_planting": {
+    "VE": 110,
+    "R1": 523.0,
+    "R3": 737.0,
+    "R5": 1110,
+    "R6": 1390,
+    "R7": 1164.0,
+    "R8": 1550
+  },
+  "stages_note": "R1, R3 and R7 are the OBSERVED median thermal requirement from observed NASS planting to blooming, setting pods and leaf drop (scripts 23-25). VE, R5, R6, R8 have no NASS counterpart and are unvalidated; they are retained for script 21 only",
+  "window": {
+    "rule": "both ends are regressions on observed NASS pod-setting and leaf-drop dates, moved by a county-relative driver anomaly",
+    "driver": "r3",
+    "fit": {
+      "r3": {
+        "start": [
+          215.1470844109983,
+          0.5199500518533979
+        ],
+        "end": [
+          260.8075921714592,
+          0.4202527627096555
+        ]
+      },
+      "gdd": {
+        "start": [
+          215.06132146435365,
+          -0.03432192349472401
+        ],
+        "end": [
+          260.7501213025372,
+          -0.03134738095567445
+        ]
+      }
+    },
+    "why": "thermal time predicts late-season timing worse than the mean date (script 24), and a statewide GDD threshold puts thermal R3 absurdly late in cool northern county-years (script 25)"
+  },
+  "planting_rule": {
+    "earliest_doy": 121,
+    "latest_doy": 175,
+    "temp_c": 16.0,
+    "rule": "first day with a 7-day mean at or above temp_c",
+    "note": "anchored to the observed mean planting date; a statistical device, not a physiological threshold"
+  },
+  "water_balance": {
+    "kc": {
+      "initial": 0.4,
+      "mid": 1.15,
+      "late": 0.5
+    },
+    "depletion_fraction": 0.5,
+    "capacity": "SSURGO available water, top metre, mm",
+    "et0": "FAO-56 Penman-Monteith, humidity-responsive; Hargreaves retained in _pheno for comparison"
+  },
+  "county_years": 3769,
+  "skipped": 59,
+  "shared_module": "_pheno.py, also used by script 20 for CMIP6 scenarios"
+}

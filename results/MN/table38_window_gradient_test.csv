@@ -1,0 +1,4 @@
+windows,rmse,skill_pct,end_gradient_days,start_gradient_days
+"county-relative (uniform window, default)",5.366,2.9252,-0.0112,-0.0008
+county-relative + latitude as a feature (control),5.3035,4.0558,-0.0112,-0.0008
+state-relative (north-south gradient retained),5.6232,-1.728,3.3284,4.095

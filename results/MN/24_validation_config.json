@@ -1,0 +1,11 @@
+{
+  "source": "script 23, NASS Quick Stats weekly Illinois soybean progress and condition",
+  "level": "state only; NASS publishes no district or county series in the bulk file",
+  "window": "1981-2024, limited by the POWER weather record",
+  "remembered_dates_replaced": true,
+  "caveats": [
+    "state-level observed dates against state-mean model dates",
+    "NASS blooming ~R1-R2, setting pods ~R3-R4, dropping leaves ~R7; model R5 and R6 have no counterpart",
+    "leap years shift day-of-year by one, ignored"
+  ]
+}

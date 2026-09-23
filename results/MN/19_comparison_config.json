@@ -1,0 +1,54 @@
+{
+  "calendar_features": [
+    "pcp_critical",
+    "pcp_grow",
+    "pcp08",
+    "pcp07",
+    "pcp_win",
+    "pcp_grow_cv",
+    "tmax_critical",
+    "tmax08",
+    "tmp_grow",
+    "tmp_grow_sd",
+    "tmin10",
+    "zndx08",
+    "zndx07",
+    "pdsi08",
+    "pdsi_critical",
+    "heat_x_dry",
+    "hot_month_count",
+    "dry_month_count",
+    "climate_normal_pcp",
+    "climate_normal_tmax"
+  ],
+  "process_features": [
+    "win_gdd",
+    "win_edd",
+    "win_hot_days",
+    "win_vpd_mean",
+    "win_vpd_max",
+    "win_prcp_mm",
+    "win_et0_mm",
+    "win_water_deficit_mm",
+    "win_tmax_mean",
+    "wb_stress_days",
+    "wb_min_water_frac",
+    "wb_season_deficit_mm",
+    "window_days",
+    "season_gdd",
+    "season_edd",
+    "season_prcp_mm",
+    "plant_doy",
+    "end_doy"
+  ],
+  "excluded": {
+    "win_gdd": "constant by construction; R3 and R6 are fixed points on the thermal-time axis"
+  },
+  "validation": "expanding window, rolling origin, no random splits",
+  "years": [
+    1981,
+    2024
+  ],
+  "rows": 2780,
+  "test_obs": 1484
+}
