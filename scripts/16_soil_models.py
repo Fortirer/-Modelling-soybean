@@ -40,7 +40,21 @@ d = d.merge(s, on="fips5", how="left", validate="many_to_one")
 unmatched = int(d[SOIL[0]].isna().sum())
 print(f"[16] panel {len(d):,} rows, {before} counties, {len(SOIL)} soil features")
 print(f"[16] rows with no soil match : {unmatched}")
-assert unmatched == 0, "soil join incomplete"
+if unmatched:
+    missing = sorted(d.loc[d[SOIL[0]].isna(), "fips5"].unique())
+    # SSURGO sometimes publishes a county's soil survey as part of a joint/
+    # reservation survey area whose areasymbol isn't simply STATE_FIPS+county_
+    # ansi (seen on South Dakota's reservation counties: Custer, Jackson,
+    # Oglala Lakota/Pennington etc. are covered by combined-area surveys like
+    # SD600-SD613, not their own county-coded area). Resolving that needs a
+    # real areasymbol-to-county crosswalk (geometry), out of scope here, so
+    # those counties are dropped from the soil analysis rather than the run
+    # crashing or silently mis-joining -- exactly the discipline already used
+    # for a missing CMIP6 model or a singular robustness spec elsewhere in
+    # this pipeline.
+    print(f"[16] dropping {unmatched} rows ({len(missing)} counties, fips5={missing}) "
+          f"with no SSURGO county-level match")
+    d = d[d[SOIL[0]].notna()].copy()
 
 cfg = json.load(open(RES / "08_ml_config.json"))
 CLIM, TARGET = cfg["features"], cfg["target"]

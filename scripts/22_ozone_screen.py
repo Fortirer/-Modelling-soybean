@@ -97,6 +97,18 @@ def main():
     f = pd.read_csv(PROC / "phenology_features.csv", dtype={"fips5": str})
     d = p.merge(f, on=["fips5", "year"]).merge(o3, on="year")
 
+    # counties script 18 could not find soil AWC for (SSURGO joint/reservation-
+    # survey coverage gap, see script 16's note) carry NaN water-balance
+    # features; smf.ols silently drops their rows from exog but cov_kwds'
+    # cluster "groups" array is not filtered the same way, so leaving them in
+    # crashes the covariance step on a length mismatch rather than a NaN error
+    na_mask = d.wb_min_water_frac.isna()
+    if na_mask.any():
+        print(f"[22] dropping {int(na_mask.sum())} rows with a NaN feature "
+              f"(fips5={sorted(d.loc[na_mask, 'fips5'].unique())}, "
+              f"see script 16's SSURGO coverage note)")
+        d = d[~na_mask].copy()
+
     # ---- 1. is anything left once a trend is removed? -----------------------
     print("\n[22] 1. OZONE, BEFORE AND AFTER REMOVING A LINEAR TREND")
     rows1 = []
@@ -137,6 +149,19 @@ def main():
     rows3 = []
     for m, lab in METRICS.items():
         col = m + "_dt"
+        if d[col].isna().all():
+            # np.polyfit in step 1 returns all-NaN coefficients the moment a
+            # single year is missing from this metric (some EPA monitors don't
+            # report 90th-percentile/annual-mean some years, sparser still for
+            # a state with only 1-7 counties carrying a monitor) -- the whole
+            # detrended series is unusable here, not just those years, so skip
+            # rather than fit on a zero-size array
+            print(f"     {lab}: SKIPPED, detrended series is all-NaN "
+                  f"(a monitor-year is missing for this metric)")
+            rows3.append(dict(metric=lab, coef_bu_per_ppb=np.nan, p_value=np.nan,
+                              effect_of_1sd_bu=np.nan, delta_r2=np.nan,
+                              corr_with_edd=np.nan, corr_with_water=np.nan))
+            continue
         x = d.assign(o3ppb=d[col] * PPB)
         mm = smf.ols(BASE.replace("season_edd", "season_edd + o3ppb"), data=x).fit(
             cov_type="cluster", cov_kwds={"groups": x.year})
@@ -155,6 +180,10 @@ def main():
     rows4 = []
     for m, lab in METRICS.items():
         col = m + "_dt"
+        if yl[col].isna().all():
+            rows4.append(dict(metric=lab, coef_bu_per_ppb=np.nan, se=np.nan,
+                              p_value=np.nan, n_years=0))
+            continue
         yy = yl.assign(o3ppb=yl[col] * PPB)
         mm = smf.ols("anom ~ edd + wb + prcp + o3ppb", data=yy).fit()
         rows4.append(dict(metric=lab, coef_bu_per_ppb=mm.params["o3ppb"],
@@ -190,30 +219,38 @@ def main():
       .round(5).to_csv(RES / "table27_ozone_screen.csv", index=False)
 
     # ---------- Figure 31 ----------------------------------------------------
+    # o3_90pct_ppm is the usual choice, but on a sparse-monitor state a single
+    # missing monitor-year can make its detrended series all-NaN (see the
+    # step-1/3/4 guards above); fall back to the first metric that actually
+    # has data rather than plotting an empty figure.
+    fig_metric = next((m for m in METRICS if not o3[m].isna().all()
+                       and not yl[m + "_dt"].isna().all()), "o3_90pct_ppm")
+    fig_label = METRICS[fig_metric]
     f, axes = plt.subplots(1, 3, figsize=(13.5, 4.8), dpi=200)
     f.patch.set_facecolor(SURFACE)
     ax = axes[0]; ax.set_facecolor(SURFACE)
-    ax.plot(o3.year, o3.o3_90pct_ppm * PPB, color=S2, lw=1.4, marker="o", ms=3)
-    b = np.polyfit(o3.year, o3.o3_90pct_ppm * PPB, 1)
+    ax.plot(o3.year, o3[fig_metric] * PPB, color=S2, lw=1.4, marker="o", ms=3)
+    b = np.polyfit(o3.year, o3[fig_metric] * PPB, 1)
     ax.plot(o3.year, np.polyval(b, o3.year), color=INK, lw=1.6, ls="--")
-    ax.set_ylabel(f"{STATE_NAME.title()} 90th-percentile 8-h ozone (ppb)", fontsize=9.5, color=INK2)
+    ax.set_ylabel(f"{STATE_NAME.title()} {fig_label} (ppb)", fontsize=9.5, color=INK2)
     ax.text(.04, .06, f"{b[0]:+.2f} ppb/yr", transform=ax.transAxes, fontsize=10, color=INK2)
     ax = axes[1]; ax.set_facecolor(SURFACE)
-    ax.scatter(yl.o3_90pct_ppm_dt * PPB, yl.anom, color=S1, s=30, alpha=.8,
+    fig_col = fig_metric + "_dt"
+    ax.scatter(yl[fig_col] * PPB, yl.anom, color=S1, s=30, alpha=.8,
                edgecolor=SURFACE, lw=.6)
-    bb = np.polyfit(yl.o3_90pct_ppm_dt * PPB, yl.anom, 1)
-    xx = np.linspace((yl.o3_90pct_ppm_dt * PPB).min(), (yl.o3_90pct_ppm_dt * PPB).max(), 20)
+    bb = np.polyfit(yl[fig_col] * PPB, yl.anom, 1)
+    xx = np.linspace((yl[fig_col] * PPB).min(), (yl[fig_col] * PPB).max(), 20)
     ax.plot(xx, np.polyval(bb, xx), color=INK, lw=1.6, ls="--")
-    r = np.corrcoef(yl.o3_90pct_ppm_dt, yl.anom)[0, 1]
+    r = np.corrcoef(yl[fig_col], yl.anom)[0, 1]
     ax.text(.04, .06, f"r = {r:+.2f}, n = {len(yl)} years", transform=ax.transAxes,
             fontsize=10, color=INK2)
     ax.set_xlabel("Detrended ozone (ppb)", fontsize=9.5, color=INK2)
     ax.set_ylabel("State-mean yield anomaly (bu/acre)", fontsize=9.5, color=INK2)
     ax = axes[2]; ax.set_facecolor(SURFACE)
-    ax.scatter(yl.edd, yl.o3_90pct_ppm_dt * PPB, color=S4, s=30, alpha=.8,
+    ax.scatter(yl.edd, yl[fig_col] * PPB, color=S4, s=30, alpha=.8,
                edgecolor=SURFACE, lw=.6)
-    rr = np.corrcoef(yl.edd, yl.o3_90pct_ppm_dt)[0, 1]
-    bb = np.polyfit(yl.edd, yl.o3_90pct_ppm_dt * PPB, 1)
+    rr = np.corrcoef(yl.edd, yl[fig_col])[0, 1]
+    bb = np.polyfit(yl.edd, yl[fig_col] * PPB, 1)
     xx = np.linspace(yl.edd.min(), yl.edd.max(), 20)
     ax.plot(xx, np.polyval(bb, xx), color=INK, lw=1.6, ls="--")
     ax.text(.04, .06, f"r = {rr:+.2f}", transform=ax.transAxes, fontsize=10, color=INK2)

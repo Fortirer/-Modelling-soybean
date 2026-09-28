@@ -49,6 +49,18 @@ PROCESS = ["win_gdd", "win_edd", "win_hot_days", "win_vpd_mean", "win_vpd_max",
 PROCESS = [c for c in PROCESS if c in d.columns]
 print(f"[19] calendar features {len(CALENDAR)} | process features {len(PROCESS)}")
 
+# the water-balance process features are NaN for counties script 18 could not
+# find soil AWC for (the same SSURGO joint/reservation-survey coverage gap
+# script 16 already documents for South Dakota) -- drop those rows here too,
+# rather than letting a NaN reach the model fit below.
+n_pre_na = len(d)
+na_mask = d[CALENDAR + PROCESS].isna().any(axis=1)
+if na_mask.any():
+    print(f"[19] dropping {int(na_mask.sum())} rows with a NaN feature "
+          f"(fips5={sorted(d.loc[na_mask, 'fips5'].unique())}, "
+          f"see script 16's SSURGO coverage note)")
+    d = d[~na_mask].copy()
+
 
 def metrics(a, p):
     e = p - a

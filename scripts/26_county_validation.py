@@ -71,6 +71,15 @@ def main():
     pan = pan[pan.in_balanced_panel == 1]
     ph = pd.read_csv(PROC / "phenology_features.csv", dtype={"fips5": str})
     d = pan.merge(ph, on=["fips5", "year"], how="inner", validate="one_to_one")
+    na_mask = d[CAL + PRC].isna().any(axis=1)
+    if na_mask.any():
+        # counties script 18 could not find soil AWC for (SSURGO joint/
+        # reservation-survey coverage gap, see script 16's note) carry NaN
+        # water-balance process features
+        print(f"[26] dropping {int(na_mask.sum())} rows with a NaN feature "
+              f"(fips5={sorted(d.loc[na_mask, 'fips5'].unique())}, "
+              f"see script 16's SSURGO coverage note)")
+        d = d[~na_mask].copy()
     lat = P.centroid_lat(RAW).set_index("unit_id").lat.to_dict()
     d = d.copy()
     d["lat"] = d.fips5.map(lat)

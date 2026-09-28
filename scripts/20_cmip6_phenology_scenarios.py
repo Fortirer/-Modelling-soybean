@@ -153,6 +153,16 @@ def main():
               "window_days", "season_edd", "season_prcp_mm",
               "season_gdd", "plant_doy", "end_doy"]
 
+    na_mask = d0[PROC_F].isna().any(axis=1)
+    if na_mask.any():
+        # counties script 18 could not find soil AWC for (SSURGO joint/
+        # reservation-survey coverage gap, see script 16's note) carry NaN
+        # water-balance process features
+        print(f"[20] dropping {int(na_mask.sum())} rows with a NaN feature "
+              f"(fips5={sorted(d0.loc[na_mask, 'fips5'].unique())}, "
+              f"see script 16's SSURGO coverage note)")
+        d0 = d0[~na_mask].copy()
+
     gbm = GradientBoostingRegressor(n_estimators=200, max_depth=3,
                                     learning_rate=.05, random_state=SEED)
     gbm.fit(d0[PROC_F], d0.yield_anom)
