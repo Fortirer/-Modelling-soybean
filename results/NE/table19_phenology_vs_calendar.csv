@@ -1,0 +1,5 @@
+features,n_features,RMSE,MAE,R2,skill_vs_baseline_pct,gain_vs_calendar_pct
+both,38,8.53335,6.49457,0.13702,7.13,1.26
+calendar (script 08),20,8.64213,6.65658,0.11488,5.95,0.0
+process (script 18),18,8.85848,6.58177,0.07,3.59,-2.5
+baseline: anomaly = 0,0,9.18844,6.94484,-0.00057,0.0,-6.32
