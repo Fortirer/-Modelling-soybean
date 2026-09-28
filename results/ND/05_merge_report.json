@@ -1,0 +1,19 @@
+{
+  "production_rows": 1472,
+  "climate_rows": 6996,
+  "merged_rows": 1472,
+  "unmatched_climate": 0,
+  "counties": 52,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 17,
+  "rows_in_balanced_panel": 768,
+  "focal_county": "CASS",
+  "focal_rows": 46,
+  "focal_year_range": [
+    1980,
+    2025
+  ],
+  "trend_slope_min": -1.213,
+  "trend_slope_max": 6.829
+}
