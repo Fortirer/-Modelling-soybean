@@ -13,5 +13,5 @@
     "low power: see the detectable-effect line in the script output"
   ],
   "verdict": "not built into the pipeline; collinear with heat and water and indistinguishable from them in this data",
-  "runtime_min": 3.3
+  "runtime_min": 3.1
 }

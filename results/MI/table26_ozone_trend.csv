@@ -1,0 +1,4 @@
+metric,slope_ppb_per_yr,trend_explains_pct,detrended_sd_ppb
+4th-highest 8-h value,-0.4846,45.887,6.8339
+90th-percentile 8-h value,-0.3164,36.7025,5.3958
+annual mean 8-h value,0.0012,0.002,3.411
