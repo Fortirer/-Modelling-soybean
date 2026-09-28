@@ -1,0 +1,19 @@
+{
+  "production_rows": 2287,
+  "climate_rows": 10956,
+  "merged_rows": 2287,
+  "unmatched_climate": 0,
+  "counties": 72,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 36,
+  "rows_in_balanced_panel": 1622,
+  "focal_county": "SANILAC",
+  "focal_rows": 45,
+  "focal_year_range": [
+    1980,
+    2024
+  ],
+  "trend_slope_min": -0.825,
+  "trend_slope_max": 6.7
+}

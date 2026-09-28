@@ -1,0 +1,9 @@
+{
+  "specs": 13,
+  "temp_sig": 13,
+  "neg_sign": 12,
+  "dY_dT_range": [
+    -5.409,
+    0.1554
+  ]
+}
