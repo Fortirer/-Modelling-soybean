@@ -38,6 +38,8 @@ STATE_REGISTRY = {
                focal_county="CASS", focal_fips="38017"),
     "SD": dict(name="SOUTH DAKOTA", fips="46", climdiv_code="39",
                focal_county="BROOKINGS", focal_fips="46011"),
+    "KS": dict(name="KANSAS", fips="20", climdiv_code="14",
+               focal_county="NEMAHA", focal_fips="20131"),
 }
 if STATE not in STATE_REGISTRY:
     raise SystemExit(f"Unknown STATE={STATE!r}. Add it to STATE_REGISTRY in "

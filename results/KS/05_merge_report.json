@@ -1,0 +1,19 @@
+{
+  "production_rows": 3969,
+  "climate_rows": 13860,
+  "merged_rows": 3969,
+  "unmatched_climate": 0,
+  "counties": 105,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 48,
+  "rows_in_balanced_panel": 2118,
+  "focal_county": "NEMAHA",
+  "focal_rows": 43,
+  "focal_year_range": [
+    1980,
+    2024
+  ],
+  "trend_slope_min": -0.245,
+  "trend_slope_max": 0.966
+}
