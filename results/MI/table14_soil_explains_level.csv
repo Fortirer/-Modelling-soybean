@@ -1,0 +1,4 @@
+target,n,r2,adj_r2,strongest_term,p_value
+county mean yield (bu/acre),36,0.40231,0.22522,soil_ksat_subsoil,0.07992
+yield trend (bu/acre/yr),36,0.26561,0.04801,soil_clay_topsoil,0.03496
+yield volatility (sd of anomaly),36,0.18088,-0.06182,soil_ksat_subsoil,0.05559

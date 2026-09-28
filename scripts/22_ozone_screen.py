@@ -96,6 +96,18 @@ def main():
         except (urllib.error.HTTPError, urllib.error.URLError,
                 ConnectionError, TimeoutError, http.client.HTTPException) as e:
             failed.append(dict(year=y, error=str(e)))
+    if not parts:
+        # the EPA server itself can be down for the whole run (seen as every
+        # year's fetch_year exhausting its retries), not just a state-specific
+        # gap -- stop cleanly and say so rather than crashing on an empty
+        # concat, consistent with this script's own "documented stopping
+        # point" framing
+        print(f"[22] SKIPPED: EPA AQS server unreachable for all {len(YEARS)} "
+              f"years attempted ({len(failed)} failures) -- rerun this script "
+              f"later once aqs.epa.gov recovers")
+        (RES / "22_ozone_config.json").write_text(json.dumps(dict(
+            skipped=True, reason="EPA AQS server unreachable", failed=failed), indent=2))
+        return
     o3 = pd.concat(parts, ignore_index=True).sort_values("year")
     o3.to_csv(RAW / "epa_ozone_il_annual.csv", index=False)
     print(f"[22] ozone years {len(o3)}  {o3.year.min()}-{o3.year.max()}  "
