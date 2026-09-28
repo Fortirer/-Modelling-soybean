@@ -29,8 +29,8 @@ import sys, io, json, gzip, time, urllib.request, urllib.error, collections
 import pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from _cfg import RAW, RES, STATE
+from _nass_bulk import latest_bulk_url
 
-URL = "https://www.nass.usda.gov/datasets/qs.crops_20260922.txt.gz"
 OUT = RAW / "nass_il_soybean_progress.csv"
 PARTIAL = RAW / "nass_il_soybean_progress.csv.partial"
 COMMODITY = "SOYBEANS"
@@ -49,9 +49,9 @@ class Counting:
         return b
 
 
-def stream_once():
+def stream_once(url):
     t0 = time.time()
-    resp = urllib.request.urlopen(URL, timeout=300)
+    resp = urllib.request.urlopen(url, timeout=300)
     total = int(resp.headers.get("Content-Length") or 0)
     src = Counting(resp)
     text = io.TextIOWrapper(gzip.GzipFile(fileobj=src), encoding="utf-8", errors="replace")
@@ -91,10 +91,11 @@ def stream_once():
 
 def main():
     kept = scanned = 0
+    url = latest_bulk_url("qs.crops_")
     for a in range(1, ATTEMPTS + 1):
         try:
-            print(f"[23] attempt {a}/{ATTEMPTS}: streaming {URL}", flush=True)
-            kept, scanned = stream_once()
+            print(f"[23] attempt {a}/{ATTEMPTS}: streaming {url}", flush=True)
+            kept, scanned = stream_once(url)
             break
         except (urllib.error.URLError, TimeoutError, OSError, EOFError,
                 gzip.BadGzipFile) as e:
@@ -132,7 +133,7 @@ def main():
 
     (RES / "23_provenance_crop_progress.json").write_text(json.dumps(dict(
         source="USDA NASS Quick Stats bulk file, qs.crops",
-        url=URL, accessed=time.strftime("%Y-%m-%d"),
+        url=url, accessed=time.strftime("%Y-%m-%d"),
         access_note="public bulk file, no API key; streamed and filtered, "
                     f"{scanned:,} rows scanned",
         filter=f"COMMODITY_DESC={COMMODITY}; STATE_ALPHA={STATE}; "

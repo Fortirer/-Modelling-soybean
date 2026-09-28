@@ -1,0 +1,15 @@
+{
+  "rows_in": 3387,
+  "sentinel_or_unparsed_cells": 0,
+  "aggregate_rows_dropped": 131,
+  "duplicate_county_year": 0,
+  "zero_production_rows": 0,
+  "identity_checked": 3256,
+  "identity_max_residual_bu_per_acre": 9013.6,
+  "identity_failures_gt_0.55": 2043,
+  "harvested_gt_planted": 788,
+  "rows_out": 3256,
+  "counties": 89,
+  "year_min": 1980,
+  "year_max": 2025
+}

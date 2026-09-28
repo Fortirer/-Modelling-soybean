@@ -1,0 +1,8 @@
+model,n,k,r2,adj_r2,RMSE,MAE,aic,bic,F_pvalue,breusch_pagan_p,durbin_watson,se_type
+M1 Baseline pooled OLS,2516,2,0.10516,0.10445,8.05932,6.22578,17647.02174,17664.51301,0.0,0.0,2.00126,cluster(county)
+M2 Quadratic + interaction,2516,5,0.13045,0.12872,7.94462,6.097,17580.89183,17615.87439,0.0,0.0,1.99812,cluster(county)
+M3 M2 + county FE,2516,61,0.13865,0.11724,7.9071,6.05224,17669.06962,18030.55601,0.0,0.0,2.01174,cluster(county)
+M4 Two-way FE (county + year),2516,106,0.31093,0.28061,7.07226,5.33331,17197.59408,17821.44962,0.0,0.0,2.06002,cluster(county)
+M5 Palmer Z specification,2516,60,0.16153,0.14104,7.80136,5.97959,17599.32752,17954.98348,0.0,0.0,2.05258,cluster(county)
+"M6 Raw yield, two-way FE",2516,62,0.57658,0.56588,8.14202,6.28837,17818.39545,18185.71226,0.0,0.0,1.90009,cluster(county)
+"M7 Log yield, county FE",2516,62,0.51173,0.49939,0.21627,0.156,-439.06875,-71.75193,0.0,0.0,2.00964,cluster(county)

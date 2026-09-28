@@ -1,0 +1,19 @@
+{
+  "production_rows": 3256,
+  "climate_rows": 12276,
+  "merged_rows": 3256,
+  "unmatched_climate": 0,
+  "counties": 89,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 57,
+  "rows_in_balanced_panel": 2516,
+  "focal_county": "LANCASTER",
+  "focal_rows": 45,
+  "focal_year_range": [
+    1980,
+    2024
+  ],
+  "trend_slope_min": -1.571,
+  "trend_slope_max": 1.011
+}

@@ -13,6 +13,7 @@ import sys, io, gzip, json, time, urllib.request, urllib.error
 import pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from _cfg import RAW, RES, PROVENANCE, STATE, STATE_NAME
+from _nass_bulk import latest_bulk_url
 
 SRC = RAW/"nass_il_soybeans_county_raw.csv"   # literal name kept across states,
                                                # harmless once RAW is state-namespaced
@@ -37,7 +38,6 @@ NOTE: the 50,000-row API cap binds for multi-state pulls; use the bulk file
       (see the auto-download path below, used for every state but Illinois).
 """
 
-BULK_URL = "https://www.nass.usda.gov/datasets/qs.crops_20260922.txt.gz"
 WANT_STATCAT = {"AREA PLANTED", "AREA HARVESTED", "PRODUCTION", "YIELD"}
 RENAME = {"AREA PLANTED": "acres_planted", "AREA HARVESTED": "acres_harvested",
           "PRODUCTION": "production_bu", "YIELD": "yield_bu_ac"}
@@ -52,7 +52,9 @@ def auto_download():
     print(f"[01] {STATE}: no staged export found; auto-downloading from the bulk "
           f"crops file (no API key needed)", flush=True)
     t0 = time.time()
-    resp = urllib.request.urlopen(BULK_URL, timeout=300)
+    bulk_url = latest_bulk_url("qs.crops_")
+    print(f"[01] {STATE}: using {bulk_url}", flush=True)
+    resp = urllib.request.urlopen(bulk_url, timeout=300)
     text = io.TextIOWrapper(gzip.GzipFile(fileobj=resp), encoding="utf-8", errors="replace")
     header = text.readline().rstrip("\n").split("\t")
     idx = {c: i for i, c in enumerate(header)}
