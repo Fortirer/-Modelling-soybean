@@ -42,6 +42,8 @@ STATE_REGISTRY = {
                focal_county="NEMAHA", focal_fips="20131"),
     "MI": dict(name="MICHIGAN", fips="26", climdiv_code="20",
                focal_county="SANILAC", focal_fips="26151"),
+    "WI": dict(name="WISCONSIN", fips="55", climdiv_code="47",
+               focal_county="ROCK", focal_fips="55105"),
 }
 if STATE not in STATE_REGISTRY:
     raise SystemExit(f"Unknown STATE={STATE!r}. Add it to STATE_REGISTRY in "
