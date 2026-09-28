@@ -35,7 +35,7 @@ WHAT THIS DESIGN CAN AND CANNOT SEE
 SOURCE  EPA AirData annual concentration by monitor, one national file per year,
         parameter 44201, Illinois, 8-hour metrics. Public, no key.
 """
-import sys, io, json, zipfile, urllib.request, urllib.error, time
+import sys, io, json, zipfile, urllib.request, urllib.error, time, http.client
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 import statsmodels.formula.api as smf
@@ -52,13 +52,23 @@ METRICS = {"o3_4thmax_ppm": "4th-highest 8-h value",
 PPB = 1000.0            # ppm -> ppb
 
 
-def fetch_year(y):
+def fetch_year(y, attempts=3):
     """State 8-hour ozone summary for one year; cached, so reruns are free."""
     cf = CACHE / f"{y}.csv"
     if cf.exists():
         return pd.read_csv(cf)
-    with urllib.request.urlopen(URL.format(y=y), timeout=300) as f:
-        z = zipfile.ZipFile(io.BytesIO(f.read()))
+    for a in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(URL.format(y=y), timeout=300) as f:
+                z = zipfile.ZipFile(io.BytesIO(f.read()))
+            break
+        except (ConnectionError, TimeoutError, http.client.HTTPException) as e:
+            # EPA's server drops the connection outright now and then (seen on
+            # a plain RemoteDisconnected, not an HTTPError/URLError), so a
+            # single failed year would otherwise crash the whole 45-year pull
+            if a == attempts:
+                raise
+            time.sleep(5 * a)
     d = pd.read_csv(z.open(z.namelist()[0]), low_memory=False)
     o = d[(d["Parameter Code"] == 44201) & (d["State Name"] == STATE_NAME.title())]
     o = o[o["Metric Used"].str.contains("8 hour running average|8-hour running average",
@@ -83,7 +93,8 @@ def main():
             r = fetch_year(y)
             if len(r):
                 parts.append(r)
-        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+        except (urllib.error.HTTPError, urllib.error.URLError,
+                ConnectionError, TimeoutError, http.client.HTTPException) as e:
             failed.append(dict(year=y, error=str(e)))
     o3 = pd.concat(parts, ignore_index=True).sort_values("year")
     o3.to_csv(RAW / "epa_ozone_il_annual.csv", index=False)

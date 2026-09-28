@@ -1,0 +1,40 @@
+{
+  "cannot_do": "county-level phenology validation: NASS publishes state-level progress only",
+  "holdout": "leave-one-district-out, earlier years only, 2001-2024",
+  "window_test": "county-relative vs state-relative anomalies, GBM on process features",
+  "best_set_under_holdout": "process",
+  "heat_slopes_equal_wald_p": 0.00028975810804373714,
+  "residual_vs_latitude": {
+    "expanding_window": {
+      "slope": -0.9987956069133703,
+      "r": -0.5560275328466427,
+      "p": 4.07704370152003e-05
+    },
+    "district_holdout": {
+      "slope": -0.7775149570712371,
+      "r": -0.42762827423926164,
+      "p": 0.0024319819298871965
+    },
+    "counties": 48,
+    "latitude_span_deg": 2.9277197204968957
+  },
+  "residual_by_tercile": {
+    "central": {
+      "expanding": -1.12,
+      "district_holdout": -1.453
+    },
+    "north": {
+      "expanding": -1.78,
+      "district_holdout": -1.753
+    },
+    "south": {
+      "expanding": 0.002,
+      "district_holdout": -0.335
+    }
+  },
+  "limits": [
+    "yield is a noisy indirect probe of window timing",
+    "nine districts, not independent of one another",
+    "a null means yield cannot discriminate, not that the assumption is right"
+  ]
+}

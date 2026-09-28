@@ -1,0 +1,4 @@
+stage,median_gdd,p25,p75,sd,cv_pct,my_threshold,threshold_error,n_years
+blooming,745.0,721.0,815.0,75.0,9.8,651,-94.0,44
+leaves,1604.0,1524.0,1719.0,149.0,9.2,1504,-100.0,44
+pods,1026.0,965.0,1092.0,107.0,10.3,883,-143.0,43
