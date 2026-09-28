@@ -1,0 +1,5 @@
+features,n_features,RMSE,MAE,R2,skill_vs_baseline_pct,gain_vs_climate_pct
+climate + soil,45,4.47262,3.55125,0.09349,4.81,1.33
+climate only,20,4.53286,3.59064,0.06891,3.53,0.0
+baseline: anomaly = 0,0,4.69855,3.75923,-0.0004,0.0,-3.66
+soil only,25,4.78903,3.82903,-0.0393,-1.93,-5.65

@@ -1,0 +1,5 @@
+ag_district_code,n,lat,rmse_expanding,rmse_district_holdout,mean_resid_holdout,transfer_loss_pct
+30,117,48.336,4.504,4.307,0.372,-4.374
+50,48,47.333,4.556,4.507,0.259,-1.059
+60,120,47.248,3.986,4.313,-0.651,8.202
+90,119,46.209,4.462,4.571,-1.384,2.437

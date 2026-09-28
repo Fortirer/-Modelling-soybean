@@ -1,0 +1,67 @@
+{
+  "planting": {
+    "threshold_c": 17.0,
+    "bias_days": 2.3062737967914586,
+    "r_yearly": NaN,
+    "note": "a statistical device; real planting is limited by field workability, not by a 19 C running mean"
+  },
+  "window": {
+    "rule": "both ends are regressions on observed NASS pod-setting and leaf-drop dates, moved by a county-relative driver anomaly",
+    "default_driver": "r3",
+    "fit": {
+      "r3": {
+        "start": [
+          211.3486695561833,
+          0.3271511979490331
+        ],
+        "end": [
+          256.6426790179367,
+          0.41830518353480695
+        ]
+      },
+      "gdd": {
+        "start": [
+          211.7943901067274,
+          -0.024762040425113027
+        ],
+        "end": [
+          257.2781122783451,
+          -0.035289583026087375
+        ]
+      }
+    },
+    "end_skill_pct": {
+      "0 climatology": NaN,
+      "D1 thermal R7 anomaly (imputed)": NaN,
+      "D2 thermal R3 anomaly  [default]": NaN,
+      "D3 GDD planting -> day 250": NaN,
+      "D4 GDD 1 May -> 15 Sep [alternative]": NaN
+    },
+    "length_response": {
+      "r3 (days)": {
+        "slope": 0.09115398558577384,
+        "se": 0.07092305473899095,
+        "p": 0.21149627122645948
+      },
+      "gdd (GDD)": {
+        "slope": -0.010527542600974353,
+        "se": 0.0056957689296969725,
+        "p": 0.07745649974446031
+      }
+    },
+    "thermal_r7_unreached_pct": 25.668449197860966,
+    "note": "every driver beats the plain average leaf-drop date by about 10%, and the record cannot choose between them; they agree that warm seasons make the window slightly LONGER"
+  },
+  "thermal_requirement_gdd": {
+    "R1": 493.0,
+    "R3": 655.0,
+    "R7": 1137.0
+  },
+  "constants_consistent": false,
+  "limits": [
+    "state-level observation only",
+    "44 years, leave-one-out",
+    "interannual slopes extrapolated far beyond the observed range",
+    "county-relative anomalies: every county's mean window ends on the same date, since NASS has no county maturity data"
+  ]
+}

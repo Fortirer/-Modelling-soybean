@@ -1,0 +1,10 @@
+metric,r_panel_raw,r_year_detrended,part,coef_bu_per_ppb,p_value,effect_of_1sd_bu,delta_r2,corr_with_edd,corr_with_water,se,n_years
+4th-highest 8-h value,-0.1956,-0.18529,correlation,,,,,,,,
+90th-percentile 8-h value,-0.1619,-0.13708,correlation,,,,,,,,
+annual mean 8-h value,-0.12189,-0.06879,correlation,,,,,,,,
+4th-highest 8-h value,,,panel,-0.21395,0.04563,-0.94347,0.02557,0.53706,-0.33856,,
+90th-percentile 8-h value,,,panel,-0.22064,0.22334,-0.67838,0.0105,0.67753,-0.48703,,
+annual mean 8-h value,,,panel,-0.13411,0.70309,-0.31988,0.00183,0.74894,-0.60437,,
+4th-highest 8-h value,,,year_level,-0.21572,0.21772,,,,,0.17218,44.0
+90th-percentile 8-h value,,,year_level,-0.20425,0.47222,,,,,0.28137,44.0
+annual mean 8-h value,,,year_level,-0.01773,0.96586,,,,,0.41153,44.0
