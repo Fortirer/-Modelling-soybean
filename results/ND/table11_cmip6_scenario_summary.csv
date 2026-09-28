@@ -1,0 +1,5 @@
+scenario,horizon,n_models,dTmax_JA_C,precip_JA_pct,out_of_range_pct,ens_median_delta_bu,ens_median_pct,ens_median_parametric_bu,ens_median_parametric_pct,model_min_bu,model_max_bu,counties_worse,counties_worse_parametric,counties_total
+ssp245,late_century,8,3.7435,-4.341,38.9486,-0.9018,-3.0907,-5.9313,-20.3274,-3.821,-0.3854,17,17,17
+ssp245,mid_century,8,2.9542,-1.3755,26.8392,-0.502,-1.7205,-3.754,-12.8656,-3.2416,-0.0748,14,17,17
+ssp585,late_century,8,7.4362,-17.4823,91.6178,-4.358,-14.9356,-21.9999,-75.3974,-6.0205,-2.9165,17,17,17
+ssp585,mid_century,8,3.8146,-3.9648,39.8275,-0.9727,-3.3337,-5.0541,-17.3212,-5.004,0.0874,17,17,17

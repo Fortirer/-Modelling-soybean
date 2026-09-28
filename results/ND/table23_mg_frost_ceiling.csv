@@ -1,0 +1,6 @@
+scenario,horizon,max_viable_mg,seedfill_at_max,seedfill_at_3_5,edd_at_max,edd_at_3_5,frost_margin_3_5,mature_3_5
+baseline,baseline,,30.0343,36.0114,23.1914,33.8278,17.7333,0.233
+ssp245,late_century,3.0,21.6993,23.2881,50.6416,53.0505,42.1672,0.8378
+ssp245,mid_century,2.0,20.6763,26.1682,41.0553,48.0509,34.9207,0.6967
+ssp585,late_century,5.0,20.4783,17.8564,118.2365,103.853,75.0827,1.0
+ssp585,mid_century,3.0,21.1964,22.7472,51.6371,54.0712,45.9523,0.8861
