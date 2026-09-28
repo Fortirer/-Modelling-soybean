@@ -1,0 +1,22 @@
+{
+  "state": "SD",
+  "name": "SOUTH DAKOTA",
+  "identity_fail_rate": 0.0,
+  "max_identity_residual": 0.2464,
+  "unmatched_climate_rows": 0,
+  "balanced_panel_counties": 27,
+  "total_counties": 63,
+  "soil_unmatched_counties": 3,
+  "soil_unmatched_fips5": [
+    "46015",
+    "46061",
+    "46067"
+  ],
+  "cmip6_models_delivered": 8,
+  "ozone_status": "ok",
+  "phenology_calibrated": true,
+  "n_findings": 1,
+  "findings": [
+    "3 balanced-panel counties have no SSURGO soil match (['46015', '46061', '46067']) -- likely a joint/reservation survey area not covered by the STATE_FIPS+county_ansi areasymbol convention (see script 16's note)"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "state": "NE",
+  "name": "NEBRASKA",
+  "identity_fail_rate": 0.6275,
+  "max_identity_residual": 9013.6,
+  "unmatched_climate_rows": 0,
+  "balanced_panel_counties": 57,
+  "total_counties": 89,
+  "soil_unmatched_counties": 0,
+  "soil_unmatched_fips5": [],
+  "cmip6_models_delivered": 8,
+  "ozone_status": "ok",
+  "phenology_calibrated": true,
+  "n_findings": 1,
+  "findings": [
+    "production identity check fails on 63% of rows (residual up to 9013.6 bu/acre) -- raw NASS data noisier than usual here"
+  ]
+}

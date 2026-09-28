@@ -8,3 +8,5 @@ xarray>=2024.1
 zarr>=2.16
 s3fs>=2024.2
 cftime>=1.6
+# dashboard/app.py only
+streamlit>=1.38

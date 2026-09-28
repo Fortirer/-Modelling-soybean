@@ -1,0 +1,4 @@
+model,accuracy,macro_f1,n_states
+baseline (most frequent),0.3334,0.1667,12
+gradient boosting,0.5416,0.5384,12
+logistic regression,0.5062,0.4942,12

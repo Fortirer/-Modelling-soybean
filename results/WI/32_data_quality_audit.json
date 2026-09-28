@@ -1,0 +1,16 @@
+{
+  "state": "WI",
+  "name": "WISCONSIN",
+  "identity_fail_rate": 0.0264,
+  "max_identity_residual": 5.15,
+  "unmatched_climate_rows": 0,
+  "balanced_panel_counties": 54,
+  "total_counties": 69,
+  "soil_unmatched_counties": 0,
+  "soil_unmatched_fips5": [],
+  "cmip6_models_delivered": 8,
+  "ozone_status": "ok",
+  "phenology_calibrated": true,
+  "n_findings": 0,
+  "findings": []
+}

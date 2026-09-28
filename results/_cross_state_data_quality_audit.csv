@@ -1,0 +1,13 @@
+state,name,identity_fail_rate,max_identity_residual,unmatched_climate_rows,balanced_panel_counties,total_counties,soil_unmatched_counties,cmip6_models_delivered,ozone_status,phenology_calibrated,n_findings
+IL,ILLINOIS,0.0,0.25,0,91,102,0,8,ok,True,0
+IA,IOWA,0.0,0.2496,0,96,99,0,8,ok,True,0
+IN,INDIANA,0.0,0.25,0,79,92,0,8,ok,True,0
+MN,MINNESOTA,0.0213,8.0,0,65,84,0,8,ok,True,0
+NE,NEBRASKA,0.6275,9013.6,0,57,89,0,8,ok,True,1
+MO,MISSOURI,0.0,0.4972,0,56,115,0,8,ok,True,0
+OH,OHIO,0.0035,3.2,0,63,88,0,8,ok,True,0
+ND,NORTH DAKOTA,0.028,4.8,0,17,52,0,8,ok,True,0
+SD,SOUTH DAKOTA,0.0,0.2464,0,27,63,3,8,ok,True,1
+KS,KANSAS,0.2862,11138.0,0,48,105,0,8,ok,True,1
+MI,MICHIGAN,0.0,0.5,0,36,72,0,8,ok,True,0
+WI,WISCONSIN,0.0264,5.15,0,54,69,0,8,ok,True,0
