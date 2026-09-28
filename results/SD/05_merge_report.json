@@ -1,0 +1,19 @@
+{
+  "production_rows": 1923,
+  "climate_rows": 8712,
+  "merged_rows": 1923,
+  "unmatched_climate": 0,
+  "counties": 63,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 27,
+  "rows_in_balanced_panel": 1192,
+  "focal_county": "BROOKINGS",
+  "focal_rows": 45,
+  "focal_year_range": [
+    1980,
+    2025
+  ],
+  "trend_slope_min": -2.329,
+  "trend_slope_max": 1.3
+}
