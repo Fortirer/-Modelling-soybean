@@ -9,6 +9,15 @@ from _cfg import RAW, PROC, RES, STATE_FIPS
 
 SENTINELS = {"(D)","(S)","(Z)","(NA)","(X)","-",""}
 
+# NASS's bulk file carries a stale county ANSI code for one Missouri county:
+# COUNTY_ANSI=193 for STE. GENEVIEVE, but the current Census FIPS list
+# (census.gov codes2020/cou/st29_mo_cou2020.txt) has no county at 193 at all
+# (the sequence runs ...189 St. Louis County, 195 Saline...) and gives Ste.
+# Genevieve as 186. Confirmed by the climate join otherwise failing on
+# exactly this one county for STATE=MO. Corrected here, not worked around
+# downstream, so every script after this one sees the real FIPS.
+STALE_COUNTY_ANSI = {("29","193"): "186"}   # (state_fips, nass_ansi) -> correct ansi
+
 def main():
     d = pd.read_csv(RAW/"nass_il_soybeans_county_raw.csv",
                     dtype={"county_ansi":str,"ag_district_code":str,"state_ansi":str})
@@ -23,6 +32,12 @@ def main():
 
     # -- 2. aggregate rows are NOT counties -----------------------------------
     d["county_ansi"] = d.county_ansi.astype(str).str.zfill(3).replace("nan","")
+    for (fips, stale), correct in STALE_COUNTY_ANSI.items():
+        if fips == STATE_FIPS:
+            n = int((d.county_ansi == stale).sum())
+            if n:
+                d.loc[d.county_ansi == stale, "county_ansi"] = correct
+                print(f"[02] corrected {n} rows: stale NASS county_ansi {stale} -> {correct}")
     d["is_county_estimate"] = (~d.county.str.startswith("OTHER")).astype(int)
     rep["aggregate_rows_dropped"] = int((d.is_county_estimate==0).sum())
     d = d[d.is_county_estimate==1].copy()

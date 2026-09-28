@@ -1,0 +1,19 @@
+{
+  "production_rows": 3893,
+  "climate_rows": 15180,
+  "merged_rows": 3893,
+  "unmatched_climate": 0,
+  "counties": 115,
+  "years": 46,
+  "min_years_rule": 42,
+  "counties_in_balanced_panel": 56,
+  "rows_in_balanced_panel": 2460,
+  "focal_county": "ATCHISON",
+  "focal_rows": 43,
+  "focal_year_range": [
+    1980,
+    2025
+  ],
+  "trend_slope_min": 0.272,
+  "trend_slope_max": 14.0
+}
