@@ -1,0 +1,186 @@
+{
+  "skipped": true,
+  "reason": "EPA AQS server unreachable",
+  "failed": [
+    {
+      "year": 1980,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1981,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1982,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1983,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1984,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1985,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1986,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1987,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1988,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1989,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1990,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1991,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1992,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1993,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1994,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1995,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1996,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1997,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1998,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 1999,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2000,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2001,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2002,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2003,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2004,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2005,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2006,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2007,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2008,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2009,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2010,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2011,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2012,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2013,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2014,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2015,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2016,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2017,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2018,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2019,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2020,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2021,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2022,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2023,
+      "error": "Remote end closed connection without response"
+    },
+    {
+      "year": 2024,
+      "error": "Remote end closed connection without response"
+    }
+  ]
+}

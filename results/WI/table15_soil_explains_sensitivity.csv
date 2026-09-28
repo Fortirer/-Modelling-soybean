@@ -1,0 +1,4 @@
+target,n,r2,adj_r2,strongest_term,p_value
+yield response to moisture (bu/SD),54,0.34518,0.22876,soil_sand_topsoil,0.00042
+yield response to heat (bu/SD),54,0.47616,0.38303,soil_om_topsoil,0.00899
+composite sensitivity index,54,0.52347,0.43876,soil_mollisol_pct,0.00518

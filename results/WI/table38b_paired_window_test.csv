@@ -1,0 +1,2 @@
+comparison,test_years,years_state_relative_better,rmse_change_pct,ci_low_pct,ci_high_pct
+state-relative vs county-relative,24,11,-0.6038,-8.2202,6.8777
