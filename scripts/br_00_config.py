@@ -59,7 +59,8 @@ PROC = ROOT / f"data/processed/BR/{UF}"
 FINAL = ROOT / f"data/final/BR/{UF}"
 FIG = ROOT / f"figures/BR/{UF}"
 RES = ROOT / f"results/BR/{UF}"
-for d in (RAW, PROC, FINAL, FIG, RES):
+MOD = ROOT / f"models/BR/{UF}"
+for d in (RAW, PROC, FINAL, FIG, RES, MOD):
     d.mkdir(parents=True, exist_ok=True)
 
 SEED = 42

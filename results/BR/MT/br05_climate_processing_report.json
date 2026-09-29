@@ -1,0 +1,12 @@
+{
+  "daily_rows": 2266011,
+  "crop_year_rows": 1502919,
+  "feature_rows": 6204,
+  "municipalities": 141,
+  "year_min": 1981,
+  "year_max": 2024,
+  "critical_window": "Jan-Feb of the harvest year (crop_year convention, see docstring)",
+  "growing_season": "Sep(year-1)-Apr(year)",
+  "nulls_total": 0,
+  "note": "no Palmer drought indices available for Brazil in this pipeline; drought represented only via precipitation-deficit features"
+}

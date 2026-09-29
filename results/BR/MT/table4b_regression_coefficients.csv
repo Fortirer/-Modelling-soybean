@@ -1,0 +1,36 @@
+model,term,coef,se,t,p,ci_low,ci_high
+M1 Baseline pooled OLS,Intercept,9.93833,1.26162,7.87741,0.0,7.46559,12.41106
+M1 Baseline pooled OLS,PCP,-0.00107,0.00052,-2.05758,0.03963,-0.00208,-5e-05
+M1 Baseline pooled OLS,TMX,-0.3247,0.03807,-8.52897,0.0,-0.39931,-0.25008
+M2 Quadratic + interaction,Intercept,10.60739,24.64275,0.43045,0.66687,-37.69152,58.90629
+M2 Quadratic + interaction,PCP,-0.00196,0.01289,-0.15226,0.87899,-0.02722,0.02329
+M2 Quadratic + interaction,PCP2,-1e-05,0.0,-2.97154,0.00296,-1e-05,-0.0
+M2 Quadratic + interaction,TMX,-0.45043,1.50823,-0.29865,0.76521,-3.4065,2.50564
+M2 Quadratic + interaction,TMX2,0.00137,0.02276,0.06017,0.95202,-0.04323,0.04597
+M2 Quadratic + interaction,PT,0.00027,0.00043,0.6298,0.52883,-0.00057,0.00111
+M3 M2 + municipio FE,Intercept,18.90537,29.23973,0.64656,0.51791,-38.40346,76.21419
+M3 M2 + municipio FE,PCP,0.00789,0.01442,0.54726,0.5842,-0.02038,0.03616
+M3 M2 + municipio FE,PCP2,-1e-05,0.0,-2.41433,0.01576,-1e-05,-0.0
+M3 M2 + municipio FE,TMX,-0.76226,1.81283,-0.42048,0.67414,-4.31535,2.79083
+M3 M2 + municipio FE,TMX2,0.00324,0.0278,0.11643,0.90731,-0.05126,0.05773
+M3 M2 + municipio FE,PT,-0.00015,0.00049,-0.30117,0.76329,-0.0011,0.00081
+M4 Two-way FE (municipio + year),Intercept,-26.19449,29.94122,-0.87486,0.38165,-84.87821,32.48923
+M4 Two-way FE (municipio + year),PCP,0.00706,0.01594,0.44314,0.65766,-0.02418,0.0383
+M4 Two-way FE (municipio + year),PCP2,-0.0,0.0,-1.53186,0.12556,-1e-05,0.0
+M4 Two-way FE (municipio + year),TMX,1.34597,1.8414,0.73095,0.46481,-2.26311,4.95506
+M4 Two-way FE (municipio + year),TMX2,-0.01877,0.02833,-0.66251,0.50764,-0.07429,0.03676
+M4 Two-way FE (municipio + year),PT,-0.00011,0.00052,-0.20236,0.83964,-0.00112,0.00091
+"M5 Raw yield, two-way FE",Intercept,-1168.18688,41.86122,-27.90618,0.0,-1250.23337,-1086.1404
+"M5 Raw yield, two-way FE",PCP,0.03489,0.01663,2.09876,0.03584,0.00231,0.06748
+"M5 Raw yield, two-way FE",PCP2,-1e-05,0.0,-4.03027,6e-05,-1e-05,-0.0
+"M5 Raw yield, two-way FE",TMX,-2.80135,1.92316,-1.45663,0.14522,-6.57068,0.96798
+"M5 Raw yield, two-way FE",TMX2,0.04194,0.03024,1.38695,0.16546,-0.01733,0.1012
+"M5 Raw yield, two-way FE",PT,-0.00089,0.00056,-1.58157,0.11375,-0.002,0.00021
+"M5 Raw yield, two-way FE",year,0.62417,0.01273,49.02409,0.0,0.59922,0.64913
+"M6 Log yield, municipio FE",Intercept,-28.95351,1.23656,-23.41465,0.0,-31.37711,-26.52991
+"M6 Log yield, municipio FE",PCP,0.00116,0.00049,2.38337,0.01716,0.00021,0.00212
+"M6 Log yield, municipio FE",PCP2,-0.0,0.0,-4.18498,3e-05,-0.0,-0.0
+"M6 Log yield, municipio FE",TMX,-0.04165,0.04546,-0.91636,0.35948,-0.13075,0.04744
+"M6 Log yield, municipio FE",TMX2,0.00066,0.00072,0.92905,0.35286,-0.00074,0.00207
+"M6 Log yield, municipio FE",PT,-3e-05,2e-05,-1.78731,0.07389,-6e-05,0.0
+"M6 Log yield, municipio FE",year,0.01653,0.00043,38.41849,0.0,0.01569,0.01738
