@@ -1,0 +1,5 @@
+scenario,horizon,n_models,dTmax_JF_C,precip_JF_pct,out_of_range_pct,ens_median_delta_bu,ens_median_pct,model_min_bu,model_max_bu,municipios_worse,municipios_total
+ssp245,late_century,8,2.1366,-0.1924,0.4763,0.7488,1.7869,0.6543,1.4331,0,97
+ssp245,mid_century,8,1.4285,2.4866,0.2139,0.5383,1.2847,0.4247,1.0374,0,97
+ssp585,late_century,8,3.8994,-2.0085,2.9787,1.2858,3.0683,1.1017,2.3463,0,97
+ssp585,mid_century,8,2.0923,0.1893,0.448,0.7268,1.7344,0.6461,1.382,0,97
