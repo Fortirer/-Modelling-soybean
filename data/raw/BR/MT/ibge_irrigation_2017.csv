@@ -1,0 +1,141 @@
+fips5,irrigated_estabs,irrigated_area_ha,county
+5100102,17.0,39.0,Acorizal
+5100201,26.0,707.0,Água Boa
+5100250,82.0,416.0,Alta Floresta
+5100300,2.0,,Alto Araguaia
+5100359,1.0,,Alto Boa Vista
+5100409,14.0,405.0,Alto Garças
+5100508,20.0,79.0,Alto Paraguai
+5100607,4.0,7894.0,Alto Taquari
+5100805,8.0,17.0,Apiacás
+5101001,8.0,941.0,Araguaiana
+5101258,7.0,48.0,Araputanga
+5101308,35.0,89.0,Arenápolis
+5101407,31.0,86.0,Aripuanã
+5101605,1.0,,Barão de Melgaço
+5101704,11.0,978.0,Barra do Bugres
+5101803,30.0,2338.0,Barra do Garças
+5101852,2.0,,Bom Jesus do Araguaia
+5101902,23.0,285.0,Brasnorte
+5102504,64.0,182.0,Cáceres
+5102603,4.0,3.0,Campinápolis
+5102637,44.0,11427.0,Campo Novo do Parecis
+5102678,201.0,1819.0,Campo Verde
+5102686,8.0,716.0,Campos de Júlio
+5102694,6.0,7.0,Canabrava do Norte
+5102702,25.0,393.0,Canarana
+5102793,70.0,81.0,Carlinda
+5102850,5.0,10.0,Castanheira
+5103007,34.0,1112.0,Chapada dos Guimarães
+5103056,92.0,459.0,Cláudia
+5103106,11.0,160.0,Cocalinho
+5103205,75.0,199.0,Colíder
+5103254,132.0,414.0,Colniza
+5103304,35.0,137.0,Comodoro
+5103353,38.0,319.0,Confresa
+5103361,14.0,12.0,Conquista D'Oeste
+5103379,22.0,46.0,Cotriguaçu
+5103403,169.0,167.0,Cuiabá
+5103437,7.0,123.0,Curvelândia
+5103452,7.0,9750.0,Denise
+5103502,40.0,1788.0,Diamantino
+5103601,24.0,774.0,Dom Aquino
+5103700,18.0,438.0,Feliz Natal
+5103809,19.0,20.0,Figueirópolis D'Oeste
+5103858,12.0,306.0,Gaúcha do Norte
+5103908,9.0,2199.0,General Carneiro
+5103957,4.0,22.0,Glória D'Oeste
+5104104,63.0,107.0,Guarantã do Norte
+5104203,19.0,15.0,Guiratinga
+5104500,2.0,,Indiavaí
+5104526,10.0,1475.0,Ipiranga do Norte
+5104542,14.0,35.0,Itanhangá
+5104559,27.0,36.0,Itaúba
+5104609,14.0,3487.0,Itiquira
+5104807,57.0,3897.0,Jaciara
+5104906,36.0,2551.0,Jangada
+5105002,17.0,11.0,Jauru
+5105101,69.0,128.0,Juara
+5105150,146.0,573.0,Juína
+5105176,19.0,31.0,Juruena
+5105200,17.0,292.0,Juscimeira
+5105234,5.0,11.0,Lambari D'Oeste
+5105259,62.0,5272.0,Lucas do Rio Verde
+5105309,3.0,23.0,Luciara
+5105507,11.0,224.0,Vila Bela da Santíssima Trindade
+5105580,31.0,66.0,Marcelândia
+5105606,29.0,48.0,Matupá
+5105622,77.0,183.0,Mirassol d'Oeste
+5105903,15.0,41.0,Nobres
+5106000,13.0,90.0,Nortelândia
+5106109,27.0,68.0,Nossa Senhora do Livramento
+5106158,22.0,72.0,Nova Bandeirantes
+5106174,1.0,,Nova Nazaré
+5106182,10.0,21.0,Nova Lacerda
+5106190,36.0,47.0,Nova Santa Helena
+5106208,8.0,571.0,Nova Brasilândia
+5106216,28.0,72.0,Nova Canaã do Norte
+5106224,46.0,1784.0,Nova Mutum
+5106232,8.0,9760.0,Nova Olímpia
+5106240,32.0,4976.0,Nova Ubiratã
+5106257,36.0,367.0,Nova Xavantina
+5106265,13.0,56.0,Novo Mundo
+5106273,5.0,247.0,Novo Horizonte do Norte
+5106281,12.0,1554.0,Novo São Joaquim
+5106299,26.0,56.0,Paranaíta
+5106307,17.0,74.0,Paranatinga
+5106315,5.0,173.0,Novo Santo Antônio
+5106372,48.0,617.0,Pedra Preta
+5106422,18.0,107.0,Peixoto de Azevedo
+5106455,3.0,36.0,Planalto da Serra
+5106505,81.0,144.0,Poconé
+5106653,8.0,11.0,Pontal do Araguaia
+5106703,3.0,8.0,Ponte Branca
+5106752,45.0,72.0,Pontes e Lacerda
+5106778,2.0,,Porto Alegre do Norte
+5106802,8.0,1080.0,Porto dos Gaúchos
+5106828,2.0,,Porto Esperidião
+5106851,14.0,55.0,Porto Estrela
+5107008,42.0,4794.0,Poxoréu
+5107040,163.0,22505.0,Primavera do Leste
+5107065,40.0,1020.0,Querência
+5107107,73.0,192.0,São José dos Quatro Marcos
+5107156,1.0,,Reserva do Cabaçal
+5107180,15.0,647.0,Ribeirão Cascalheira
+5107198,1.0,,Ribeirãozinho
+5107206,1.0,,Rio Branco
+5107248,22.0,323.0,Santa Carmem
+5107263,4.0,17.0,Santo Afonso
+5107297,4.0,3.0,São José do Povo
+5107305,30.0,3618.0,São José do Rio Claro
+5107354,1.0,,São José do Xingu
+5107404,10.0,393.0,São Pedro da Cipa
+5107578,37.0,120.0,Rondolândia
+5107602,143.0,298.0,Rondonópolis
+5107701,69.0,166.0,Rosário Oeste
+5107743,1.0,,Santa Cruz do Xingu
+5107750,1.0,,Salto do Céu
+5107768,7.0,1238.0,Santa Rita do Trivelato
+5107776,11.0,9.0,Santa Terezinha
+5107792,23.0,394.0,Santo Antônio do Leste
+5107800,340.0,710.0,Santo Antônio de Leverger
+5107859,16.0,1297.0,São Félix do Araguaia
+5107875,13.0,1103.0,Sapezal
+5107883,2.0,,Serra Nova Dourada
+5107909,174.0,1078.0,Sinop
+5107925,109.0,16416.0,Sorriso
+5107941,45.0,74.0,Tabaporã
+5107958,126.0,566.0,Tangará da Serra
+5108006,16.0,3156.0,Tapurah
+5108055,43.0,124.0,Terra Nova do Norte
+5108105,28.0,26.0,Tesouro
+5108204,3.0,14.0,Torixoréu
+5108303,36.0,27.0,União do Sul
+5108352,1.0,,Vale de São Domingos
+5108402,138.0,181.0,Várzea Grande
+5108501,55.0,6096.0,Vera
+5108600,21.0,103.0,Vila Rica
+5108808,19.0,85.0,Nova Guarita
+5108857,6.0,8.0,Nova Marilândia
+5108907,9.0,879.0,Nova Maringá
+5108956,14.0,19.0,Nova Monte Verde
