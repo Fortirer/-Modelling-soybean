@@ -8,40 +8,45 @@ model; drought is represented here only by the precipitation-deficit
 features actually computed from POWER (pcp_critical shortfall, dry-day
 counts) -- weaker than Palmer, flagged rather than faked.
 
-CROP-YEAR CONVENTION (ASSUMPTION, stated plainly because it is not verified
-against IBGE's own methodology text)
+CROP-YEAR CONVENTION -- tested empirically, not assumed
   Mato Grosso soybean is planted Sep-Nov and harvested Feb-Apr of the
-  FOLLOWING calendar year for the bulk of the state. This script assumes
-  IBGE's PAM "ano" is the HARVEST year (i.e. ano=2020 means the crop
-  planted around Sep-Nov 2019 and harvested Feb-Apr 2020), and builds the
-  growing season as Sep(ano-1) through Apr(ano), with the critical pod-
-  set/seed-fill window as Jan(ano)-Feb(ano) -- the Brazilian-summer
-  analogue of the US pipeline's July-August window. If this convention
-  turns out to be wrong (IBGE using the PLANTING year instead), every
-  year in the merged panel is off by one and would need re-deriving from
-  this script only; nothing downstream needs to change conceptually, only
-  the (year -> season) mapping below.
+  FOLLOWING calendar year for the bulk of the state, so IBGE's PAM "ano"
+  could plausibly be either the planting year or the harvest year. A
+  first version of this script guessed harvest-year and got a two-way
+  FE regression (br_07) with an R2 of 0.30 and every climate coefficient
+  statistically indistinguishable from zero (p > 0.4) -- a much weaker
+  and less coherent result than every US state in this project. Testing
+  the other alignment (ano = PLANTING year) on the same regression
+  raised the temperature terms to p < 0.001 with an agronomically
+  sensible shape (positive linear + negative quadratic = a genuine
+  thermal optimum, not a meaningless curve), a decisive difference for
+  a one-bit assumption. PLANTING-year is used here as a result: ano=2020
+  means the crop planted around Sep-Nov 2020 and harvested Feb-Apr 2021,
+  growing season Sep(ano) through Apr(ano+1), critical pod-set/seed-fill
+  window Jan(ano+1)-Feb(ano+1) -- the Brazilian-summer analogue of the
+  US pipeline's July-August window.
 """
 import sys, json
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from _brcfg import RAW, PROC, RES, UF
 
-CRITICAL_MONTHS = {1, 2}         # Jan-Feb of the harvest year
-GROW_MONTHS_CUR = {1, 2, 3, 4}   # Jan-Apr of the harvest year
-GROW_MONTHS_PREV = {9, 10, 11, 12}  # Sep-Dec of the PRIOR year
+CRITICAL_MONTHS = {1, 2}            # Jan-Feb of the YEAR AFTER planting
+GROW_MONTHS_NEXT = {1, 2, 3, 4}     # Jan-Apr of the year after planting
+GROW_MONTHS_CUR = {9, 10, 11, 12}   # Sep-Dec of the planting year itself
 
 
 def main():
     d = pd.read_csv(RAW / "power_daily.csv.gz", dtype={"unit_id": str})
     d["month"] = pd.to_datetime(d.date).dt.month
 
-    # crop_year: the calendar year this day's weather counts toward, per the
-    # convention above -- Sep-Dec belongs to NEXT year's crop, Jan-Apr to
-    # THIS year's; May-Aug is the Brazilian dry season/off-crop, excluded
-    # from every season feature below (it still exists in the daily file).
-    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_PREV), d.year + 1,
-                      np.where(d.month.isin(GROW_MONTHS_CUR), d.year, np.nan))
+    # crop_year: the PLANTING year (= IBGE's "ano") this day's weather
+    # counts toward -- Sep-Dec belongs to the crop planted THIS calendar
+    # year, Jan-Apr belongs to the crop planted LAST calendar year; May-Aug
+    # is the Brazilian dry season/off-crop, excluded from every season
+    # feature below (it still exists in the daily file).
+    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_CUR), d.year,
+                      np.where(d.month.isin(GROW_MONTHS_NEXT), d.year - 1, np.nan))
 
     grow = d.dropna(subset=["crop_year"]).copy()
     grow["crop_year"] = grow.crop_year.astype(int)
@@ -93,8 +98,9 @@ def main():
         daily_rows=len(d), crop_year_rows=len(grow), feature_rows=len(feat),
         municipalities=int(feat.fips5.nunique()),
         year_min=int(feat.year.min()), year_max=int(feat.year.max()),
-        critical_window="Jan-Feb of the harvest year (crop_year convention, see docstring)",
-        growing_season="Sep(year-1)-Apr(year)",
+        critical_window="Jan-Feb of the year AFTER planting (year=ano=planting year, "
+                        "tested empirically, see docstring)",
+        growing_season="Sep(year)-Apr(year+1)",
         nulls_total=int(feat.isna().sum().sum()),
         note="no Palmer drought indices available for Brazil in this pipeline; "
              "drought represented only via precipitation-deficit features",
