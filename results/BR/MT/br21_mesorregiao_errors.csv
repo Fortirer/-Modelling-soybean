@@ -1,0 +1,6 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Centro-Sul Mato-grossense,244,-15.175,4.413,4.429,-0.419,0.377
+Nordeste Mato-grossense,441,-12.776,4.496,4.434,0.125,-1.363
+Norte Mato-grossense,881,-12.159,3.861,4.809,0.856,24.568
+Sudeste Mato-grossense,401,-16.333,4.222,4.216,-0.439,-0.15
+Sudoeste Mato-grossense,147,-15.081,4.472,4.722,0.286,5.577
