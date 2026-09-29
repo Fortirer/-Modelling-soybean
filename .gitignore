@@ -28,3 +28,8 @@ data/raw/**/power_daily.csv.gz
 # Per-year EPA download cache for script 22; the assembled annual series is kept
 data/raw/epa_ozone_cache/
 data/raw/**/epa_ozone_cache/
+
+# Per-municipality SoilGrids download cache for Brazil script br_08 (one
+# small JSON per municipality, makes a restart resumable); the assembled
+# soilgrids_horizons.csv is kept
+data/raw/**/soilgrids_cache/

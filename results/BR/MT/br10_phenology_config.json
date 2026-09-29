@@ -1,0 +1,10 @@
+{
+  "note": "process/window CONDITIONS, not a calibrated phenology model -- see docstring for what was deliberately not ported from _pheno.py",
+  "growing_season": "Sep(year)-Apr(year+1)",
+  "critical_window": "Jan(year+1)-Feb(year+1)",
+  "water_balance": "ET0 - precipitation, NO soil storage buffering (no TAW source for Brazil, see br_08/09)",
+  "municipality_years": 6345,
+  "municipalities": 141,
+  "year_min": 1980,
+  "year_max": 2024
+}
