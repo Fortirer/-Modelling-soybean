@@ -1,0 +1,43 @@
+{
+  "source": "IMEA (Instituto Mato-grossense de Economia Agropecuaria), public PDF bulletins, scraped from https://www.imea.com.br/imea-site/relatorios-mercado",
+  "scope_limit": "IMEA's own 7-region breakdown, coarser than IBGE's 5-mesorregiao grouping (br_17) and far coarser than the 141-municipio panel; this does NOT calibrate a municipio-level phenology model -- that gap remains open",
+  "method": "Per season and region, linearly interpolate the calendar day the weekly progress curve first reaches 50% complete, expressed as days after 1-Sep (planting) or 1-Feb (harvest) of that season. One-way ANOVA across regions on this day50 metric, plus Kendall's W on the season-to-season earliness rank as a distribution-free check.",
+  "results": [
+    {
+      "metric": "semeadura",
+      "n_seasons": 9,
+      "mean_day50_by_region": {
+        "Oeste": 50.13,
+        "Medio-Norte": 52.45,
+        "Noroeste": 53.82,
+        "Sudeste": 54.34,
+        "Centro-Sul": 55.34,
+        "Norte": 55.36,
+        "Nordeste": 65.16
+      },
+      "spread_days": 15.031638359208493,
+      "anova_F": 3.6767145654123117,
+      "anova_p": 0.0037807335627157825,
+      "kendall_w": 0.5388007054673721,
+      "kendall_p": 5.836332475106509e-05
+    },
+    {
+      "metric": "colheita",
+      "n_seasons": 12,
+      "mean_day50_by_region": {
+        "Oeste": 9.87,
+        "Medio-Norte": 10.88,
+        "Noroeste": 13.49,
+        "Norte": 13.6,
+        "Sudeste": 18.85,
+        "Centro-Sul": 19.16,
+        "Nordeste": 25.77
+      },
+      "spread_days": 15.90504758265447,
+      "anova_F": 5.172140344825492,
+      "anova_p": 0.00016289372427000066,
+      "kendall_w": 0.5788690476190477,
+      "kendall_p": 2.127990458289375e-07
+    }
+  ]
+}
