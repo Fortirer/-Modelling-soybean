@@ -7,9 +7,12 @@ produced and average yield, one row per year per product. Filtered here to
 produto 2713 "Soja (em grao)" and to every municipality in one state via
 SIDRA's "n6/in n3 <uf>" query syntax.
 
-No API key. One request per state returns every municipality x year x
-variable at once (confirmed well under SIDRA's 50,000-value response cap for
-a single state and the full time series).
+No API key. SIDRA caps a single response at 50,000 values; one request per
+state for all 4 variables at once stays under that for Mato Grosso (141
+municipios) but not for Paraná (399 municipios x ~50 years x 4 variables
+=~80,000) -- see the 400 Bad Request this raised on first Parana run.
+Fetches one variable per request instead, which stays under the cap for
+any UF and is a strictly more robust default going forward.
 """
 import sys, json, time, urllib.request, urllib.error
 import pandas as pd
@@ -25,8 +28,8 @@ VAR_NAMES = {109: "area_plantada_ha", 216: "area_colhida_ha",
              214: "producao_t", 112: "rendimento_kg_ha"}
 
 RECIPE = f"""
-Reproduce this pull:
-  GET {API_BASE}/t/{TABLE}/n6/in%20n3%20{IBGE_UF}/v/{VARS}/p/all/c81/{PRODUTO}
+Reproduce this pull (one request per variable, see docstring for why):
+  GET {API_BASE}/t/{TABLE}/n6/in%20n3%20{IBGE_UF}/v/<one of {VARS}>/p/all/c81/{PRODUTO}
   (SIDRA API, https://sidra.ibge.gov.br/tabela/{TABLE})
   n6 = municipality level; "in n3 {IBGE_UF}" restricts to every municipality
   in UF code {IBGE_UF} ({UF_NAME.title()}); p/all = every available year;
@@ -37,8 +40,8 @@ zero, mirroring the US pipeline's NASS sentinel handling in script 02.
 """
 
 
-def fetch(retries=4):
-    url = f"{API_BASE}/t/{TABLE}/n6/in%20n3%20{IBGE_UF}/v/{VARS}/p/all/c81/{PRODUTO}"
+def fetch_one(var_code, retries=4):
+    url = f"{API_BASE}/t/{TABLE}/n6/in%20n3%20{IBGE_UF}/v/{var_code}/p/all/c81/{PRODUTO}"
     req = urllib.request.Request(url, headers={"Accept": "application/json"})
     for attempt in range(retries):
         try:
@@ -50,6 +53,19 @@ def fetch(retries=4):
                 raise
             time.sleep(3 * (attempt + 1))
     return []
+
+
+def fetch():
+    all_rows = []
+    for var_code in VAR_NAMES:
+        raw = fetch_one(var_code)
+        if not raw or "D1C" not in raw[0]:
+            raise SystemExit(f"[br01] unexpected response shape for variable "
+                             f"{var_code}: {raw[:2]}")
+        all_rows.extend(raw[1:])
+        print(f"[br01]   variable {var_code} ({VAR_NAMES[var_code]}): "
+              f"{len(raw) - 1:,} values", flush=True)
+    return [raw[0]] + all_rows  # keep a header row at index 0 for main()'s check
 
 
 def main():

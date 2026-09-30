@@ -1,0 +1,32 @@
+{
+  "source": "NASA POWER daily point API (MERRA-2 reanalysis)",
+  "url": "https://power.larc.nasa.gov/api/temporal/daily/point",
+  "portal": "https://power.larc.nasa.gov/",
+  "accessed": "2026-09-29",
+  "access_note": "free, no API key, global",
+  "community": "AG",
+  "period": "19810101-20241231",
+  "variables_requested": [
+    "T2M_MAX",
+    "T2M_MIN",
+    "T2M",
+    "T2MDEW",
+    "PRECTOTCORR",
+    "ALLSKY_SFC_SW_DWN"
+  ],
+  "units_requested": 399,
+  "units_returned": 399,
+  "daily_records": 6412329,
+  "failed": [],
+  "fill_value": -999.0,
+  "recipe": "Reproduce one point:\n  GET https://power.larc.nasa.gov/api/temporal/daily/point\n      ?parameters=T2M_MAX,T2M_MIN,T2M,T2MDEW,PRECTOTCORR,ALLSKY_SFC_SW_DWN\n      &community=AG&longitude=<LON>&latitude=<LAT>\n      &start=19810101&end=20241231&format=JSON\nNo API key. Identical call and variable set to the US pipeline's script 17;\nonly the centroid table (Brazilian municipalities here) differs.",
+  "missing_pct": {
+    "tmax_c": 0.0,
+    "tmin_c": 0.0,
+    "tmean_c": 0.0,
+    "tdew_c": 0.0,
+    "prcp_mm": 0.0,
+    "srad_mj": 6.814
+  },
+  "same_source_as": "US pipeline script 17 -- see its docstring on why POWER was chosen for cross-scale transfer"
+}

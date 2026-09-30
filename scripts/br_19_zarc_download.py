@@ -54,7 +54,7 @@ import websockets
 import asyncio
 import pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW
+from _brcfg import RAW, UF
 
 HOST = "mapa-indicadores.agricultura.gov.br"
 APP_ID = "6d8f45b7-dffc-41d8-a022-83cc28bb4199"
@@ -201,8 +201,8 @@ async def fetch_zarc(uf_value, cultura_value, safra_value, max_reconnects=15):
 
 
 def main():
-    uf, cultura, safra = "MT", "Soja", "2024\\2025"
-    rows = asyncio.run(fetch_zarc(uf, cultura, safra))
+    cultura, safra = "Soja", "2024\\2025"
+    rows = asyncio.run(fetch_zarc(UF, cultura, safra))
     cols = ["municipio", "grupo_maturacao", "classe_solo", "decendio", "mes", "risco"]
     df = pd.DataFrame(rows, columns=cols)
     df["risco"] = pd.to_numeric(df["risco"], errors="coerce")

@@ -45,6 +45,8 @@ UF = os.environ.get("UF", "MT").upper()
 UF_REGISTRY = {
     "MT": dict(name="MATO GROSSO", ibge_uf="51",
                focal_municipio="SORRISO", focal_code="5107925"),
+    "PR": dict(name="PARANA", ibge_uf="41",
+               focal_municipio="CASCAVEL", focal_code="4104808"),
 }
 if UF not in UF_REGISTRY:
     raise SystemExit(f"Unknown UF={UF!r}. Add it to UF_REGISTRY in "

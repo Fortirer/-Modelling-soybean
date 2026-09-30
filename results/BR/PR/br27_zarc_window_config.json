@@ -1,0 +1,31 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 399,
+  "by_maturity_group": {
+    "Grupo I": 72.3,
+    "Grupo II": 70.94,
+    "Grupo III": 68.04
+  },
+  "maturity_group_anova": {
+    "F": 34.599964166822815,
+    "p": 2.4702673378467516e-15
+  },
+  "by_mesorregiao": {
+    "Oeste Paranaense": 58.79,
+    "Centro Ocidental Paranaense": 63.94,
+    "Norte Central Paranaense": 68.36,
+    "Noroeste Paranaense": 68.89,
+    "Norte Pioneiro Paranaense": 71.37,
+    "Centro-Sul Paranaense": 74.37,
+    "Metropolitana de Curitiba": 76.47,
+    "Centro Oriental Paranaense": 76.91,
+    "Sudeste Paranaense": 78.8,
+    "Sudoeste Paranaense": 80.0
+  },
+  "mesorregiao_anova": {
+    "F": 133.905400747765,
+    "p": 4.7070673029212676e-113
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}

@@ -24,7 +24,7 @@ import sys, json, gzip, urllib.request
 import numpy as np, pandas as pd
 from scipy.stats import f_oneway
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, RES, FIG, IBGE_UF, FOCAL_MUNICIPIO
+from _brcfg import RAW, RES, FIG, IBGE_UF, FOCAL_MUNICIPIO, UF_NAME
 from _viz import *
 
 MONTH_NUM = dict(Jan=1, Fev=2, Mar=3, Abr=4, Mai=5, Jun=6, Jul=7, Ago=8,
@@ -145,7 +145,7 @@ def main():
         for s_ in ("top", "right"):
             ax.spines[s_].set_visible(False)
         ax.tick_params(colors=MUTED, labelsize=8.5)
-    f.suptitle("Figure BR-23. ZARC recommended soybean planting window, Mato Grosso 2024/25",
+    f.suptitle(f"Figure BR-23. ZARC recommended soybean planting window, {UF_NAME.title()} 2024/25",
               fontsize=13.5, color=INK, x=.02, ha="left", y=1.08, fontweight="semibold")
     f.text(.02, .975, "Official government climate-risk zoning (not observed crop progress) -- "
           "does maturity group or geography move the recommended sowing decade?",

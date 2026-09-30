@@ -1,0 +1,13 @@
+{
+  "source": "IBGE SIDRA, tabela 1612 (Producao Agricola Municipal)",
+  "url": "https://sidra.ibge.gov.br/tabela/1612",
+  "api": "https://apisidra.ibge.gov.br/values/t/1612/n6/in%20n3%20{ibge_uf}/v/109,216,214,112/p/all/c81/2713",
+  "note": "area plantada (ha), area colhida (ha), quantidade produzida (t), rendimento medio (kg/ha); produto=2713 Soja (em grao); municipio level (n6), all municipalities in the state (n3 filter). Public REST API, no key.",
+  "uf": "PR",
+  "rows": 16260,
+  "municipalities": 393,
+  "year_min": 1974,
+  "year_max": 2025,
+  "recipe": "Reproduce this pull (one request per variable, see docstring for why):\n  GET https://apisidra.ibge.gov.br/values/t/1612/n6/in%20n3%2041/v/<one of 109,216,214,112>/p/all/c81/2713\n  (SIDRA API, https://sidra.ibge.gov.br/tabela/1612)\n  n6 = municipality level; \"in n3 41\" restricts to every municipality\n  in UF code 41 (Parana); p/all = every available year;\n  c81/2713 = produto das lavouras temporarias = Soja (em grao).\nIBGE marks a cell \"-\" for not-applicable (no soy grown that municipio-year)\nand \"..\" for data withheld/not collected; both are read as missing here, not\nzero, mirroring the US pipeline's NASS sentinel handling in script 02.",
+  "accessed": "2026-09-29"
+}
