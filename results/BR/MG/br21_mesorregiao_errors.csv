@@ -1,0 +1,9 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Campo das Vertentes,107,-21.323,6.019,5.983,0.613,-0.606
+Central Mineira,151,-19.188,7.775,7.812,0.142,0.482
+Metropolitana de Belo Horizonte,76,-19.466,11.365,11.296,1.075,-0.613
+Noroeste de Minas,368,-17.024,5.658,5.83,0.43,3.028
+Norte de Minas,98,-16.248,9.217,9.143,0.815,-0.807
+Oeste de Minas,183,-20.314,8.051,7.953,-0.274,-1.225
+Sul/Sudoeste de Minas,462,-21.139,7.143,7.252,-0.152,1.53
+Triângulo Mineiro/Alto Paranaíba,1369,-19.226,5.316,6.675,-0.256,25.574
