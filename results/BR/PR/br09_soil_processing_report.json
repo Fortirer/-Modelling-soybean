@@ -1,0 +1,44 @@
+{
+  "municipalities": 398,
+  "features": [
+    "soil_clay_topsoil",
+    "soil_clay_subsoil",
+    "soil_sand_topsoil",
+    "soil_sand_subsoil",
+    "soil_silt_topsoil",
+    "soil_silt_subsoil",
+    "soil_om_topsoil",
+    "soil_om_subsoil",
+    "soil_ph_topsoil",
+    "soil_ph_subsoil",
+    "soil_bd_topsoil",
+    "soil_bd_subsoil",
+    "soil_cec_topsoil",
+    "soil_cec_subsoil"
+  ],
+  "n_features": 14,
+  "depth_bands": {
+    "topsoil": "0-30 cm (SoilGrids bins 0-5,5-15,15-30cm)",
+    "subsoil": "30-100 cm (SoilGrids bins 30-60,60-100cm)"
+  },
+  "weighting": "depth-bin-thickness weighted mean",
+  "om_conversion": "soc_pct x 1.724 (Van Bemmelen factor) -> organic matter %",
+  "wrb_class_counts": {
+    "Ferralsols": 309,
+    "NaN": 34,
+    "Nitisols": 21,
+    "Cambisols": 15,
+    "Acrisols": 12,
+    "Lixisols": 4,
+    "Leptosols": 1,
+    "Gleysols": 1,
+    "Podzols": 1
+  },
+  "no_us_equivalent": [
+    "soil_awc",
+    "soil_ksat",
+    "soil_mollisol_pct",
+    "soil_drain_*_pct -- see br08's docstring"
+  ],
+  "nulls_total": 1994
+}
