@@ -1,0 +1,23 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 139,
+  "by_maturity_group": {
+    "Grupo I": 92.63,
+    "Grupo II": 92.58,
+    "Grupo III": 92.4
+  },
+  "maturity_group_anova": {
+    "F": 0.08204656634935062,
+    "p": 0.9212440347704957
+  },
+  "by_mesorregiao": {
+    "Ocidental do Tocantins": 92.56,
+    "Oriental do Tocantins": 92.62
+  },
+  "mesorregiao_anova": {
+    "F": 0.0037650916898389875,
+    "p": 0.9511629834788071
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
