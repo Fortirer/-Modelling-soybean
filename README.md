@@ -672,13 +672,14 @@ This is a structural translation of a Brazil state-level IBGE + ERA5 study desig
 
 ---
 
-## Extension: Brazil (Mato Grosso and Paraná)
+## Extension: Brazil (Mato Grosso, Paraná and Goiás)
 
-The Illinois pipeline was itself a translation of a Brazil state-level design (see [Design lineage](#design-lineage) above). This extension runs it back the other way: a parallel branch, `br_00` through `br_20`, applies the same discipline — detrended yield anomaly, county/municipio fixed effects, expanding-window validation, no random splits — to Brazil's two largest soybean states, at municipio resolution (the direct analogue of a US county). Each state is a UF registered in `scripts/br_00_config.py`'s `UF_REGISTRY` (`data/{raw,processed,final}/BR/<UF>/`, `results/BR/<UF>/`, `figures/BR/<UF>/`); it is a separate branch entirely, not folded into the US `STATE_REGISTRY` machinery, because Brazil has no NASS, nClimDiv, TIGER, SSURGO or AQS equivalent.
+The Illinois pipeline was itself a translation of a Brazil state-level design (see [Design lineage](#design-lineage) above). This extension runs it back the other way: a parallel branch, `br_00` through `br_20`, applies the same discipline — detrended yield anomaly, county/municipio fixed effects, expanding-window validation, no random splits — to three of Brazil's largest soybean states, at municipio resolution (the direct analogue of a US county). Each state is a UF registered in `scripts/br_00_config.py`'s `UF_REGISTRY` (`data/{raw,processed,final}/BR/<UF>/`, `results/BR/<UF>/`, `figures/BR/<UF>/`); it is a separate branch entirely, not folded into the US `STATE_REGISTRY` machinery, because Brazil has no NASS, nClimDiv, TIGER, SSURGO or AQS equivalent.
 
-![states](https://img.shields.io/badge/states-MT%20%2B%20PR-1a1815)
+![states](https://img.shields.io/badge/states-MT%20%2B%20PR%20%2B%20GO-1a1815)
 ![mt](https://img.shields.io/badge/MT-97%20of%20141%20municipios-2E6B8C)
 ![pr](https://img.shields.io/badge/PR-362%20of%20399%20municipios-2E6B8C)
+![go](https://img.shields.io/badge/GO-161%20of%20246%20municipios-2E6B8C)
 
 ### Mato Grosso
 
@@ -740,29 +741,43 @@ Paraná is Brazil's #2 soybean state by production, run through the identical `b
 - **No IMEA-equivalent regional timing check exists.** DERAL/SEAB (Paraná's own rural-economy department) publishes weekly bulletins in the same spirit as IMEA's, but their regional planting/harvest table is rendered as an image, not extractable text — confirmed directly, not assumed. A genuine, documented gap, same as CONAB was for Mato Grosso.
 - **SoilGrids needed two passes, same lesson as MT's original run.** The first `br_08` pass got only 231 of 399 municipios in 4.5 hours before ISRIC's server degraded under sustained load; the per-municipality cache (only trusted if properties actually came back non-empty) meant a second pass only had to retry the 168 gaps, reaching 398 of 399 in about an hour.
 
-### Mato Grosso vs Paraná, side by side
+### Goiás
 
-| | Mato Grosso | Paraná |
-| --- | --- | --- |
-| Municipios in balanced panel | 97 of 141 | 362 of 399 |
-| Two-way FE R² | 0.272 | **0.463** |
-| Heat sign at observed mean | **+0.56** bu/acre/°C | **−0.67** bu/acre/°C |
-| Heat response heterogeneous by latitude? | No (Wald p=0.55) | **Yes, reverses sign** (Wald p<0.001) |
-| Soil explains yield level? | No (near-null) | **Yes** (R²=0.237) |
-| Soil improves out-of-sample prediction? | No | No (same null) |
-| Spatial-holdout transfer loss (worst mesorregiao) | +24.6% | +2.2% |
-| CMIP6 ensemble effect, every scenario | **Positive** (approaching a maximum) | **Positive** (crossing a minimum) — same sign, opposite mechanism |
-| ZARC: maturity group moves planting window? | No (p=0.94) | **Yes** (p<0.0001) |
-| ZARC: mesorregiao geographic spread | 7 days | **21 days** |
-| Regional industry/agency timing bulletin | IMEA (scraped, `br_18`) | None found (DERAL's tables are images) |
+Goiás sits closest to Brazil's traditional Cerrado agricultural core, run through the same `br_01`-`br_20` scripts with `UF=GO` (IBGE UF 52, focal municipio Rio Verde). Two new things surfaced here that neither prior state showed.
 
-The takeaway isn't "Brazil behaves like X" — it's that the two largest soybean states in the same country, run through literally the same code, land on opposite answers for whether heat helps, whether it's spatially uniform, whether soil matters, and whether cultivar choice matters for timing. Averaging them into one number would erase the finding.
+- **Heat has no detectable effect at all.** Both `TMX` and `TMX²` are statistically insignificant in the two-way FE model (`br_07`: p=0.54 and p=0.95) — precipitation (`PCP`, `PCP²`, both p<0.001) is the significant driver instead. The "thermal optimum" a naive read of the fitted quadratic would report (181 °C) is a meaningless artifact of two near-zero, insignificant coefficients, not a real number, and is reported here as such rather than quoted at face value.
+- **CMIP6 scenarios come out mixed, for a good reason.** 3 of 4 scenario-horizons are slightly negative, only ssp585 late-century positive, and per-model spread shows genuinely opposite signs within every scenario — consistent with, not contradicting, the null temperature finding above. There is no real signal to project forward, so the ensemble doesn't manufacture one.
+- **The latitude-heterogeneity test is statistically significant but practically tiny.** Wald p=0.010, but the tercile coefficients are small and non-monotonic (south +0.14, central −0.09, north −0.11 bu/acre/°C) — nothing like Paraná's dramatic ±0.65 reversal. A real difference between regions, but none of them show heat mattering much either way.
+- **Irrigation is a real factor here, unlike either prior state.** Median prevalence 17.2% of harvested cropland (mean 32.7%, max 100% in Barro Alto) against MT's 0.91% and Paraná's 1.22% — consistent with Goiás's well-documented center-pivot irrigation development in the Cerrado. This broke a script bug: `br_16` had asserted "overwhelmingly rainfed" as an unconditional claim, true for the first two states but false here; it now branches on the actual median instead of asserting a conclusion regardless of the data.
+- **Soil sits between the other two states' extremes.** R²=0.098 for yield level (Mato Grosso: near-null; Paraná: 0.237) — a real but weak relationship, not a clean null or a clean signal.
+- **Maturity group has no effect on ZARC's recommended window** (ANOVA p=0.76) — matches Mato Grosso's null, not Paraná's significant effect. Mesorregiao geographic spread is real (p<0.0001) at about 6 days — smaller than Paraná's 21, close to Mato Grosso's 7.
+- **SoilGrids succeeded in one pass this time** — 246 of 246 municipios on the first try, no retry needed. ISRIC's server load is genuinely variable run to run, not a fixed property of this branch's request pattern.
+
+### Three states, side by side
+
+| | Mato Grosso | Paraná | Goiás |
+| --- | --- | --- | --- |
+| Municipios in balanced panel | 97 of 141 | 362 of 399 | 161 of 246 |
+| Two-way FE R² | 0.272 | **0.463** | 0.216 |
+| Heat effect at observed mean | **+0.56** bu/acre/°C (significant) | **−0.67** bu/acre/°C (significant) | ~0 (both terms **insignificant**) |
+| Heat response heterogeneous by latitude? | No (Wald p=0.55) | **Yes, reverses sign** (p<0.001, ±0.65) | Significant but tiny (p=0.010, ±0.1-0.14) |
+| Significant yield driver | Temperature | Temperature | **Precipitation** |
+| Soil explains yield level? | No (near-null) | **Yes** (R²=0.237) | Weak (R²=0.098) |
+| Soil improves out-of-sample prediction? | No | No (same null) | No (same null) |
+| Spatial-holdout transfer loss (worst mesorregiao) | +24.6% | +2.2% | +3.4% |
+| CMIP6 ensemble effect | **Positive**, every scenario | **Positive**, every scenario | **Mixed** — sign varies by scenario/model |
+| Irrigation prevalence (median) | 0.91% (rainfed) | 1.22% (rainfed) | **17.2%** (real factor) |
+| ZARC: maturity group moves planting window? | No (p=0.94) | **Yes** (p<0.0001) | No (p=0.76) |
+| ZARC: mesorregiao geographic spread | 7 days | **21 days** | 6 days |
+| Regional industry/agency timing bulletin | IMEA (scraped, `br_18`) | None found (DERAL's tables are images) | Not checked |
+
+The takeaway isn't "Brazil behaves like X" — three of its largest soybean states, run through literally the same code, land on three different answers for whether heat helps, hurts, or does nothing; whether that response is spatially uniform; whether soil or irrigation matter; and whether cultivar choice affects planting timing. Averaging them into one number would erase every one of these findings.
 
 ### Quick start
 
 ```bash
 cd scripts
-UF=MT python br_01_download_production.py   # or UF=PR for Parana
+UF=MT python br_01_download_production.py   # or UF=PR (Parana), UF=GO (Goias)
 UF=MT python br_02_clean_production.py
 UF=MT python br_03_download_boundaries.py
 UF=MT python br_04_download_daily_weather.py   # NASA POWER, 141 units (~slow)
