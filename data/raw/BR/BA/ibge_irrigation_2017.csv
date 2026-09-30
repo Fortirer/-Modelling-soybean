@@ -1,0 +1,416 @@
+fips5,irrigated_estabs,irrigated_area_ha,county
+2900108,292.0,388.0,Abaíra - BA
+2900207,770.0,1826.0,Abaré - BA
+2900306,76.0,249.0,Acajutiba - BA
+2900355,6.0,5.0,Adustina - BA
+2900405,48.0,3380.0,Água Fria - BA
+2900504,1123.0,1391.0,Érico Cardoso - BA
+2900603,15.0,45.0,Aiquara - BA
+2900702,164.0,133.0,Alagoinhas - BA
+2900801,114.0,1295.0,Alcobaça - BA
+2900900,8.0,57.0,Almadina - BA
+2901007,77.0,42.0,Amargosa - BA
+2901106,112.0,73.0,Amélia Rodrigues - BA
+2901155,395.0,1257.0,América Dourada - BA
+2901205,235.0,561.0,Anagé - BA
+2901304,160.0,291.0,Andaraí - BA
+2901353,203.0,73.0,Andorinha - BA
+2901403,33.0,47.0,Angical - BA
+2901502,1.0,,Anguera - BA
+2901601,5.0,1.0,Antas - BA
+2901700,21.0,12.0,Antônio Cardoso - BA
+2901809,112.0,54.0,Antônio Gonçalves - BA
+2901908,19.0,52.0,Aporá - BA
+2901957,33.0,25.0,Apuarema - BA
+2902005,1159.0,524.0,Aracatu - BA
+2902054,46.0,71.0,Araçás - BA
+2902104,92.0,66.0,Araci - BA
+2902203,23.0,70.0,Aramari - BA
+2902252,15.0,6.0,Arataca - BA
+2902302,8.0,2.0,Aratuípe - BA
+2902401,2.0,,Aurelino Leal - BA
+2902500,180.0,175.0,Baianópolis - BA
+2902609,137.0,30.0,Baixa Grande - BA
+2902658,52.0,38.0,Banzaê - BA
+2902708,208.0,727.0,Barra - BA
+2902807,1111.0,1456.0,Barra da Estiva - BA
+2902906,94.0,414.0,Barra do Choça - BA
+2903003,191.0,248.0,Barra do Mendes - BA
+2903102,20.0,38.0,Barra do Rocha - BA
+2903201,570.0,31092.0,Barreiras - BA
+2903235,428.0,1043.0,Barro Alto - BA
+2903276,55.0,16.0,Barrocas - BA
+2903300,2.0,,Barro Preto - BA
+2903409,56.0,1259.0,Belmonte - BA
+2903508,62.0,296.0,Belo Campo - BA
+2903607,48.0,41.0,Biritinga - BA
+2903706,162.0,657.0,Boa Nova - BA
+2903805,174.0,463.0,Boa Vista do Tupim - BA
+2903904,1210.0,8056.0,Bom Jesus da Lapa - BA
+2903953,47.0,60.0,Bom Jesus da Serra - BA
+2904001,339.0,297.0,Boninal - BA
+2904050,107.0,2033.0,Bonito - BA
+2904100,170.0,101.0,Boquira - BA
+2904209,160.0,88.0,Botuporã - BA
+2904308,249.0,176.0,Brejões - BA
+2904407,81.0,77.0,Brejolândia - BA
+2904506,41.0,32.0,Brotas de Macaúbas - BA
+2904605,1933.0,1609.0,Brumado - BA
+2904704,6.0,8.0,Buerarema - BA
+2904753,8.0,12.0,Buritirama - BA
+2904803,11.0,16.0,Caatiba - BA
+2904852,101.0,272.0,Cabaceiras do Paraguaçu - BA
+2904902,72.0,25.0,Cachoeira - BA
+2905008,1339.0,1250.0,Caculé - BA
+2905107,113.0,105.0,Caém - BA
+2905156,198.0,279.0,Caetanos - BA
+2905206,1856.0,788.0,Caetité - BA
+2905305,602.0,1547.0,Cafarnaum - BA
+2905404,3.0,11.0,Cairu - BA
+2905503,60.0,43.0,Caldeirão Grande - BA
+2905602,13.0,84.0,Camacan - BA
+2905701,583.0,330.0,Camaçari - BA
+2905800,92.0,426.0,Camamu - BA
+2905909,147.0,103.0,Campo Alegre de Lourdes - BA
+2906006,1052.0,1573.0,Campo Formoso - BA
+2906105,233.0,296.0,Canápolis - BA
+2906204,716.0,1960.0,Canarana - BA
+2906303,47.0,475.0,Canavieiras - BA
+2906402,13.0,7.0,Candeal - BA
+2906501,172.0,120.0,Candeias - BA
+2906600,372.0,468.0,Candiba - BA
+2906709,206.0,215.0,Cândido Sales - BA
+2906808,132.0,110.0,Cansanção - BA
+2906824,607.0,1134.0,Canudos - BA
+2906857,75.0,20.0,Capela do Alto Alegre - BA
+2906873,80.0,69.0,Capim Grosso - BA
+2906899,290.0,855.0,Caraíbas - BA
+2906907,70.0,5870.0,Caravelas - BA
+2907004,7.0,27.0,Cardeal da Silva - BA
+2907103,329.0,1894.0,Carinhanha - BA
+2907202,1223.0,9034.0,Casa Nova - BA
+2907301,6.0,40.0,Castro Alves - BA
+2907400,45.0,37.0,Catolândia - BA
+2907509,163.0,186.0,Catu - BA
+2907558,226.0,270.0,Caturama - BA
+2907608,161.0,310.0,Central - BA
+2907707,101.0,395.0,Chorrochó - BA
+2907806,36.0,36.0,Cícero Dantas - BA
+2907905,396.0,225.0,Cipó - BA
+2908002,24.0,33.0,Coaraci - BA
+2908101,410.0,9353.0,Cocos - BA
+2908200,67.0,78.0,Conceição da Feira - BA
+2908309,16.0,8.0,Conceição do Almeida - BA
+2908408,776.0,183.0,Conceição do Coité - BA
+2908507,131.0,2188.0,Conceição do Jacuípe - BA
+2908606,167.0,1702.0,Conde - BA
+2908705,356.0,125.0,Condeúba - BA
+2908804,127.0,453.0,Contendas do Sincorá - BA
+2908903,36.0,16.0,Coração de Maria - BA
+2909000,168.0,108.0,Cordeiros - BA
+2909109,123.0,589.0,Coribe - BA
+2909208,132.0,47.0,Coronel João Sá - BA
+2909307,1136.0,6810.0,Correntina - BA
+2909406,109.0,557.0,Cotegipe - BA
+2909505,45.0,145.0,Cravolândia - BA
+2909604,61.0,47.0,Crisópolis - BA
+2909703,74.0,94.0,Cristópolis - BA
+2909802,32.0,118.0,Cruz das Almas - BA
+2909901,2453.0,5596.0,Curaçá - BA
+2910008,19.0,23.0,Dário Meira - BA
+2910057,57.0,56.0,Dias d'Ávila - BA
+2910107,1202.0,1951.0,Dom Basílio - BA
+2910206,8.0,2.0,Dom Macedo Costa - BA
+2910305,68.0,41.0,Elísio Medrado - BA
+2910404,95.0,1387.0,Encruzilhada - BA
+2910503,42.0,238.0,Entre Rios - BA
+2910602,98.0,99.0,Esplanada - BA
+2910701,167.0,114.0,Euclides da Cunha - BA
+2910727,123.0,4800.0,Eunápolis - BA
+2910750,47.0,29.0,Fátima - BA
+2910776,139.0,246.0,Feira da Mata - BA
+2910800,435.0,262.0,Feira de Santana - BA
+2910859,54.0,113.0,Filadélfia - BA
+2910909,1.0,,Firmino Alves - BA
+2911105,28.0,75.0,Formosa do Rio Preto - BA
+2911204,17.0,38.0,Gandu - BA
+2911253,5.0,12.0,Gavião - BA
+2911303,58.0,131.0,Gentio do Ouro - BA
+2911402,551.0,1947.0,Glória - BA
+2911501,12.0,84.0,Gongogi - BA
+2911600,95.0,277.0,Governador Mangabeira - BA
+2911659,573.0,655.0,Guajeru - BA
+2911709,1136.0,1164.0,Guanambi - BA
+2911808,193.0,1594.0,Guaratinga - BA
+2911857,61.0,62.0,Heliópolis - BA
+2911907,166.0,1083.0,Iaçu - BA
+2912004,315.0,99.0,Ibiassucê - BA
+2912103,4.0,11.0,Ibicaraí - BA
+2912202,377.0,2401.0,Ibicoara - BA
+2912301,175.0,157.0,Ibicuí - BA
+2912400,532.0,2213.0,Ibipeba - BA
+2912509,291.0,192.0,Ibipitanga - BA
+2912608,16.0,6.0,Ibiquera - BA
+2912707,16.0,64.0,Ibirapitanga - BA
+2912806,40.0,2067.0,Ibirapuã - BA
+2912905,17.0,15.0,Ibirataia - BA
+2913002,81.0,114.0,Ibitiara - BA
+2913101,539.0,1829.0,Ibititá - BA
+2913200,271.0,460.0,Ibotirama - BA
+2913309,55.0,28.0,Ichu - BA
+2913408,584.0,217.0,Igaporã - BA
+2913457,11.0,10.0,Igrapiúna - BA
+2913507,166.0,271.0,Iguaí - BA
+2913606,77.0,163.0,Ilhéus - BA
+2913705,189.0,1500.0,Inhambupe - BA
+2913804,10.0,10.0,Ipecaetá - BA
+2913903,145.0,98.0,Ipiaú - BA
+2914000,88.0,91.0,Ipirá - BA
+2914109,54.0,109.0,Ipupiara - BA
+2914208,28.0,46.0,Irajuba - BA
+2914307,150.0,198.0,Iramaia - BA
+2914406,296.0,1061.0,Iraquara - BA
+2914505,67.0,104.0,Irará - BA
+2914604,254.0,763.0,Irecê - BA
+2914653,107.0,5209.0,Itabela - BA
+2914703,163.0,1342.0,Itaberaba - BA
+2914802,62.0,73.0,Itabuna - BA
+2914901,58.0,128.0,Itacaré - BA
+2915007,306.0,462.0,Itaeté - BA
+2915106,61.0,76.0,Itagi - BA
+2915205,89.0,273.0,Itagibá - BA
+2915304,6.0,2482.0,Itagimirim - BA
+2915353,239.0,1040.0,Itaguaçu da Bahia - BA
+2915403,18.0,20.0,Itaju do Colônia - BA
+2915502,5.0,27.0,Itajuípe - BA
+2915601,186.0,2332.0,Itamaraju - BA
+2915700,5.0,65.0,Itamari - BA
+2915809,57.0,282.0,Itambé - BA
+2915908,18.0,8.0,Itanagra - BA
+2916005,65.0,185.0,Itanhém - BA
+2916104,13.0,9.0,Itaparica - BA
+2916203,6.0,40.0,Itapé - BA
+2916302,2.0,,Itapebi - BA
+2916401,175.0,280.0,Itapetinga - BA
+2916500,253.0,664.0,Itapicuru - BA
+2916609,8.0,17.0,Itapitanga - BA
+2916708,283.0,454.0,Itaquara - BA
+2916807,48.0,100.0,Itarantim - BA
+2916856,35.0,100.0,Itatim - BA
+2916906,196.0,457.0,Itiruçu - BA
+2917003,81.0,84.0,Itiúba - BA
+2917102,8.0,6.0,Itororó - BA
+2917201,1226.0,2705.0,Ituaçu - BA
+2917300,28.0,21.0,Ituberá - BA
+2917334,231.0,611.0,Iuiu - BA
+2917359,248.0,13481.0,Jaborandi - BA
+2917409,290.0,280.0,Jacaraci - BA
+2917508,404.0,697.0,Jacobina - BA
+2917607,1157.0,1901.0,Jaguaquara - BA
+2917706,72.0,128.0,Jaguarari - BA
+2917805,29.0,34.0,Jaguaripe - BA
+2917904,54.0,284.0,Jandaíra - BA
+2918001,671.0,1097.0,Jequié - BA
+2918100,649.0,1831.0,Jeremoabo - BA
+2918209,19.0,22.0,Jiquiriçá - BA
+2918308,78.0,125.0,Jitaúna - BA
+2918357,359.0,988.0,João Dourado - BA
+2918407,4676.0,40418.0,Juazeiro - BA
+2918456,13.0,86.0,Jucuruçu - BA
+2918506,319.0,2246.0,Jussara - BA
+2918555,5.0,7.0,Jussari - BA
+2918605,313.0,1054.0,Jussiape - BA
+2918704,234.0,340.0,Lafaiete Coutinho - BA
+2918753,389.0,432.0,Lagoa Real - BA
+2918803,63.0,141.0,Laje - BA
+2918902,10.0,93.0,Lajedão - BA
+2919009,84.0,46.0,Lajedinho - BA
+2919058,237.0,370.0,Lajedo do Tabocal - BA
+2919108,122.0,31.0,Lamarão - BA
+2919157,754.0,1959.0,Lapão - BA
+2919207,18.0,24.0,Lauro de Freitas - BA
+2919306,136.0,389.0,Lençóis - BA
+2919405,460.0,597.0,Licínio de Almeida - BA
+2919504,3358.0,8293.0,Livramento de Nossa Senhora - BA
+2919553,123.0,14029.0,Luís Eduardo Magalhães - BA
+2919603,27.0,7.0,Macajuba - BA
+2919702,12.0,262.0,Macarani - BA
+2919801,409.0,455.0,Macaúbas - BA
+2919900,16.0,22.0,Macururé - BA
+2919959,52.0,35.0,Maetinga - BA
+2920007,19.0,18.0,Maiquinique - BA
+2920106,195.0,61.0,Mairi - BA
+2920205,435.0,1939.0,Malhada - BA
+2920304,243.0,218.0,Malhada de Pedras - BA
+2920403,124.0,214.0,Manoel Vitorino - BA
+2920452,2.0,,Mansidão - BA
+2920502,548.0,1121.0,Maracás - BA
+2920601,69.0,42.0,Maragogipe - BA
+2920700,33.0,77.0,Maraú - BA
+2920809,55.0,66.0,Marcionílio Souza - BA
+2920908,7.0,421.0,Mascote - BA
+2921005,108.0,299.0,Mata de São João - BA
+2921054,104.0,111.0,Matina - BA
+2921104,25.0,139.0,Medeiros Neto - BA
+2921203,317.0,409.0,Miguel Calmon - BA
+2921302,13.0,4.0,Milagres - BA
+2921401,198.0,946.0,Mirangaba - BA
+2921450,238.0,419.0,Mirante - BA
+2921500,64.0,27.0,Monte Santo - BA
+2921609,38.0,88.0,Morpará - BA
+2921708,543.0,1649.0,Morro do Chapéu - BA
+2921807,171.0,85.0,Mortugaba - BA
+2921906,355.0,5600.0,Mucugê - BA
+2922003,115.0,3265.0,Mucuri - BA
+2922052,441.0,566.0,Mulungu do Morro - BA
+2922102,59.0,49.0,Mundo Novo - BA
+2922201,30.0,18.0,Muniz Ferreira - BA
+2922250,148.0,2470.0,Muquém do São Francisco - BA
+2922300,15.0,14.0,Muritiba - BA
+2922409,40.0,15.0,Mutuípe - BA
+2922508,42.0,30.0,Nazaré - BA
+2922607,5.0,4.0,Nilo Peçanha - BA
+2922656,15.0,13.0,Nordestina - BA
+2922706,208.0,286.0,Nova Canaã - BA
+2922730,18.0,15.0,Nova Fátima - BA
+2922755,21.0,33.0,Nova Ibiá - BA
+2922805,41.0,20.0,Nova Itarana - BA
+2922854,204.0,394.0,Nova Redenção - BA
+2922904,293.0,499.0,Nova Soure - BA
+2923001,48.0,1282.0,Nova Viçosa - BA
+2923035,294.0,337.0,Novo Horizonte - BA
+2923050,18.0,98.0,Novo Triunfo - BA
+2923100,86.0,84.0,Olindina - BA
+2923209,207.0,251.0,Oliveira dos Brejinhos - BA
+2923308,8.0,4.0,Ouriçangas - BA
+2923357,196.0,431.0,Ourolândia - BA
+2923407,261.0,431.0,Palmas de Monte Alto - BA
+2923506,128.0,162.0,Palmeiras - BA
+2923605,578.0,1239.0,Paramirim - BA
+2923704,212.0,249.0,Paratinga - BA
+2923803,119.0,86.0,Paripiranga - BA
+2923902,71.0,74.0,Pau Brasil - BA
+2924009,256.0,657.0,Paulo Afonso - BA
+2924058,59.0,15.0,Pé de Serra - BA
+2924108,4.0,5.0,Pedrão - BA
+2924207,56.0,11.0,Pedro Alexandre - BA
+2924306,288.0,431.0,Piatã - BA
+2924405,99.0,232.0,Pilão Arcado - BA
+2924504,715.0,532.0,Pindaí - BA
+2924603,175.0,178.0,Pindobaçu - BA
+2924652,152.0,83.0,Pintadas - BA
+2924678,11.0,5.0,Piraí do Norte - BA
+2924702,55.0,8.0,Piripá - BA
+2924801,156.0,242.0,Piritiba - BA
+2924900,260.0,292.0,Planaltino - BA
+2925006,70.0,271.0,Planalto - BA
+2925105,305.0,460.0,Poções - BA
+2925204,65.0,49.0,Pojuca - BA
+2925253,208.0,1333.0,Ponto Novo - BA
+2925303,448.0,5928.0,Porto Seguro - BA
+2925402,31.0,27.0,Potiraguá - BA
+2925501,193.0,4474.0,Prado - BA
+2925600,506.0,1578.0,Presidente Dutra - BA
+2925709,144.0,109.0,Presidente Jânio Quadros - BA
+2925758,56.0,122.0,Presidente Tancredo Neves - BA
+2925808,148.0,227.0,Queimadas - BA
+2925907,49.0,37.0,Quijingue - BA
+2925931,52.0,34.0,Quixabeira - BA
+2925956,20.0,123.0,Rafael Jambeiro - BA
+2926004,176.0,239.0,Remanso - BA
+2926103,101.0,30.0,Retirolândia - BA
+2926202,186.0,17627.0,Riachão das Neves - BA
+2926301,333.0,93.0,Riachão do Jacuípe - BA
+2926400,405.0,337.0,Riacho de Santana - BA
+2926509,237.0,1538.0,Ribeira do Amparo - BA
+2926608,394.0,514.0,Ribeira do Pombal - BA
+2926657,38.0,103.0,Ribeirão do Largo - BA
+2926707,799.0,1976.0,Rio de Contas - BA
+2926806,392.0,165.0,Rio do Antônio - BA
+2926905,164.0,207.0,Rio do Pires - BA
+2927002,268.0,675.0,Rio Real - BA
+2927101,834.0,3030.0,Rodelas - BA
+2927200,65.0,121.0,Ruy Barbosa - BA
+2927309,43.0,14.0,Salinas da Margarida - BA
+2927408,36.0,12.0,Salvador - BA
+2927507,90.0,23.0,Santa Bárbara - BA
+2927606,97.0,221.0,Santa Brígida - BA
+2927705,117.0,1499.0,Santa Cruz Cabrália - BA
+2927804,3.0,5.0,Santa Cruz da Vitória - BA
+2927903,6.0,12.0,Santa Inês - BA
+2928000,106.0,51.0,Santaluz - BA
+2928059,30.0,129.0,Santa Luzia - BA
+2928109,388.0,1197.0,Santa Maria da Vitória - BA
+2928208,376.0,2695.0,Santana - BA
+2928307,15.0,26.0,Santanópolis - BA
+2928406,116.0,139.0,Santa Rita de Cássia - BA
+2928505,44.0,115.0,Santa Terezinha - BA
+2928604,1800.0,1195.0,Santo Amaro - BA
+2928703,118.0,39.0,Santo Antônio de Jesus - BA
+2928802,207.0,124.0,Santo Estêvão - BA
+2928901,223.0,32520.0,São Desidério - BA
+2928950,43.0,30.0,São Domingos - BA
+2929008,19.0,13.0,São Félix - BA
+2929057,227.0,2820.0,São Félix do Coribe - BA
+2929107,57.0,43.0,São Felipe - BA
+2929206,138.0,87.0,São Francisco do Conde - BA
+2929255,282.0,457.0,São Gabriel - BA
+2929305,22.0,44.0,São Gonçalo dos Campos - BA
+2929354,3.0,6.0,São José da Vitória - BA
+2929370,39.0,35.0,São José do Jacuípe - BA
+2929404,36.0,16.0,São Miguel das Matas - BA
+2929503,282.0,184.0,São Sebastião do Passé - BA
+2929602,9.0,73.0,Sapeaçu - BA
+2929701,111.0,719.0,Sátiro Dias - BA
+2929750,91.0,66.0,Saubara - BA
+2929800,196.0,133.0,Saúde - BA
+2929909,396.0,759.0,Seabra - BA
+2930006,445.0,1182.0,Sebastião Laranjeiras - BA
+2930105,148.0,94.0,Senhor do Bonfim - BA
+2930154,220.0,1606.0,Serra do Ramalho - BA
+2930204,270.0,2007.0,Sento Sé - BA
+2930303,173.0,128.0,Serra Dourada - BA
+2930402,25.0,13.0,Serra Preta - BA
+2930501,372.0,109.0,Serrinha - BA
+2930600,49.0,62.0,Serrolândia - BA
+2930709,102.0,50.0,Simões Filho - BA
+2930758,244.0,838.0,Sítio do Mato - BA
+2930766,25.0,20.0,Sítio do Quinto - BA
+2930774,417.0,1275.0,Sobradinho - BA
+2930808,156.0,312.0,Souto Soares - BA
+2930907,59.0,16.0,Tabocas do Brejo Velho - BA
+2931004,1516.0,1786.0,Tanhaçu - BA
+2931053,195.0,96.0,Tanque Novo - BA
+2931103,2.0,,Tanquinho - BA
+2931202,10.0,29.0,Taperoá - BA
+2931301,57.0,106.0,Tapiramutá - BA
+2931350,141.0,2676.0,Teixeira de Freitas - BA
+2931400,26.0,31.0,Teodoro Sampaio - BA
+2931509,73.0,13.0,Teofilândia - BA
+2931608,13.0,75.0,Teolândia - BA
+2931707,5.0,3.0,Terra Nova - BA
+2931806,107.0,103.0,Tremedal - BA
+2931905,397.0,474.0,Tucano - BA
+2932002,269.0,273.0,Uauá - BA
+2932101,184.0,186.0,Ubaíra - BA
+2932200,42.0,341.0,Ubaitaba - BA
+2932309,34.0,37.0,Ubatã - BA
+2932408,251.0,852.0,Uibaí - BA
+2932457,49.0,933.0,Umburanas - BA
+2932507,46.0,389.0,Una - BA
+2932606,436.0,749.0,Urandi - BA
+2932705,29.0,124.0,Uruçuca - BA
+2932804,296.0,1007.0,Utinga - BA
+2932903,164.0,304.0,Valença - BA
+2933000,111.0,36.0,Valente - BA
+2933059,135.0,283.0,Várzea da Roça - BA
+2933109,48.0,28.0,Várzea do Poço - BA
+2933158,247.0,572.0,Várzea Nova - BA
+2933174,3.0,1.0,Varzedo - BA
+2933208,14.0,5.0,Vera Cruz - BA
+2933257,21.0,564.0,Vereda - BA
+2933307,561.0,1601.0,Vitória da Conquista - BA
+2933406,255.0,838.0,Wagner - BA
+2933455,99.0,79.0,Wanderley - BA
+2933505,250.0,451.0,Wenceslau Guimarães - BA
+2933604,385.0,1641.0,Xique-Xique - BA
