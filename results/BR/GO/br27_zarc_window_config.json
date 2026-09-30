@@ -1,0 +1,26 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 246,
+  "by_maturity_group": {
+    "Grupo I": 84.97,
+    "Grupo II": 85.0,
+    "Grupo III": 84.8
+  },
+  "maturity_group_anova": {
+    "F": 0.27281263727684935,
+    "p": 0.7613124505323509
+  },
+  "by_mesorregiao": {
+    "Centro Goiano": 82.73,
+    "Sul Goiano": 84.0,
+    "Leste Goiano": 87.43,
+    "Noroeste Goiano": 87.68,
+    "Norte Goiano": 88.95
+  },
+  "mesorregiao_anova": {
+    "F": 55.597128346789006,
+    "p": 5.0756232782544536e-33
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
