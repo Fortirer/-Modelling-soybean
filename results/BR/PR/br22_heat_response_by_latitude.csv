@@ -1,0 +1,4 @@
+tercile,municipios,n,mean_tmax,tmx,se,tmx_separate_fit
+south,120,4559,28.2622,-0.6486,0.0672,-0.3822
+central,124,4555,29.5974,-0.076,0.0668,-0.2358
+north,118,4542,30.4684,0.6522,0.0731,0.3516
