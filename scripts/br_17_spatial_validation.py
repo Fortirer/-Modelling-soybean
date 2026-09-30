@@ -128,7 +128,14 @@ def main():
         else:
             trn = d[(d.year < t) & (d.mesorregiao != g)]
             tst = d[(d.year == t) & (d.mesorregiao == g)]
-        if not len(tst):
+        if not len(tst) or not len(trn):
+            # can happen in a small-panel state (few municipios, few
+            # mesorregioes): removing one mesorregiao and restricting to
+            # earlier years can leave zero training rows for an early test
+            # year. Skip that fit rather than crash -- it means the
+            # holdout design itself cannot be run for every (year, region)
+            # combination in this state, which is a real limitation to
+            # report, not a bug to route around silently.
             return []
         p = gbm(trn, tst, F)
         return [(kind, nm, i, float(pp)) for i, pp in zip(tst.index, p)]

@@ -1,0 +1,3 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Extremo Oeste Baiano,184,-12.475,8.815,7.561,-1.559,-14.227
+Vale São-Franciscano da Bahia,20,-13.469,4.701,4.881,0.288,3.834

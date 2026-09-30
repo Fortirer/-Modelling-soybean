@@ -1,0 +1,7 @@
+features,holdout,n,rmse,baseline_rmse,skill_pct
+climate,none (br_11),204,8.4139,6.9764,-20.6052
+climate,mesorregiao,172,7.7222,7.1185,-8.481
+process,none (br_11),204,8.4997,6.9764,-21.8358
+process,mesorregiao,172,7.2996,7.1185,-2.5452
+both,none (br_11),204,8.4781,6.9764,-21.5254
+both,mesorregiao,172,7.5308,7.1185,-5.7932
