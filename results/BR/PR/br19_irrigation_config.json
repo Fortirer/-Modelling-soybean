@@ -1,0 +1,11 @@
+{
+  "source": "IBGE SIDRA tabela 6859, Censo Agropecuario 2017, all-crop irrigated area (no soja-only breakdown exists)",
+  "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
+  "n_municipios": 396,
+  "n_zero_irrigation": 9,
+  "state_prevalence_pct_median": 1.215317750656119,
+  "state_prevalence_pct_mean": 8.308809723413514,
+  "interaction_beta": 0.1184960200960367,
+  "interaction_p": 0.7593785868030509,
+  "finding": "Mato Grosso soybean is overwhelmingly rainfed; low/near-zero irrigation prevalence is the substantive finding for this UF, not a data gap."
+}

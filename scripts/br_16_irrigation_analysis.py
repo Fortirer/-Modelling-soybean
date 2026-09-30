@@ -12,7 +12,7 @@ import sys, json
 import numpy as np, pandas as pd
 import statsmodels.formula.api as smf
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, FINAL, RES, FIG, FOCAL_CODE, FOCAL_MUNICIPIO
+from _brcfg import RAW, FINAL, RES, FIG, FOCAL_CODE, FOCAL_MUNICIPIO, UF_NAME
 from _viz import *
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
@@ -39,8 +39,8 @@ print(f"[br16] state-wide irrigation prevalence proxy: median "
       f"{irr.irrigation_prevalence_pct.median():.2f}%, mean "
       f"{irr.irrigation_prevalence_pct.mean():.2f}%, max "
       f"{irr.irrigation_prevalence_pct.max():.2f}% ({irr.loc[irr.irrigation_prevalence_pct.idxmax(), 'county']})")
-print("[br16] MT soybean is overwhelmingly rainfed at the state level -- this low "
-      "prevalence is the expected finding for this UF, not a data gap.")
+print(f"[br16] {UF_NAME.title()} soybean is overwhelmingly rainfed at the state level -- "
+      f"this low prevalence is the expected finding for this UF, not a data gap.")
 
 d = d.merge(irr[["fips5", "irrigated_area_ha", "irrigation_prevalence_pct"]], on="fips5", how="left")
 d["has_irrigation"] = (d.irrigated_area_ha.fillna(0) > 0).astype(int)
@@ -91,9 +91,9 @@ if FOCAL_CODE in irr.fips5.values:
     fval = irr.loc[irr.fips5 == FOCAL_CODE, "irrigation_prevalence_pct"].iloc[0]
     if pd.notna(fval):
         ax.axvline(fval, color=FOCAL, lw=2, ls="--", label=f"{FOCAL_MUNICIPIO.title()} {fval:.2f}%")
-style(ax, "Figure BR-20. Irrigation prevalence across Mato Grosso municipalities",
+style(ax, f"Figure BR-20. Irrigation prevalence across {UF_NAME.title()} municipalities",
       "Irrigated establishment area as a share of mean harvested cropland, 2017 census "
-      "snapshot. Confirms MT soybean production is overwhelmingly rainfed.",
+      f"snapshot. Confirms {UF_NAME.title()} soybean production is overwhelmingly rainfed.",
       "Irrigation prevalence (%)", "Municipalities", legend=FOCAL_CODE in irr.fips5.values,
       src="Source: IBGE Censo Agropecuario 2017 (tabela 6859); IBGE PAM")
 save(f, FIG / "fig_br20_irrigation_prevalence.png")
