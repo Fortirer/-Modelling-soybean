@@ -11,7 +11,7 @@ import sys, json
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from sklearn.ensemble import GradientBoostingRegressor
-from _brcfg import FINAL, RES, FIG, SEED, FOCAL_CODE
+from _brcfg import FINAL, RES, FIG, SEED, FOCAL_CODE, FOCAL_MUNICIPIO
 from _viz import *
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
@@ -49,7 +49,7 @@ print(t7.tail(4)[["county", "r_moisture", "r_heat", "beta_moisture_bu_per_sd",
 if FOCAL_CODE in t7.fips5.values:
     rank = list(t7.fips5).index(FOCAL_CODE) + 1
     foc = t7[t7.fips5 == FOCAL_CODE].iloc[0]
-    print(f"\n[br14] Sorriso: rank {rank} of {len(t7)} | r_moisture {foc.r_moisture:.3f} "
+    print(f"\n[br14] {FOCAL_MUNICIPIO.title()}: rank {rank} of {len(t7)} | r_moisture {foc.r_moisture:.3f} "
           f"| beta_moisture {foc.beta_moisture_bu_per_sd:+.3f} bu/SD")
 
 # ---------- Scenarios -----------------------------------------------------------
@@ -105,7 +105,7 @@ print(bymuni.nlargest(4, "d_S4 +1C and -10% precip")[
     ["county", "baseline_yield", "d_S4 +1C and -10% precip", "pct_S4"]].to_string(index=False))
 if FOCAL_CODE in bymuni.fips5.values:
     fc = bymuni[bymuni.fips5 == FOCAL_CODE].iloc[0]
-    print(f"\n[br14] Sorriso under S4: {fc['d_S4 +1C and -10% precip']:+.2f} bu/acre "
+    print(f"\n[br14] {FOCAL_MUNICIPIO.title()} under S4: {fc['d_S4 +1C and -10% precip']:+.2f} bu/acre "
           f"({fc.pct_S4:+.2f}%)")
 
 # ---------- Figure: sensitivity ranking -----------------------------------------
@@ -117,7 +117,7 @@ ax.set_yticks([])
 ax.set_ylabel(f"{len(k)} municipalities, ordered", fontsize=10, color=INK2)
 if FOCAL_CODE in list(k.fips5):
     i = list(k.fips5).index(FOCAL_CODE)
-    ax.annotate("Sorriso", xy=(k.beta_moisture_bu_per_sd.iloc[i], i), xytext=(1.2, i - 9),
+    ax.annotate(FOCAL_MUNICIPIO.title(), xy=(k.beta_moisture_bu_per_sd.iloc[i], i), xytext=(1.2, i - 9),
                fontsize=10, color=FOCAL, arrowprops=dict(arrowstyle="->", color=FOCAL, lw=1.3))
 ax.grid(axis="y", lw=0)
 ax.grid(axis="x", color=GRID, lw=.7)
@@ -138,7 +138,7 @@ for n, (key, ttl) in enumerate([
     ax.axvline(v.mean(), color=FOCAL, lw=2, ls="--", label=f"mean {v.mean():+.2f} bu/acre")
     if FOCAL_CODE in bymuni.fips5.values:
         ax.axvline(bymuni.loc[bymuni.fips5 == FOCAL_CODE, f"d_{key}"].iloc[0], color=S4, lw=2,
-                   label=f"Sorriso {bymuni.loc[bymuni.fips5 == FOCAL_CODE, f'd_{key}'].iloc[0]:+.2f}")
+                   label=f"{FOCAL_MUNICIPIO.title()} {bymuni.loc[bymuni.fips5 == FOCAL_CODE, f'd_{key}'].iloc[0]:+.2f}")
     style(ax, ttl, "Sensitivity experiment, not a climate projection. "
           f"Distribution across {len(bymuni)} municipalities.",
           "Change in predicted yield (bu/acre)", "Municipalities", legend=True,

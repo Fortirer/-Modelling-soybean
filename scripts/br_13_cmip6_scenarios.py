@@ -28,7 +28,7 @@ import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 import statsmodels.formula.api as smf
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, FINAL, PROC, RES, FIG, UF, FOCAL_CODE
+from _brcfg import RAW, FINAL, PROC, RES, FIG, UF, FOCAL_CODE, FOCAL_MUNICIPIO
 from _viz import *
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
@@ -158,7 +158,7 @@ print(PM.pivot_table(index="model", columns=["scenario", "horizon"],
                      values="mean_delta_bu").round(3).to_string())
 
 foc = PC[PC.fips5 == FOCAL_CODE]
-print(f"\n[br13] Sorriso ({FOCAL_CODE})")
+print(f"\n[br13] {FOCAL_MUNICIPIO.title()} ({FOCAL_CODE})")
 print(foc[["scenario", "horizon", "baseline_yield", "delta_bu", "pct"]]
       .round(3).to_string(index=False))
 

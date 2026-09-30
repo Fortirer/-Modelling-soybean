@@ -26,7 +26,7 @@ import statsmodels.formula.api as smf
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.inspection import permutation_importance
 from matplotlib.patches import Patch
-from _brcfg import FINAL, PROC, RES, FIG, SEED, FOCAL_CODE
+from _brcfg import FINAL, PROC, RES, FIG, SEED, FOCAL_CODE, FOCAL_MUNICIPIO
 from _viz import *
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
@@ -173,7 +173,7 @@ for ax_, (col, xl) in zip(axes, pairs):
     fo = muni[muni.fips5 == FOCAL_CODE]
     if len(fo):
         ax_.scatter(fo[col], fo.yield_mean, s=70, color=FOCAL, zorder=3,
-                    edgecolor=SURFACE, linewidth=1.1, label="Sorriso")
+                    edgecolor=SURFACE, linewidth=1.1, label=FOCAL_MUNICIPIO.title())
     b = np.polyfit(muni[col].dropna(), muni.loc[muni[col].notna(), "yield_mean"], 1)
     xx = np.linspace(muni[col].min(), muni[col].max(), 50)
     ax_.plot(xx, np.polyval(b, xx), color=INK, lw=1.6, ls="--")

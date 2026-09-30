@@ -12,7 +12,7 @@ import sys, json
 import numpy as np, pandas as pd
 import statsmodels.formula.api as smf
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, FINAL, RES, FIG, FOCAL_CODE
+from _brcfg import RAW, FINAL, RES, FIG, FOCAL_CODE, FOCAL_MUNICIPIO
 from _viz import *
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
@@ -90,7 +90,7 @@ ax.hist(v, bins=24, color=S1, edgecolor=SURFACE, lw=1.1)
 if FOCAL_CODE in irr.fips5.values:
     fval = irr.loc[irr.fips5 == FOCAL_CODE, "irrigation_prevalence_pct"].iloc[0]
     if pd.notna(fval):
-        ax.axvline(fval, color=FOCAL, lw=2, ls="--", label=f"Sorriso {fval:.2f}%")
+        ax.axvline(fval, color=FOCAL, lw=2, ls="--", label=f"{FOCAL_MUNICIPIO.title()} {fval:.2f}%")
 style(ax, "Figure BR-20. Irrigation prevalence across Mato Grosso municipalities",
       "Irrigated establishment area as a share of mean harvested cropland, 2017 census "
       "snapshot. Confirms MT soybean production is overwhelmingly rainfed.",
