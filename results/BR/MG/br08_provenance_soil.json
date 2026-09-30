@@ -1,0 +1,52 @@
+{
+  "source": "ISRIC SoilGrids v2.0, 250m global gridded soil property maps",
+  "url": "https://www.isric.org/explore/soilgrids",
+  "api": "https://rest.isric.org/soilgrids/v2.0/properties/query",
+  "accessed": "2026-09-30",
+  "access_note": "free, no key, global",
+  "properties": [
+    [
+      "clay_pct",
+      10
+    ],
+    [
+      "sand_pct",
+      10
+    ],
+    [
+      "silt_pct",
+      10
+    ],
+    [
+      "soc_pct",
+      100
+    ],
+    [
+      "ph_h2o",
+      10
+    ],
+    [
+      "bd_kg_dm3",
+      100
+    ],
+    [
+      "cec_cmol_kg",
+      10
+    ]
+  ],
+  "depths": [
+    "0-5cm",
+    "5-15cm",
+    "15-30cm",
+    "30-60cm",
+    "60-100cm"
+  ],
+  "classification": "WRB (World Reference Base), NOT USDA soil taxonomy -- no mollisol_pct equivalent, see docstring; single-attempt best-effort, some municipalities may be null",
+  "no_equivalent_for": [
+    "awc (available water capacity)",
+    "ksat (saturated hydraulic conductivity)",
+    "drainage class"
+  ],
+  "municipalities": 401,
+  "wrb_null_count": 9
+}
