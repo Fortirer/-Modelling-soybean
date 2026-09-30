@@ -12,7 +12,7 @@ sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 import statsmodels.formula.api as smf
 import statsmodels.api as sm
 from statsmodels.stats.diagnostic import het_breuschpagan
-from _brcfg import FINAL, RES, MOD, FOCAL_CODE
+from _brcfg import FINAL, RES, MOD, FOCAL_CODE, UF
 
 d = pd.read_csv(FINAL / "soja_mt_climate_1981_2024.csv", dtype={"fips5": str})
 d = d[d.in_balanced_panel == 1].copy()
@@ -95,4 +95,4 @@ json.dump(dict(
     mean_precip_mm=float(Pbar), mean_tmax_C=float(Tbar), n=int(m4.nobs),
     r2_M4=float(m4.rsquared),
 ), open(RES / "br07_key_estimates.json", "w"), indent=2)
-print(f"\n[br07] -> results/BR/MT/br07_key_estimates.json")
+print(f"\n[br07] -> results/BR/{UF}/br07_key_estimates.json")
