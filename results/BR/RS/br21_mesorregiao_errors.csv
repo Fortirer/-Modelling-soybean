@@ -1,0 +1,8 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Centro Ocidental Rio-grandense,706,-29.523,11.44,11.389,-0.106,-0.446
+Centro Oriental Rio-grandense,1070,-29.467,10.194,10.149,0.255,-0.444
+Metropolitana de Porto Alegre,508,-30.112,8.974,9.412,0.326,4.877
+Nordeste Rio-grandense,791,-28.672,10.79,10.883,-0.582,0.864
+Noroeste Rio-grandense,4966,-27.973,11.969,11.84,-0.691,-1.073
+Sudeste Rio-grandense,506,-31.546,9.229,9.392,-0.02,1.765
+Sudoeste Rio-grandense,387,-30.095,9.743,9.706,0.13,-0.372
