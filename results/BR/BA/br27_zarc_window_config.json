@@ -1,0 +1,25 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 169,
+  "by_maturity_group": {
+    "Grupo I": 54.03,
+    "Grupo II": 54.12,
+    "Grupo III": 69.18
+  },
+  "maturity_group_anova": {
+    "F": 19.387962643125142,
+    "p": 8.5958414498105e-09
+  },
+  "by_mesorregiao": {
+    "Sul Baiano": 58.12,
+    "Centro Sul Baiano": 58.74,
+    "Extremo Oeste Baiano": 74.93,
+    "Vale S\u00e3o-Franciscano da Bahia": 75.87
+  },
+  "mesorregiao_anova": {
+    "F": 5.697477865465601,
+    "p": 0.0009783147134646505
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
