@@ -1,0 +1,33 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 853,
+  "by_maturity_group": {
+    "Grupo I": 75.08,
+    "Grupo II": 74.64,
+    "Grupo III": 74.99
+  },
+  "maturity_group_anova": {
+    "F": 0.6980912440554268,
+    "p": 0.49762894145617437
+  },
+  "by_mesorregiao": {
+    "Vale do Mucuri": 59.67,
+    "Jequitinhonha": 65.72,
+    "Vale do Rio Doce": 66.89,
+    "Norte de Minas": 68.15,
+    "Zona da Mata": 72.58,
+    "Campo das Vertentes": 79.0,
+    "Sul/Sudoeste de Minas": 79.36,
+    "Oeste de Minas": 79.45,
+    "Metropolitana de Belo Horizonte": 79.73,
+    "Central Mineira": 82.42,
+    "Tri\u00e2ngulo Mineiro/Alto Parana\u00edba": 83.65,
+    "Noroeste de Minas": 87.63
+  },
+  "mesorregiao_anova": {
+    "F": 174.40010899820254,
+    "p": 1.0999108368783532e-207
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
