@@ -1,15 +1,27 @@
-"""BR 04 - Daily weather from NASA POWER for every Mato Grosso municipality
-centroid. This is the transfer US script 17's docstring names outright: POWER
-was chosen there specifically so Illinois and Brazil could share one
-consistent daily-weather source. Same API, same variables, same fill-value
-handling; only the centroid table and the date range differ (POWER's daily
-record starts 1981, so this covers IBGE's production series from 1981
-onward, not 1974-1980).
+"""BR 04 - Daily weather from NASA POWER for every soybean-producing
+municipality centroid. This is the transfer US script 17's docstring names
+outright: POWER was chosen there specifically so Illinois and Brazil could
+share one consistent daily-weather source. Same API, same variables, same
+fill-value handling; only the centroid table and the date range differ
+(POWER's daily record starts 1981, so this covers IBGE's production series
+from 1981 onward, not 1974-1980).
+
+FETCHES ONLY PRODUCING MUNICIPIOS, NOT EVERY MUNICIPIO IN THE STATE.
+  br_03's boundary file covers every municipio IBGE recognizes (853 for
+  Minas Gerais, most of which have never reported a hectare of soybean --
+  MG is mostly coffee and dairy country outside the Triangulo Mineiro).
+  Fetching daily weather for all of them would multiply this branch's
+  slowest download by however oversized the state's municipio count is
+  relative to its soybean footprint, for centroids that can never appear
+  in the final panel. Filtered here to the municipio_codigo set already
+  in br_02's production_clean.csv -- a real zero-production history, not
+  a modeling assumption, so this introduces no selection bias into the
+  analysis itself.
 """
 import sys, json, time, urllib.request, urllib.error
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, RES, UF
+from _brcfg import RAW, PROC, RES, UF
 
 API = "https://power.larc.nasa.gov/api/temporal/daily/point"
 VARS = ["T2M_MAX", "T2M_MIN", "T2M", "T2MDEW", "PRECTOTCORR", "ALLSKY_SFC_SW_DWN"]
@@ -37,7 +49,16 @@ def centroids():
         if len(pts) > 1 and np.allclose(pts[0], pts[-1]):
             pts = pts[:-1]
         rows.append(dict(unit_id=code.strip(), lon=pts[:, 0].mean(), lat=pts[:, 1].mean()))
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    prod_file = PROC / "production_clean.csv"
+    if prod_file.exists():
+        producing = set(pd.read_csv(prod_file, dtype={"fips5": str}).fips5)
+        before = len(df)
+        df = df[df.unit_id.isin(producing)].reset_index(drop=True)
+        if len(df) < before:
+            print(f"[br04] filtered {before} municipio boundaries down to {len(df)} "
+                  f"with any recorded soybean production (see docstring)")
+    return df
 
 
 def fetch(lat, lon, retries=4):

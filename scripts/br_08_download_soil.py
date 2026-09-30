@@ -42,7 +42,7 @@ import sys, json, time, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from _brcfg import RAW, RES, UF
+from _brcfg import RAW, PROC, RES, UF
 
 PROP_URL = "https://rest.isric.org/soilgrids/v2.0/properties/query"
 CLASS_URL = "https://rest.isric.org/soilgrids/v2.0/classification/query"
@@ -140,7 +140,19 @@ def centroids():
         if len(pts) > 1 and np.allclose(pts[0], pts[-1]):
             pts = pts[:-1]
         rows.append(dict(fips5=code.strip(), lon=pts[:, 0].mean(), lat=pts[:, 1].mean()))
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    # same filter as br_04: skip municipios with no recorded soybean
+    # production ever, rather than fetch soil for every municipio IBGE
+    # recognizes in the state -- see br_04's docstring for why
+    prod_file = PROC / "production_clean.csv"
+    if prod_file.exists():
+        producing = set(pd.read_csv(prod_file, dtype={"fips5": str}).fips5)
+        before = len(df)
+        df = df[df.fips5.isin(producing)].reset_index(drop=True)
+        if len(df) < before:
+            print(f"[br08] filtered {before} municipio boundaries down to {len(df)} "
+                  f"with any recorded soybean production")
+    return df
 
 
 def main():
