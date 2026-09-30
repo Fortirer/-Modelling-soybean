@@ -672,6 +672,88 @@ This is a structural translation of a Brazil state-level IBGE + ERA5 study desig
 
 ---
 
+## Extension: Mato Grosso, Brazil
+
+The Illinois pipeline was itself a translation of a Brazil state-level design (see [Design lineage](#design-lineage) above). This extension runs it back the other way: a parallel branch, `br_00` through `br_20`, applies the same discipline — detrended yield anomaly, county/municipio fixed effects, expanding-window validation, no random splits — to Mato Grosso, Brazil's largest soybean state, at municipio resolution (the direct analogue of a US county). It is a separate branch (`scripts/br_NN_*.py`, `data/{raw,processed,final}/BR/MT/`, `results/BR/MT/`, `figures/BR/MT/`), not folded into the US `STATE_REGISTRY` machinery, because Brazil has no NASS, nClimDiv, TIGER, SSURGO or AQS equivalent. See `scripts/br_00_config.py` for why.
+
+![observations](https://img.shields.io/badge/municipios-97%20of%20141-1a1815)
+![years](https://img.shields.io/badge/years-1981--2024-2E6B8C)
+![r2](https://img.shields.io/badge/two--way%20FE%20R²-0.272-B4472F)
+
+### Sources, one per US-pipeline step they replace
+
+| US source | Brazil replacement | Access |
+| --- | --- | --- |
+| USDA NASS (production) | IBGE SIDRA tabela 1612 (PAM), municipio level, produto "Soja (em grao)" | REST, no key |
+| NOAA nClimDiv | NASA POWER daily point API — already global by design (see script `17`'s own docstring) | REST, no key |
+| Census TIGER (boundaries) | IBGE Malhas Territoriais | REST, no key |
+| USDA-NRCS SSURGO | ISRIC SoilGrids v2.0, 250 m, one property per request (multi-property queries 504) | REST, no key |
+| NASS Census irrigation | IBGE Censo Agropecuario 2017, tabela 6859 — all-crop irrigated area, no soja-only breakdown exists | REST, no key |
+| NASS crop progress | **No municipio-resolution equivalent exists** — see below | — |
+| — | ZARC (MAPA official climate-risk zoning), municipio × maturity-group × soil-class planting risk | Qlik Sense QIX Engine websocket API, reverse-engineered (`br_19`) |
+
+### The Southern-Hemisphere calendar, resolved empirically not assumed
+
+IBGE's PAM "ano" is the **planting** year (ano=2020 → planted Sep-Nov 2020, harvested Feb-Apr 2021). This was tested against the actual regression rather than guessed: the planting-year convention gives R²=0.27 with every term significant and a sensible thermal-optimum shape; the harvest-year guess gives R²=0.30 but insignificant terms. Growing season Sep(Y)-Apr(Y+1); critical window Jan-Feb(Y+1) — the local-summer analogue of Illinois' July-August.
+
+### The headline finding runs backwards from every US state
+
+The two-way fixed-effects model (`br_07`) gives **TMX +5.26 (p<0.001), TMX² −0.075 (p<0.001)**, R²=0.272 — a fitted thermal optimum at **32.7 °C** against an observed mean January-February maximum of 28.96 °C, *below* the optimum. dYield/dTemp at sample means is **+0.56 bu/acre per °C** — the opposite sign from every one of the twelve US states run through this pipeline. Mato Grosso soybean, at today's climate, is not yet at the point where more heat hurts.
+
+CMIP6 scenarios (`br_12`-`br_13`) confirm it structurally rather than by accident: every scenario, every one of 8 models, all 97 municipios in the balanced panel project a **positive** yield change (0 of 97 worse off anywhere) — ssp245 mid +0.54, ssp585 late +1.29 bu/acre ensemble-median. Jan-Feb ensemble warming is milder than the US July-August signal (+1.4 to +3.9 °C against +2.5 to +5.4 °C), and it is moving the state *toward* its thermal optimum, not past it.
+
+### Where soil and irrigation diverge from Illinois too
+
+Soil explains 82% of Illinois' county yield *level* but soil **explains nothing here, in either direction** (`br_11`): the best MT feature set scores *worse* than a naive baseline out-of-sample — the only state or UF in this whole project where that happens. WRB classification is 96 of 141 municipios Ferralsol (deeply weathered Cerrado Oxisols, contrast with Illinois' Mollisols), topsoil organic matter 2.79%, pH 5.09.
+
+Irrigation (`br_15`-`br_16`) is a non-factor: median prevalence 0.91% of harvested cropland (16 of 140 municipios report zero), no significant interaction with precipitation sensitivity (p=0.45). MT soybean is overwhelmingly rainfed — the low prevalence is the expected finding for this UF, not a data gap.
+
+### Three independent sources converge on the same regional heterogeneity
+
+A uniform statewide crop calendar (the same simplification Illinois' county-relative window makes) turns out to miss something real in Mato Grosso, and three separately built analyses using three unrelated data sources agree:
+
+| Source | Method | Finding |
+| --- | --- | --- |
+| Yield panel (`br_17`) | Leave-one-mesorregiao-out spatial holdout, 2001-2024 | Norte Mato-grossense transfers worst (+24.6% RMSE under holdout); municipio-mean residuals correlate with latitude (r=+0.44 to +0.62) |
+| IMEA industry bulletins (`br_18`) | Interpolated day-of-50%-complete, 9 planting + 12 harvest seasons scraped from public PDF bulletins | Regions differ significantly in timing (ANOVA p=0.004 planting, p=0.0002 harvest); Nordeste Mato-grossense is the consistent laggard in both, ~15-day spread |
+| ZARC official risk zoning (`br_19`-`br_20`) | Recommended planting decade (minimum government risk code), 91,368 rows extracted from a live Qlik Sense session | Mesorregiao effect highly significant (p<0.0001, F=27.8), ~7-day spread; maturity group has **no** effect (p=0.935) — a genuine null, since the water-balance model scores risk against rainy-season onset, which doesn't shift with cycle length |
+
+The three sources do not agree on every detail — ZARC ranks Nordeste only mid-pack, not last as the other two do — worth stating rather than smoothing over. But "geography matters more than a uniform calendar assumes" replicates three times, independently.
+
+### Still open
+
+Municipio-resolution **observed** crop-progress data (the NASS equivalent needed to calibrate true phenology stage dates, US scripts `23`-`25`) does not exist for Brazil at any resolution this branch could find. CONAB's bulletins are state-level dashboards; IMEA's are regional (7 zones); ZARC (`br_19`-`br_20`) is the finest — genuine municipio × maturity-group resolution — but it is a climate-risk *model* output, not observed planting/harvest progress. The adaptation/maturity-group analysis (US script `21` equivalent) is answerable for planting-window timing using ZARC (answer: no effect), but a full replication would need maturity-group-resolved yield outcomes, which no source provides.
+
+### Quick start
+
+```bash
+cd scripts
+UF=MT python br_01_download_production.py
+UF=MT python br_02_clean_production.py
+UF=MT python br_03_download_boundaries.py
+UF=MT python br_04_download_daily_weather.py   # NASA POWER, 141 units (~slow)
+UF=MT python br_05_process_climate.py
+UF=MT python br_06_merge_data.py
+UF=MT python br_07_statistical_models.py
+UF=MT python br_08_download_soil.py            # ISRIC SoilGrids, cached, threaded
+UF=MT python br_09_soil_features.py
+UF=MT python br_10_phenology_features.py
+UF=MT python br_11_soil_models.py
+UF=MT python br_12_cmip6_deltas.py             # AWS Open Data (~20 min)
+UF=MT python br_13_cmip6_scenarios.py
+UF=MT python br_14_sensitivity_analysis.py
+UF=MT python br_15_download_irrigation.py
+UF=MT python br_16_irrigation_analysis.py
+UF=MT python br_17_spatial_validation.py
+UF=MT python br_18_imea_phenology_check.py     # scrapes public IMEA bulletins
+UF=MT python br_19_zarc_download.py            # Qlik Sense websocket API, resilient reconnect
+UF=MT python br_20_zarc_planting_windows.py
+```
+
+Reference cultivar registries are Mato Grosso only; adding a second UF means extending `UF_REGISTRY` in `br_00_config.py`.
+
+---
+
 ## License
 
 MIT for the code and documentation. Underlying data are United States federal works in the public domain. See [`LICENSE`](LICENSE).
