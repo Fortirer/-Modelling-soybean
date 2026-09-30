@@ -164,7 +164,13 @@ async def open_session(uf_value, cultura_value, safra_value):
     return client, obj_handle, n_rows
 
 
-async def fetch_zarc(uf_value, cultura_value, safra_value, max_reconnects=15):
+async def fetch_zarc(uf_value, cultura_value, safra_value, max_reconnects=60):
+    # the connection drops roughly every 10-30k rows regardless of state
+    # size, so a state with a much larger total row count (Minas Gerais,
+    # ~850 municipios, 521,856 rows) needs proportionally more reconnects
+    # -- 15 was tuned against Mato Grosso's much smaller pull and ran out
+    # with about 120,000 rows still unfetched here. Raised with margin
+    # rather than re-tuned per state.
     rows = []
     top = 0
     n_rows = None
