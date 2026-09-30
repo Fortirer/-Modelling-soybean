@@ -1,0 +1,13 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Araraquara,342,-21.741,6.723,6.716,-0.067,-0.112
+Araçatuba,534,-21.152,8.185,8.293,0.609,1.322
+Assis,765,-22.854,6.56,6.566,0.407,0.093
+Bauru,396,-22.586,7.19,7.173,-0.405,-0.227
+Campinas,335,-22.189,7.867,7.815,0.326,-0.652
+Itapetininga,414,-23.676,7.655,7.878,-0.483,2.906
+Macro Metropolitana Paulista,30,-23.637,9.127,9.239,-0.697,1.221
+Marília,22,-22.439,5.698,5.739,-0.398,0.707
+Piracicaba,215,-22.425,7.022,6.992,0.904,-0.43
+Presidente Prudente,377,-22.267,8.266,8.155,0.648,-1.345
+Ribeirão Preto,1236,-20.833,6.388,6.272,-0.089,-1.819
+São José do Rio Preto,990,-20.526,8.206,8.267,-0.161,0.743
