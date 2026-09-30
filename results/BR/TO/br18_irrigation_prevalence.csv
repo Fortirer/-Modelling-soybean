@@ -1,0 +1,125 @@
+fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested_ha,irrigation_prevalence_pct
+1700251,3.0,61.0,Abreulândia - TO,,,
+1700301,24.0,282.0,Aguiarnópolis - TO,,,
+1700350,14.0,6.0,Aliança do Tocantins - TO,7879.2921,3188.6392,0.1882
+1700400,4.0,23.0,Almas - TO,7917.6308,3204.1543,0.7178
+1700707,1.0,0.0,Alvorada - TO,22063.8042,8928.9127,0.0
+1701002,1.0,0.0,Ananás - TO,,,
+1701051,2.0,0.0,Angico - TO,,,
+1701101,6.0,2186.0,Aparecida do Rio Negro - TO,28548.2748,11553.0871,18.9213
+1701309,9.0,28.0,Aragominas - TO,,,
+1701903,7.0,15.0,Araguacema - TO,23976.141,9702.8086,0.1546
+1702000,8.0,1527.0,Araguaçu - TO,11324.016,4582.6707,33.3212
+1702109,87.0,491.0,Araguaína - TO,,,
+1702208,99.0,151.0,Araguatins - TO,,,
+1702307,5.0,0.0,Arapoema - TO,,,
+1702406,9.0,365.0,Arraias - TO,,,
+1702554,3.0,0.0,Augustinópolis - TO,,,
+1702901,10.0,12.0,Axixá do Tocantins - TO,,,
+1703008,46.0,91.0,Babaçulândia - TO,,,
+1703057,3.0,98.0,Bandeirantes do Tocantins - TO,,,
+1703073,14.0,13.0,Barra do Ouro - TO,12439.8733,5034.2425,0.2582
+1703107,8.0,91.0,Barrolândia - TO,,,
+1703206,3.0,13.0,Bernardo Sayão - TO,,,
+1703701,6.0,894.0,Brejinho de Nazaré - TO,20812.229,8422.4177,10.6145
+1703800,12.0,10.0,Buriti do Tocantins - TO,,,
+1703826,12.0,26.0,Cachoeirinha - TO,,,
+1703842,18.0,424.0,Campos Lindos - TO,107580.2932,43536.2385,0.9739
+1703867,28.0,1412.0,Cariri do Tocantins - TO,19770.4264,8000.8148,17.6482
+1703883,2.0,0.0,Carmolândia - TO,,,
+1703891,3.0,3.0,Carrasco Bonito - TO,,,
+1703909,3.0,1354.0,Caseara - TO,,,
+1704600,2.0,0.0,Chapada de Areia - TO,,,
+1705102,9.0,98.0,Chapada da Natividade - TO,20231.1059,8187.2453,1.197
+1705508,14.0,22.0,Colinas do Tocantins - TO,,,
+1705557,17.0,47.0,Combinado - TO,,,
+1706001,12.0,20.0,Couto Magalhães - TO,9081.2404,3675.0509,0.5442
+1706100,11.0,2972.0,Cristalândia - TO,6177.511,2499.9522,100.0
+1706258,9.0,39.0,Crixás do Tocantins - TO,6724.6641,2721.3774,1.4331
+1706506,16.0,78.0,Darcinópolis - TO,14139.0476,5721.8746,1.3632
+1707009,40.0,680.0,Dianópolis - TO,25622.357,10369.0092,6.558
+1707108,6.0,14.0,Divinópolis do Tocantins - TO,,,
+1707207,3.0,73.0,Dois Irmãos do Tocantins - TO,,,
+1707306,11.0,1067.0,Dueré - TO,4490.7285,1817.3349,58.7123
+1707405,17.0,69.0,Esperantina - TO,,,
+1707553,2.0,0.0,Fátima - TO,,,
+1707652,14.0,1928.0,Figueirópolis - TO,19483.8792,7884.8531,24.4519
+1707702,23.0,55.0,Filadélfia - TO,,,
+1708205,68.0,31181.0,Formoso do Araguaia - TO,26191.0007,10599.1313,100.0
+1709005,27.0,813.0,Goiatins - TO,25127.4255,10168.7173,7.9951
+1709302,19.0,237.0,Guaraí - TO,13252.3266,5363.0311,4.4191
+1709500,76.0,341.0,Gurupi - TO,12879.8385,5212.2903,6.5422
+1710508,5.0,14.0,Itacajá - TO,11283.3689,4566.2214,0.3066
+1710706,29.0,19.0,Itaguatins - TO,,,
+1710904,6.0,9.0,Itapiratins - TO,20155.0269,8156.4572,0.1103
+1711100,3.0,34.0,Itaporã do Tocantins - TO,,,
+1711506,6.0,23.0,Jaú do Tocantins - TO,,,
+1711803,2.0,0.0,Juarina - TO,,,
+1711902,51.0,43725.0,Lagoa da Confusão - TO,50700.9118,20517.9492,100.0
+1711951,1.0,0.0,Lagoa do Tocantins - TO,,,
+1712009,12.0,159.0,Lajeado - TO,,,
+1712157,2.0,0.0,Lavandeira - TO,,,
+1712405,4.0,121.0,Lizarda - TO,,,
+1712454,22.0,20.0,Luzinópolis - TO,,,
+1712504,5.0,374.0,Marianópolis do Tocantins - TO,,,
+1712801,7.0,10.0,Maurilândia do Tocantins - TO,,,
+1713205,69.0,488.0,Miracema do Tocantins - TO,10772.2221,4359.3675,11.1943
+1713304,17.0,162.0,Miranorte - TO,11260.2216,4556.854,3.5551
+1713601,5.0,29.0,Monte do Carmo - TO,41278.8625,16704.9777,0.1736
+1713700,3.0,15.0,Monte Santo do Tocantins - TO,,,
+1713809,39.0,81.0,Palmeiras do Tocantins - TO,,,
+1713957,3.0,51.0,Muricilândia - TO,,,
+1714203,4.0,10.0,Natividade - TO,3398.5639,1375.3512,0.7271
+1714302,10.0,24.0,Nazaré - TO,,,
+1714880,43.0,211.0,Nova Olinda - TO,4811.1418,1947.0017,10.8372
+1715002,3.0,22.0,Nova Rosalândia - TO,,,
+1715101,2.0,0.0,Novo Acordo - TO,,,
+1715150,6.0,9.0,Novo Alegre - TO,,,
+1715259,6.0,9.0,Novo Jardim - TO,,,
+1715705,11.0,201.0,Palmeirante - TO,17976.2987,7274.7564,2.763
+1715754,38.0,1983.0,Palmeirópolis - TO,4331.7573,1753.0016,100.0
+1716109,31.0,67.0,Paraíso do Tocantins - TO,4023.464,1628.2395,4.1149
+1716208,33.0,1847.0,Paranã - TO,,,
+1716307,5.0,34.0,Pau D'Arco - TO,,,
+1716505,15.0,19990.0,Pedro Afonso - TO,42400.2781,17158.799,100.0
+1716604,23.0,1243.0,Peixe - TO,33237.4977,13450.75,9.2411
+1716653,3.0,8.0,Pequizeiro - TO,,,
+1716703,1.0,0.0,Colméia - TO,,,
+1717008,1.0,0.0,Pindorama do Tocantins - TO,,,
+1717206,5.0,65.0,Piraquê - TO,,,
+1717503,32.0,16646.0,Pium - TO,18798.6449,7607.5484,100.0
+1717800,3.0,125.0,Ponte Alta do Bom Jesus - TO,,,
+1717909,12.0,24.0,Ponte Alta do Tocantins - TO,,,
+1718204,143.0,1638.0,Porto Nacional - TO,34688.2603,14037.8533,11.6685
+1718303,5.0,16.0,Praia Norte - TO,,,
+1718451,1.0,0.0,Pugmil - TO,,,
+1718550,7.0,11.0,Riachinho - TO,,,
+1718659,8.0,752.0,Rio da Conceição - TO,,,
+1718709,6.0,2228.0,Rio dos Bois - TO,13992.3422,5662.505,39.3465
+1718758,8.0,120.0,Rio Sono - TO,4380.2371,1772.6206,6.7696
+1718808,4.0,1.0,Sampaio - TO,,,
+1718840,4.0,405.0,Sandolândia - TO,,,
+1718865,2.0,0.0,Santa Fé do Araguaia - TO,,,
+1718881,2.0,0.0,Santa Maria do Tocantins - TO,13430.4246,5435.1048,0.0
+1718899,1.0,0.0,Santa Rita do Tocantins - TO,14233.5789,5760.1301,0.0
+1718907,5.0,124.0,Santa Rosa do Tocantins - TO,43436.4691,17578.1309,0.7054
+1719004,3.0,6.0,Santa Tereza do Tocantins - TO,,,
+1720002,5.0,39.0,Santa Terezinha do Tocantins - TO,,,
+1720101,19.0,570.0,São Bento do Tocantins - TO,,,
+1720150,1.0,0.0,São Félix do Tocantins - TO,,,
+1720200,55.0,75.0,São Miguel do Tocantins - TO,,,
+1720259,7.0,32.0,São Salvador do Tocantins - TO,,,
+1720309,15.0,40.0,São Sebastião do Tocantins - TO,,,
+1720499,17.0,52.0,São Valério - TO,18706.7011,7570.34,0.6869
+1720655,5.0,403.0,Silvanópolis - TO,32548.5232,13171.9317,3.0595
+1720804,26.0,21.0,Sítio Novo do Tocantins - TO,,,
+1720853,3.0,0.0,Sucupira - TO,18844.3514,7626.0452,0.0
+1720903,17.0,28.0,Taguatinga - TO,1922.3563,777.9507,3.5992
+1720937,3.0,53.0,Taipas do Tocantins - TO,,,
+1721000,400.0,899.0,Palmas - TO,15161.0624,6135.4697,14.6525
+1721109,8.0,198.0,Tocantínia - TO,,,
+1721208,30.0,35.0,Tocantinópolis - TO,,,
+1721257,12.0,7.0,Tupirama - TO,20683.017,8370.1274,0.0836
+1721307,1.0,0.0,Tupiratins - TO,2778.9942,1124.62,0.0
+1722081,29.0,480.0,Wanderlândia - TO,,,
+1722107,4.0,47.0,Xambioá - TO,,,
