@@ -1,0 +1,26 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 141,
+  "by_maturity_group": {
+    "Grupo I": 82.04,
+    "Grupo II": 81.96,
+    "Grupo III": 81.86
+  },
+  "maturity_group_anova": {
+    "F": 0.06772718160538321,
+    "p": 0.9345255958320766
+  },
+  "by_mesorregiao": {
+    "Norte Mato-grossense": 78.78,
+    "Sudeste Mato-grossense": 82.61,
+    "Centro-Sul Mato-grossense": 83.56,
+    "Nordeste Mato-grossense": 83.94,
+    "Sudoeste Mato-grossense": 85.9
+  },
+  "mesorregiao_anova": {
+    "F": 27.810638385095906,
+    "p": 8.73763713911387e-17
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
