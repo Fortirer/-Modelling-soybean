@@ -49,6 +49,8 @@ UF_REGISTRY = {
                focal_municipio="CASCAVEL", focal_code="4104808"),
     "GO": dict(name="GOIAS", ibge_uf="52",
                focal_municipio="RIO VERDE", focal_code="5218805"),
+    "RS": dict(name="RIO GRANDE DO SUL", ibge_uf="43",
+               focal_municipio="NAO-ME-TOQUE", focal_code="4312658"),
 }
 if UF not in UF_REGISTRY:
     raise SystemExit(f"Unknown UF={UF!r}. Add it to UF_REGISTRY in "

@@ -1,0 +1,494 @@
+fips5,irrigated_estabs,irrigated_area_ha,county
+4300034,54.0,11338.0,Aceguá - RS
+4300059,42.0,231.0,Água Santa - RS
+4300109,369.0,8228.0,Agudo - RS
+4300208,71.0,131.0,Ajuricaba - RS
+4300307,11.0,11.0,Alecrim - RS
+4300406,351.0,65473.0,Alegrete - RS
+4300455,42.0,144.0,Alegria - RS
+4300471,6.0,100.0,Almirante Tamandaré do Sul - RS
+4300505,24.0,48.0,Alpestre - RS
+4300554,5.0,49.0,Alto Alegre - RS
+4300570,27.0,50.0,Alto Feliz - RS
+4300604,11.0,132.0,Alvorada - RS
+4300638,30.0,129.0,Amaral Ferrador - RS
+4300646,18.0,40.0,Ametista do Sul - RS
+4300661,3.0,85.0,André da Rocha - RS
+4300703,15.0,16.0,Anta Gorda - RS
+4300802,205.0,664.0,Antônio Prado - RS
+4300851,102.0,22215.0,Arambaré - RS
+4300877,8.0,7.0,Araricá - RS
+4300901,3.0,8.0,Aratiba - RS
+4301008,24.0,27.0,Arroio do Meio - RS
+4301057,7.0,5.0,Arroio do Sal - RS
+4301073,53.0,87.0,Arroio do Padre - RS
+4301107,12.0,260.0,Arroio dos Ratos - RS
+4301206,45.0,39.0,Arroio do Tigre - RS
+4301305,162.0,45179.0,Arroio Grande - RS
+4301404,4.0,6.0,Arvorezinha - RS
+4301503,56.0,376.0,Augusto Pestana - RS
+4301552,16.0,90.0,Áurea - RS
+4301602,126.0,16056.0,Bagé - RS
+4301636,4.0,669.0,Balneário Pinhal - RS
+4301651,34.0,57.0,Barão - RS
+4301701,14.0,28.0,Barão de Cotegipe - RS
+4301750,42.0,246.0,Barão do Triunfo - RS
+4301800,3.0,2.0,Barracão - RS
+4301859,3.0,15.0,Barra do Guarita - RS
+4301875,63.0,21343.0,Barra do Quaraí - RS
+4301909,110.0,12781.0,Barra do Ribeiro - RS
+4301925,3.0,12.0,Barra do Rio Azul - RS
+4301958,12.0,34.0,Barra Funda - RS
+4302006,20.0,39.0,Barros Cassal - RS
+4302055,5.0,10.0,Benjamin Constant do Sul - RS
+4302105,51.0,97.0,Bento Gonçalves - RS
+4302154,18.0,711.0,Boa Vista das Missões - RS
+4302204,19.0,14.0,Boa Vista do Buricá - RS
+4302220,26.0,4664.0,Boa Vista do Cadeado - RS
+4302238,19.0,3129.0,Boa Vista do Incra - RS
+4302253,31.0,21.0,Boa Vista do Sul - RS
+4302303,19.0,326.0,Bom Jesus - RS
+4302352,70.0,92.0,Bom Princípio - RS
+4302378,9.0,19.0,Bom Progresso - RS
+4302402,5.0,82.0,Bom Retiro do Sul - RS
+4302451,8.0,14.0,Boqueirão do Leão - RS
+4302501,31.0,1503.0,Bossoroca - RS
+4302584,17.0,283.0,Bozano - RS
+4302600,3.0,137.0,Braga - RS
+4302659,5.0,6.0,Brochier - RS
+4302709,17.0,1823.0,Butiá - RS
+4302808,63.0,3108.0,Caçapava do Sul - RS
+4302907,95.0,17767.0,Cacequi - RS
+4303004,382.0,33056.0,Cachoeira do Sul - RS
+4303103,2.0,,Cachoeirinha - RS
+4303202,14.0,20.0,Cacique Doble - RS
+4303301,16.0,264.0,Caibaté - RS
+4303400,10.0,29.0,Caiçara - RS
+4303509,263.0,31969.0,Camaquã - RS
+4303558,14.0,120.0,Camargo - RS
+4303608,13.0,178.0,Cambará do Sul - RS
+4303673,49.0,472.0,Campestre da Serra - RS
+4303707,571.0,195.0,Campina das Missões - RS
+4303806,21.0,219.0,Campinas do Sul - RS
+4303905,13.0,10.0,Campo Bom - RS
+4304002,20.0,1872.0,Campo Novo - RS
+4304101,22.0,122.0,Campos Borges - RS
+4304200,192.0,5758.0,Candelária - RS
+4304309,529.0,180.0,Cândido Godói - RS
+4304358,29.0,1784.0,Candiota - RS
+4304408,33.0,16.0,Canela - RS
+4304507,224.0,2076.0,Canguçu - RS
+4304606,29.0,639.0,Canoas - RS
+4304614,1.0,,Canudos do Vale - RS
+4304622,15.0,26.0,Capão Bonito do Sul - RS
+4304630,2.0,,Capão da Canoa - RS
+4304655,10.0,954.0,Capão do Cipó - RS
+4304663,26.0,7357.0,Capão do Leão - RS
+4304671,59.0,12755.0,Capivari do Sul - RS
+4304689,74.0,1939.0,Capela de Santana - RS
+4304697,1.0,,Capitão - RS
+4304705,20.0,1108.0,Carazinho - RS
+4304713,121.0,252.0,Caraá - RS
+4304804,116.0,152.0,Carlos Barbosa - RS
+4304853,7.0,17.0,Carlos Gomes - RS
+4304903,13.0,32.0,Casca - RS
+4304952,21.0,97.0,Caseiros - RS
+4305009,62.0,2319.0,Catuípe - RS
+4305108,795.0,2718.0,Caxias do Sul - RS
+4305116,9.0,13.0,Centenário - RS
+4305124,18.0,318.0,Cerrito - RS
+4305132,71.0,858.0,Cerro Branco - RS
+4305157,7.0,34.0,Cerro Grande - RS
+4305173,95.0,501.0,Cerro Grande do Sul - RS
+4305207,108.0,73.0,Cerro Largo - RS
+4305306,19.0,3192.0,Chapada - RS
+4305355,43.0,4423.0,Charqueadas - RS
+4305371,5.0,7.0,Charrua - RS
+4305405,33.0,3615.0,Chiapetta - RS
+4305439,6.0,1671.0,Chuí - RS
+4305447,15.0,12.0,Chuvisca - RS
+4305454,11.0,2558.0,Cidreira - RS
+4305504,22.0,102.0,Ciríaco - RS
+4305587,4.0,4.0,Colinas - RS
+4305603,7.0,2.0,Colorado - RS
+4305702,33.0,2385.0,Condor - RS
+4305801,36.0,10.0,Constantina - RS
+4305835,3.0,0.0,Coqueiro Baixo - RS
+4305850,6.0,20.0,Coqueiros do Sul - RS
+4305871,6.0,326.0,Coronel Barros - RS
+4305900,14.0,2394.0,Coronel Bicaco - RS
+4305934,33.0,22.0,Coronel Pilar - RS
+4305959,28.0,40.0,Cotiporã - RS
+4305975,8.0,429.0,Coxilha - RS
+4306007,24.0,97.0,Crissiumal - RS
+4306056,59.0,4991.0,Cristal - RS
+4306072,8.0,107.0,Cristal do Sul - RS
+4306106,71.0,13717.0,Cruz Alta - RS
+4306130,6.0,17.0,Cruzaltense - RS
+4306205,44.0,576.0,Cruzeiro do Sul - RS
+4306304,26.0,41.0,David Canabarro - RS
+4306320,8.0,7.0,Derrubadas - RS
+4306353,8.0,424.0,Dezesseis de Novembro - RS
+4306379,37.0,3802.0,Dilermando de Aguiar - RS
+4306403,10.0,18.0,Dois Irmãos - RS
+4306429,13.0,3837.0,Dois Irmãos das Missões - RS
+4306452,3.0,2.0,Dois Lajeados - RS
+4306502,47.0,148.0,Dom Feliciano - RS
+4306551,33.0,89.0,Dom Pedro de Alcântara - RS
+4306601,208.0,46334.0,Dom Pedrito - RS
+4306700,179.0,2273.0,Dona Francisca - RS
+4306734,24.0,88.0,Doutor Maurício Cardoso - RS
+4306759,4.0,5.0,Doutor Ricardo - RS
+4306767,183.0,10206.0,Eldorado do Sul - RS
+4306809,6.0,5.0,Encantado - RS
+4306908,88.0,2535.0,Encruzilhada do Sul - RS
+4306924,69.0,31.0,Engenho Velho - RS
+4306932,29.0,2134.0,Entre-Ijuís - RS
+4306957,14.0,21.0,Entre Rios do Sul - RS
+4306973,15.0,56.0,Erebango - RS
+4307005,42.0,63.0,Erechim - RS
+4307054,13.0,113.0,Ernestina - RS
+4307104,20.0,742.0,Herval - RS
+4307203,24.0,100.0,Erval Grande - RS
+4307302,16.0,765.0,Erval Seco - RS
+4307401,9.0,125.0,Esmeralda - RS
+4307450,2.0,,Esperança do Sul - RS
+4307500,9.0,480.0,Espumoso - RS
+4307559,14.0,18.0,Estação - RS
+4307609,11.0,13.0,Estância Velha - RS
+4307708,1.0,,Esteio - RS
+4307807,23.0,29.0,Estrela - RS
+4307815,21.0,631.0,Estrela Velha - RS
+4307831,22.0,2143.0,Eugênio de Castro - RS
+4307864,4.0,23.0,Fagundes Varela - RS
+4307906,279.0,427.0,Farroupilha - RS
+4308003,153.0,1900.0,Faxinal do Soturno - RS
+4308052,3.0,41.0,Faxinalzinho - RS
+4308078,6.0,10.0,Fazenda Vilanova - RS
+4308102,213.0,384.0,Feliz - RS
+4308201,251.0,549.0,Flores da Cunha - RS
+4308250,13.0,13.0,Floriano Peixoto - RS
+4308300,9.0,12.0,Fontoura Xavier - RS
+4308409,219.0,10626.0,Formigueiro - RS
+4308433,2.0,,Forquetinha - RS
+4308458,20.0,2483.0,Fortaleza dos Valos - RS
+4308508,61.0,127.0,Frederico Westphalen - RS
+4308607,119.0,148.0,Garibaldi - RS
+4308656,18.0,822.0,Garruchos - RS
+4308706,2.0,,Gaurama - RS
+4308805,54.0,2654.0,General Câmara - RS
+4308854,8.0,38.0,Gentil - RS
+4308904,24.0,46.0,Getúlio Vargas - RS
+4309001,36.0,1130.0,Giruá - RS
+4309050,28.0,1893.0,Glorinha - RS
+4309100,62.0,43.0,Gramado - RS
+4309126,12.0,133.0,Gramado dos Loureiros - RS
+4309159,2.0,,Gramado Xavier - RS
+4309209,55.0,1029.0,Gravataí - RS
+4309258,8.0,35.0,Guabiju - RS
+4309308,84.0,3089.0,Guaíba - RS
+4309407,17.0,9.0,Guaporé - RS
+4309506,8.0,10.0,Guarani das Missões - RS
+4309555,19.0,35.0,Harmonia - RS
+4309571,4.0,1.0,Herveiras - RS
+4309605,190.0,123.0,Horizontina - RS
+4309654,69.0,943.0,Hulha Negra - RS
+4309704,11.0,24.0,Humaitá - RS
+4309753,9.0,18.0,Ibarama - RS
+4309803,25.0,101.0,Ibiaçá - RS
+4309902,128.0,554.0,Ibiraiaras - RS
+4309951,11.0,38.0,Ibirapuitã - RS
+4310009,39.0,2457.0,Ibirubá - RS
+4310108,37.0,21.0,Igrejinha - RS
+4310207,174.0,272.0,Ijuí - RS
+4310306,9.0,6.0,Ilópolis - RS
+4310363,11.0,11.0,Imigrante - RS
+4310405,48.0,2138.0,Independência - RS
+4310413,13.0,882.0,Inhacorá - RS
+4310439,175.0,910.0,Ipê - RS
+4310462,15.0,24.0,Ipiranga do Sul - RS
+4310504,12.0,19.0,Iraí - RS
+4310538,12.0,11.0,Itaara - RS
+4310553,22.0,1430.0,Itacurubi - RS
+4310579,2.0,,Itapuca - RS
+4310603,152.0,73985.0,Itaqui - RS
+4310652,34.0,102.0,Itati - RS
+4310702,6.0,8.0,Itatiba do Sul - RS
+4310751,23.0,56.0,Ivorá - RS
+4310801,43.0,60.0,Ivoti - RS
+4310850,15.0,27.0,Jaboticaba - RS
+4310876,33.0,2080.0,Jacuizinho - RS
+4310900,7.0,76.0,Jacutinga - RS
+4311007,44.0,22393.0,Jaguarão - RS
+4311106,218.0,2236.0,Jaguari - RS
+4311122,8.0,260.0,Jaquirana - RS
+4311130,5.0,986.0,Jari - RS
+4311155,46.0,5818.0,Jóia - RS
+4311205,40.0,3315.0,Júlio de Castilhos - RS
+4311239,10.0,19.0,Lagoa Bonita do Sul - RS
+4311254,6.0,18.0,Lagoão - RS
+4311270,7.0,167.0,Lagoa dos Três Cantos - RS
+4311304,38.0,91.0,Lagoa Vermelha - RS
+4311403,31.0,41.0,Lajeado - RS
+4311429,8.0,3.0,Lajeado do Bugre - RS
+4311502,18.0,5232.0,Lavras do Sul - RS
+4311601,103.0,76.0,Liberato Salzano - RS
+4311627,16.0,24.0,Lindolfo Collor - RS
+4311643,72.0,136.0,Linha Nova - RS
+4311700,20.0,69.0,Machadinho - RS
+4311718,68.0,28857.0,Maçambará - RS
+4311734,41.0,666.0,Mampituba - RS
+4311759,73.0,3671.0,Manoel Viana - RS
+4311775,68.0,303.0,Maquiné - RS
+4311791,3.0,4.0,Maratá - RS
+4311809,19.0,59.0,Marau - RS
+4311908,11.0,20.0,Marcelino Ramos - RS
+4311981,96.0,771.0,Mariana Pimentel - RS
+4312005,6.0,7.0,Mariano Moro - RS
+4312054,4.0,6.0,Marques de Souza - RS
+4312104,43.0,1954.0,Mata - RS
+4312138,23.0,27.0,Mato Castelhano - RS
+4312153,13.0,14.0,Mato Leitão - RS
+4312179,22.0,472.0,Mato Queimado - RS
+4312203,5.0,6.0,Maximiliano de Almeida - RS
+4312252,8.0,1201.0,Minas do Leão - RS
+4312302,3.0,9.0,Miraguaí - RS
+4312377,22.0,50.0,Monte Alegre dos Campos - RS
+4312385,42.0,17.0,Monte Belo do Sul - RS
+4312401,64.0,518.0,Montenegro - RS
+4312427,2.0,,Mormaço - RS
+4312443,53.0,1015.0,Morrinhos do Sul - RS
+4312450,48.0,304.0,Morro Redondo - RS
+4312476,6.0,3.0,Morro Reuter - RS
+4312500,197.0,37017.0,Mostardas - RS
+4312609,8.0,11.0,Muçum - RS
+4312617,10.0,581.0,Muitos Capões - RS
+4312625,39.0,121.0,Muliterno - RS
+4312658,13.0,85.0,Não-Me-Toque - RS
+4312674,1.0,,Nicolau Vergueiro - RS
+4312708,15.0,139.0,Nonoai - RS
+4312757,5.0,52.0,Nova Alvorada - RS
+4312807,18.0,39.0,Nova Araçá - RS
+4312906,150.0,200.0,Nova Bassano - RS
+4312955,109.0,68.0,Nova Boa Vista - RS
+4313003,10.0,20.0,Nova Bréscia - RS
+4313011,13.0,33.0,Nova Candelária - RS
+4313037,33.0,280.0,Nova Esperança do Sul - RS
+4313060,15.0,12.0,Nova Hartz - RS
+4313086,185.0,407.0,Nova Pádua - RS
+4313102,25.0,117.0,Nova Palma - RS
+4313201,154.0,285.0,Nova Petrópolis - RS
+4313300,50.0,138.0,Nova Prata - RS
+4313334,14.0,422.0,Nova Ramada - RS
+4313359,85.0,164.0,Nova Roma do Sul - RS
+4313375,185.0,4311.0,Nova Santa Rita - RS
+4313391,106.0,1682.0,Novo Cabrais - RS
+4313409,32.0,66.0,Novo Hamburgo - RS
+4313425,6.0,6.0,Novo Machado - RS
+4313466,10.0,19.0,Novo Xingu - RS
+4313490,7.0,16.0,Novo Barreiro - RS
+4313508,72.0,4635.0,Osório - RS
+4313607,11.0,239.0,Paim Filho - RS
+4313656,129.0,16734.0,Palmares do Sul - RS
+4313706,57.0,7889.0,Palmeira das Missões - RS
+4313805,32.0,97.0,Palmitinho - RS
+4313904,44.0,2185.0,Panambi - RS
+4313953,33.0,3945.0,Pantano Grande - RS
+4314001,11.0,15.0,Paraí - RS
+4314027,152.0,3662.0,Paraíso do Sul - RS
+4314035,84.0,88.0,Pareci Novo - RS
+4314050,13.0,14.0,Parobé - RS
+4314068,6.0,7.0,Passa Sete - RS
+4314076,40.0,650.0,Passo do Sobrado - RS
+4314100,99.0,279.0,Passo Fundo - RS
+4314134,22.0,101.0,Paulo Bento - RS
+4314159,6.0,8.0,Paverama - RS
+4314175,18.0,3442.0,Pedras Altas - RS
+4314209,12.0,2021.0,Pedro Osório - RS
+4314308,26.0,3046.0,Pejuçara - RS
+4314407,396.0,12236.0,Pelotas - RS
+4314423,19.0,14.0,Picada Café - RS
+4314456,10.0,62.0,Pinhal - RS
+4314464,33.0,77.0,Pinhal da Serra - RS
+4314472,7.0,495.0,Pinhal Grande - RS
+4314498,12.0,16.0,Pinheirinho do Vale - RS
+4314506,8.0,131.0,Pinheiro Machado - RS
+4314548,48.0,131.0,Pinto Bandeira - RS
+4314555,150.0,158.0,Pirapó - RS
+4314605,27.0,710.0,Piratini - RS
+4314704,24.0,32.0,Planalto - RS
+4314753,4.0,3.0,Poço das Antas - RS
+4314779,8.0,31.0,Pontão - RS
+4314787,10.0,21.0,Ponte Preta - RS
+4314803,36.0,229.0,Portão - RS
+4314902,181.0,771.0,Porto Alegre - RS
+4315008,35.0,83.0,Porto Lucena - RS
+4315057,24.0,36.0,Porto Mauá - RS
+4315073,11.0,28.0,Porto Vera Cruz - RS
+4315107,42.0,145.0,Porto Xavier - RS
+4315131,4.0,8.0,Pouso Novo - RS
+4315149,50.0,90.0,Presidente Lucena - RS
+4315156,6.0,17.0,Progresso - RS
+4315172,7.0,32.0,Protásio Alves - RS
+4315206,5.0,19.0,Putinga - RS
+4315305,87.0,16699.0,Quaraí - RS
+4315313,8.0,138.0,Quatro Irmãos - RS
+4315321,3.0,105.0,Quevedos - RS
+4315354,9.0,10.0,Quinze de Novembro - RS
+4315404,12.0,63.0,Redentora - RS
+4315453,1.0,,Relvado - RS
+4315503,435.0,18826.0,Restinga Sêca - RS
+4315552,2.0,,Rio dos Índios - RS
+4315602,246.0,22962.0,Rio Grande - RS
+4315701,152.0,9454.0,Rio Pardo - RS
+4315750,31.0,46.0,Riozinho - RS
+4315800,16.0,9.0,Roca Sales - RS
+4315909,34.0,23.0,Rodeio Bonito - RS
+4315958,5.0,571.0,Rolador - RS
+4316006,24.0,246.0,Rolante - RS
+4316105,221.0,623.0,Ronda Alta - RS
+4316204,25.0,72.0,Rondinha - RS
+4316303,209.0,276.0,Roque Gonzales - RS
+4316402,164.0,26280.0,Rosário do Sul - RS
+4316428,3.0,4.0,Sagrada Família - RS
+4316436,1.0,,Saldanha Marinho - RS
+4316451,21.0,2404.0,Salto do Jacuí - RS
+4316477,13.0,47.0,Salvador das Missões - RS
+4316501,6.0,4.0,Salvador do Sul - RS
+4316600,42.0,51.0,Sananduva - RS
+4316709,32.0,5992.0,Santa Bárbara do Sul - RS
+4316733,16.0,71.0,Santa Cecília do Sul - RS
+4316758,13.0,9.0,Santa Clara do Sul - RS
+4316808,142.0,2156.0,Santa Cruz do Sul - RS
+4316907,355.0,8134.0,Santa Maria - RS
+4316956,34.0,81.0,Santa Maria do Herval - RS
+4316972,49.0,8332.0,Santa Margarida do Sul - RS
+4317004,24.0,143.0,Santana da Boa Vista - RS
+4317103,172.0,11827.0,Sant'Ana do Livramento - RS
+4317202,82.0,310.0,Santa Rosa - RS
+4317251,16.0,18.0,Santa Tereza - RS
+4317301,139.0,66377.0,Santa Vitória do Palmar - RS
+4317400,45.0,913.0,Santiago - RS
+4317509,44.0,938.0,Santo Ângelo - RS
+4317558,25.0,53.0,Santo Antônio do Palma - RS
+4317608,168.0,13690.0,Santo Antônio da Patrulha - RS
+4317707,68.0,6221.0,Santo Antônio das Missões - RS
+4317756,9.0,212.0,Santo Antônio do Planalto - RS
+4317806,39.0,5959.0,Santo Augusto - RS
+4317905,64.0,200.0,Santo Cristo - RS
+4317954,11.0,39.0,Santo Expedito do Sul - RS
+4318002,222.0,58299.0,São Borja - RS
+4318051,11.0,29.0,São Domingos do Sul - RS
+4318101,71.0,4257.0,São Francisco de Assis - RS
+4318200,85.0,1206.0,São Francisco de Paula - RS
+4318309,294.0,37028.0,São Gabriel - RS
+4318408,42.0,1312.0,São Jerônimo - RS
+4318424,18.0,14.0,São João da Urtiga - RS
+4318432,75.0,1383.0,São João do Polêsine - RS
+4318440,34.0,64.0,São Jorge - RS
+4318457,4.0,4.0,São José das Missões - RS
+4318465,2.0,,São José do Herval - RS
+4318481,45.0,61.0,São José do Hortêncio - RS
+4318499,162.0,35.0,São José do Inhacorá - RS
+4318507,227.0,1748.0,São José do Norte - RS
+4318606,17.0,29.0,São José do Ouro - RS
+4318614,4.0,4.0,São José do Sul - RS
+4318622,2.0,,São José dos Ausentes - RS
+4318705,13.0,23.0,São Leopoldo - RS
+4318804,229.0,10015.0,São Lourenço do Sul - RS
+4318903,67.0,9648.0,São Luiz Gonzaga - RS
+4319000,122.0,322.0,São Marcos - RS
+4319109,5.0,5.0,São Martinho - RS
+4319125,15.0,231.0,São Martinho da Serra - RS
+4319158,37.0,6799.0,São Miguel das Missões - RS
+4319208,22.0,1899.0,São Nicolau - RS
+4319307,569.0,90.0,São Paulo das Missões - RS
+4319356,6.0,19.0,São Pedro da Serra - RS
+4319364,12.0,31.0,São Pedro das Missões - RS
+4319372,34.0,192.0,São Pedro do Butiá - RS
+4319406,176.0,5337.0,São Pedro do Sul - RS
+4319505,141.0,302.0,São Sebastião do Caí - RS
+4319604,227.0,17107.0,São Sepé - RS
+4319703,4.0,7.0,São Valentim - RS
+4319711,16.0,18.0,São Valentim do Sul - RS
+4319737,5.0,23.0,São Valério do Sul - RS
+4319752,11.0,9.0,São Vendelino - RS
+4319802,116.0,10138.0,São Vicente do Sul - RS
+4319901,33.0,122.0,Sapiranga - RS
+4320008,9.0,14.0,Sapucaia do Sul - RS
+4320107,51.0,407.0,Sarandi - RS
+4320206,211.0,642.0,Seberi - RS
+4320230,7.0,14.0,Sede Nova - RS
+4320263,5.0,14.0,Segredo - RS
+4320305,11.0,279.0,Selbach - RS
+4320321,39.0,206.0,Senador Salgado Filho - RS
+4320354,204.0,2907.0,Sentinela do Sul - RS
+4320404,11.0,12.0,Serafina Corrêa - RS
+4320453,2.0,,Sério - RS
+4320503,19.0,116.0,Sertão - RS
+4320552,145.0,1186.0,Sertão Santana - RS
+4320578,11.0,50.0,Sete de Setembro - RS
+4320602,18.0,22.0,Severiano de Almeida - RS
+4320651,2.0,,Silveira Martins - RS
+4320677,40.0,30.0,Sinimbu - RS
+4320701,30.0,60.0,Sobradinho - RS
+4320800,19.0,12.0,Soledade - RS
+4320859,11.0,4.0,Tabaí - RS
+4320909,43.0,87.0,Tapejara - RS
+4321006,17.0,451.0,Tapera - RS
+4321105,108.0,21166.0,Tapes - RS
+4321204,56.0,763.0,Taquara - RS
+4321303,45.0,2793.0,Taquari - RS
+4321329,20.0,86.0,Taquaruçu do Sul - RS
+4321352,104.0,2804.0,Tavares - RS
+4321402,21.0,39.0,Tenente Portela - RS
+4321436,14.0,202.0,Terra de Areia - RS
+4321451,18.0,34.0,Teutônia - RS
+4321469,3.0,9.0,Tio Hugo - RS
+4321477,9.0,41.0,Tiradentes do Sul - RS
+4321493,11.0,289.0,Toropi - RS
+4321501,139.0,2723.0,Torres - RS
+4321600,20.0,503.0,Tramandaí - RS
+4321626,2.0,,Travesseiro - RS
+4321634,14.0,29.0,Três Arroios - RS
+4321667,20.0,99.0,Três Cachoeiras - RS
+4321709,18.0,22.0,Três Coroas - RS
+4321808,56.0,126.0,Três de Maio - RS
+4321832,42.0,150.0,Três Forquilhas - RS
+4321857,43.0,9.0,Três Palmeiras - RS
+4321907,29.0,42.0,Três Passos - RS
+4321956,15.0,603.0,Trindade do Sul - RS
+4322004,90.0,6983.0,Triunfo - RS
+4322103,31.0,109.0,Tucunduva - RS
+4322152,11.0,21.0,Tunas - RS
+4322202,30.0,7223.0,Tupanciretã - RS
+4322251,11.0,6.0,Tupandi - RS
+4322301,19.0,62.0,Tuparendi - RS
+4322327,69.0,1589.0,Turuçu - RS
+4322343,18.0,23.0,Ubiretama - RS
+4322350,3.0,10.0,União da Serra - RS
+4322376,3.0,9.0,Unistalda - RS
+4322400,403.0,93996.0,Uruguaiana - RS
+4322509,77.0,1747.0,Vacaria - RS
+4322525,17.0,1107.0,Vale Verde - RS
+4322533,65.0,1129.0,Vale do Sol - RS
+4322541,20.0,23.0,Vale Real - RS
+4322558,8.0,15.0,Vanini - RS
+4322608,127.0,1601.0,Venâncio Aires - RS
+4322707,62.0,894.0,Vera Cruz - RS
+4322806,62.0,75.0,Veranópolis - RS
+4322855,10.0,9.0,Vespasiano Corrêa - RS
+4322905,9.0,28.0,Viadutos - RS
+4323002,285.0,22572.0,Viamão - RS
+4323101,6.0,11.0,Vicente Dutra - RS
+4323200,21.0,228.0,Victor Graeff - RS
+4323309,8.0,14.0,Vila Flores - RS
+4323358,10.0,14.0,Vila Lângaro - RS
+4323408,19.0,61.0,Vila Maria - RS
+4323457,3.0,36.0,Vila Nova do Sul - RS
+4323507,12.0,50.0,Vista Alegre - RS
+4323606,21.0,41.0,Vista Alegre do Prata - RS
+4323705,6.0,10.0,Vista Gaúcha - RS
+4323754,14.0,209.0,Vitória das Missões - RS
+4323770,8.0,33.0,Westfália - RS
+4323804,5.0,197.0,Xangri-lá - RS
