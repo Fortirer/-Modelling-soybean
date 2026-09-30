@@ -1,0 +1,11 @@
+{
+  "source": "IBGE SIDRA tabela 6859, Censo Agropecuario 2017, all-crop irrigated area (no soja-only breakdown exists)",
+  "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
+  "n_municipios": 241,
+  "n_zero_irrigation": 22,
+  "state_prevalence_pct_median": 17.15689626391362,
+  "state_prevalence_pct_mean": 32.72562039647973,
+  "interaction_beta": 0.2741549625273803,
+  "interaction_p": 0.4197968440931741,
+  "finding": "Goias shows meaningful irrigation prevalence (median 17.2%), unlike the near-zero prevalence found elsewhere in this branch -- a real state-level difference."
+}
