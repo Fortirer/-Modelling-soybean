@@ -1,0 +1,3 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Ocidental do Tocantins,634,-10.447,5.774,6.141,1.351,6.356
+Oriental do Tocantins,470,-10.078,5.136,5.083,0.571,-1.039
