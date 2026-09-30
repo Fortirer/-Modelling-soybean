@@ -1,0 +1,28 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 497,
+  "by_maturity_group": {
+    "Grupo I": 87.23,
+    "Grupo II": 83.93,
+    "Grupo III": 83.5
+  },
+  "maturity_group_anova": {
+    "F": 36.463031468059086,
+    "p": 3.46837232702444e-16
+  },
+  "by_mesorregiao": {
+    "Centro Oriental Rio-grandense": 81.77,
+    "Nordeste Rio-grandense": 82.17,
+    "Noroeste Rio-grandense": 83.5,
+    "Metropolitana de Porto Alegre": 84.95,
+    "Sudeste Rio-grandense": 88.6,
+    "Centro Ocidental Rio-grandense": 90.32,
+    "Sudoeste Rio-grandense": 103.4
+  },
+  "mesorregiao_anova": {
+    "F": 55.31533791417807,
+    "p": 5.8187755866823674e-52
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
