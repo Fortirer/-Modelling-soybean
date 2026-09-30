@@ -672,11 +672,11 @@ This is a structural translation of a Brazil state-level IBGE + ERA5 study desig
 
 ---
 
-## Extension: Brazil (Mato Grosso, Paraná, Goiás, Rio Grande do Sul, Mato Grosso do Sul, Minas Gerais and Bahia)
+## Extension: Brazil (Mato Grosso, Paraná, Goiás, Rio Grande do Sul, Mato Grosso do Sul, Minas Gerais, Bahia and Tocantins)
 
-The Illinois pipeline was itself a translation of a Brazil state-level design (see [Design lineage](#design-lineage) above). This extension runs it back the other way: a parallel branch, `br_00` through `br_20`, applies the same discipline — detrended yield anomaly, county/municipio fixed effects, expanding-window validation, no random splits — to seven of Brazil's largest soybean states, at municipio resolution (the direct analogue of a US county). Each state is a UF registered in `scripts/br_00_config.py`'s `UF_REGISTRY` (`data/{raw,processed,final}/BR/<UF>/`, `results/BR/<UF>/`, `figures/BR/<UF>/`); it is a separate branch entirely, not folded into the US `STATE_REGISTRY` machinery, because Brazil has no NASS, nClimDiv, TIGER, SSURGO or AQS equivalent.
+The Illinois pipeline was itself a translation of a Brazil state-level design (see [Design lineage](#design-lineage) above). This extension runs it back the other way: a parallel branch, `br_00` through `br_20`, applies the same discipline — detrended yield anomaly, county/municipio fixed effects, expanding-window validation, no random splits — to eight of Brazil's largest soybean states, at municipio resolution (the direct analogue of a US county). Each state is a UF registered in `scripts/br_00_config.py`'s `UF_REGISTRY` (`data/{raw,processed,final}/BR/<UF>/`, `results/BR/<UF>/`, `figures/BR/<UF>/`); it is a separate branch entirely, not folded into the US `STATE_REGISTRY` machinery, because Brazil has no NASS, nClimDiv, TIGER, SSURGO or AQS equivalent.
 
-![states](https://img.shields.io/badge/states-MT%20%2B%20PR%20%2B%20GO%20%2B%20RS%20%2B%20MS%20%2B%20MG%20%2B%20BA-1a1815)
+![states](https://img.shields.io/badge/states-MT%20%2B%20PR%20%2B%20GO%20%2B%20RS%20%2B%20MS%20%2B%20MG%20%2B%20BA%20%2B%20TO-1a1815)
 ![mt](https://img.shields.io/badge/MT-97%20of%20141%20municipios-2E6B8C)
 ![pr](https://img.shields.io/badge/PR-362%20of%20399%20municipios-2E6B8C)
 ![go](https://img.shields.io/badge/GO-161%20of%20246%20municipios-2E6B8C)
@@ -684,6 +684,7 @@ The Illinois pipeline was itself a translation of a Brazil state-level design (s
 ![ms](https://img.shields.io/badge/MS-70%20of%2079%20municipios-2E6B8C)
 ![mg](https://img.shields.io/badge/MG-138%20of%20853%20municipios-2E6B8C)
 ![ba](https://img.shields.io/badge/BA-9%20of%20417%20municipios-2E6B8C)
+![to](https://img.shields.io/badge/TO-53%20of%20139%20municipios-2E6B8C)
 
 ### Mato Grosso
 
@@ -845,13 +846,44 @@ Bahia takes MG's asymmetry to its extreme. Of 417 municipios registered with IBG
 | ZARC: mesorregiao geographic spread | 7 days | 21 days | 6 days | ~21 days | ~8 days | 28 days (record) | ~18 days (also noisy) |
 | Regional industry/agency timing bulletin | IMEA (scraped) | None found (images) | Not checked | Not checked | Not checked | Not checked | Not checked |
 
-The takeaway isn't "Brazil behaves like X" — seven of its largest soybean states, run through literally the same code, land on different answers for whether heat helps, hurts, or does nothing; whether that response is spatially uniform or reflects latitude, altitude, or moisture; whether soil or irrigation matter, and in which direction; and whether cultivar choice affects planting timing. Averaging them into one number would erase every one of these findings. Two patterns are worth naming directly rather than leaving implicit: states cluster on some findings (GO/MS/MG share temperature-insignificance; PR/RS share real soil and maturity-group effects) in a way that may reflect a real underlying cause worth investigating rather than coincidence, and MG's records (worst transfer, highest irrigation, widest geographic spread) trace back to one root cause — that soybean is a minority land use there rather than the dominant one. Bahia takes that same root cause further still: it is not just a state where soy is a minority use, but one where the qualifying production history is so recent and narrow that several of its headline numbers (R²=0.787, soil R²=1.0000) are sample-size artifacts rather than estimates comparable to the other six states'. The one number worth trusting from Bahia despite all of that is the *direction* of its climate effect, which four independently-built methods agree on.
+### Tocantins
+
+Tocantins is Brazil's newest state (created 1988, split from northern Goiás), with the smallest municipio count of the eight (139, `UF=TO`, IBGE UF 17, focal municipio Campos Lindos in the Jalapão frontier). Unlike MG/BA, its production footprint is closer to the earlier, more-saturated states (117 of 139 municipios have ever produced soy, 84%), and its balanced panel (53 municipios) is a healthy size — so its findings should be read at face value, not through the small-sample caveats that shadowed Bahia's. What Tocantins actually shows is a state that is unusually, genuinely uniform.
+
+- **The first state with literally no geographic effect on planting timing.** ZARC's mesorregiao test (`br_20`) returns p=0.95 — not just an insignificant maturity-group effect (as in MT/GO), but no detectable geographic effect at all, the flattest result of any state. Its two mesorregioes return means within 0.06 days of each other.
+- **A third total climate-null in the pooled model, but — unlike MG's — on a healthy sample.** Neither `TMX`/`TMX²` nor `PCP`/`PCP²` is significant in `br_07` (p=0.85, 0.19, 0.46, 0.44). R²=0.320.
+- **The lowest spatial variance of any state, independently confirmed twice more.** `br_10`'s `win_gdd` standard deviation (42.97) is the lowest of any state; `br_16`'s irrigation profile and `br_07`'s null both point the same direction — this is a genuinely compact, climatically consistent production zone, not an artifact of small samples the way similar-looking nulls were for MG.
+- **A third instance of the pooled-vs-disaggregated tension, first seen in Mato Grosso do Sul.** Despite `br_07`'s pooled null, `br_17`'s latitude-tercile heat response is *highly* significant (Wald p<0.001) — negative everywhere, but three times stronger in the north (−1.37) than the south (−0.45). A single pooled coefficient can average away a real, spatially-varying effect; this has now happened in three different states (MS, TO, and see below).
+- **The largest Jan-Feb water surplus of any state** — mean `win_water_deficit_mm` of −236.5, the wettest window in the branch, the mirror image of Bahia's water-deficit extreme.
+- **A genuinely mixed soil-yield pattern, distinct from every prior state's category.** Yield *level* is not significant (R²=0.187, p=0.168), but yield *trend* (R²=0.462, p=0.001) and *volatility* (R²=0.416, p=0.022) both are — the opposite emphasis from Paraná/RS, where level was the strongest signal. Same out-of-sample null as every state.
+- **The CMIP6 projection is genuinely unresolved, not falsely precise.** The quadratic panel R²=0.018 (consistent with `br_07`'s null), and the hottest scenario is dominated by sharp inter-model disagreement: two models (ACCESS-ESM1-5, CanESM5) project 9-11 bu/acre gains under ssp585 late-century while the other six cluster under 3 — and 43% of municipality-years exceed the hottest Jan-Feb on record in that scenario, the highest out-of-range share of any state. Reported as real model disagreement, not smoothed into a single confident number.
+
+### Eight states, side by side
+
+| | Mato Grosso | Paraná | Goiás | Rio Grande do Sul | Mato Grosso do Sul | Minas Gerais | Bahia | Tocantins |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Municipios in balanced panel (of state total) | 97 of 141 | 362 of 399 | 161 of 246 | 401 of 497 | 70 of 79 | 138 of 853 | 9 of 417 | 53 of 139 |
+| Two-way FE R² | 0.272 | 0.463 | 0.216 | 0.643 | 0.430 | 0.213 | 0.787 (overfit, n=9) | 0.320 |
+| Heat effect at observed mean (pooled quadratic) | **+0.56** (significant) | **−0.67** (significant) | ~0 (insignificant) | ~0 (at inflection) | ~0 (insignificant) | ~0 (insignificant) | ~0 (insignificant, tiny n) | ~0 (insignificant) |
+| Significant yield driver (pooled quadratic) | Temperature | Temperature | Precipitation | Both (interacting) | Precipitation | Neither | Marginal precip only | Neither |
+| Heat significant once spatially disaggregated? | N/A (already significant) | N/A (already significant) | Tiny effect (p=0.010) | N/A (already significant) | **Yes** (p=0.076, pooled null) | Marginal (p=0.036) | No (p=0.52) | **Yes** (p<0.001, pooled null) |
+| CMIP6 ensemble effect | Positive, every scenario | Positive, every scenario | Mixed | Positive, wetter projected | Cleanest positive | Negative — R²=0.005 | Negative, unanimous | Mixed/sign-flipping — R²=0.018, sharp inter-model split |
+| Soil explains yield level? | No | Yes (R²=0.237) | Weak (R²=0.098) | Yes (R²=0.271) | Weak (R²=0.174) | Weak (R²=0.063) | R²=1.0000 (saturated) | **No** (R²=0.187, p=0.17) |
+| Soil explains yield trend/volatility instead? | — | — | — | — | — | — | — | **Yes** (R²=0.46/0.42, both significant) |
+| Soil improves out-of-sample prediction? | No | No | No | No | No | No | No | No — same null in all eight states |
+| Spatial-holdout transfer loss (worst mesorregiao) | +24.6% | +2.2% | +3.4% | +4.9% (best overall) | +1.6% | +25.6% (record) | −14.2% (thin sample) | +6.4% |
+| Irrigation prevalence (median, soy-relevant municipios) | 0.91% | 1.22% | 17.2% | 2.28% | 1.24% | 57.1% (record) | 15.8% (no variation) | 3.6% (rainfed) |
+| ZARC: maturity group moves planting window? | No (p=0.94) | Yes (p<0.0001) | No (p=0.76) | Yes (p<0.0001) | Yes (p=0.0002) | No (p=0.50) | Yes (noisy) | No (p=0.92) |
+| ZARC: mesorregiao geographic spread | 7 days | 21 days | 6 days | ~21 days | ~8 days | 28 days (record) | ~18 days (noisy) | **~0 days (p=0.95, flattest of any state)** |
+| Regional industry/agency timing bulletin | IMEA (scraped) | None found (images) | Not checked | Not checked | Not checked | Not checked | Not checked | Not checked |
+
+The takeaway isn't "Brazil behaves like X" — eight of its largest soybean states, run through literally the same code, land on different answers for whether heat helps, hurts, or does nothing; whether that response is spatially uniform or reflects latitude, altitude, or moisture; whether soil or irrigation matter, and in which direction; and whether cultivar choice affects planting timing. Averaging them into one number would erase every one of these findings. Several patterns are worth naming directly rather than leaving implicit. States cluster on some findings (GO/MS/MG/TO share temperature-insignificance in the pooled model; PR/RS share real soil and maturity-group effects) in a way that may reflect a real underlying cause worth investigating rather than coincidence. MG's records (worst transfer, highest irrigation, widest geographic spread) trace back to one root cause — soybean as a minority land use — and Bahia takes that further still, to the point where several headline numbers are sample-size artifacts rather than real estimates. Tocantins shows the opposite extreme is just as informative: a healthy sample size producing a genuinely flat, uniform state, confirmed independently across four different tests (ZARC geography, pooled climate model, growing-degree-day variance, and the irrigation profile). And a specification tension recurs three times now (MS, TO, and partially GO/MG) — a pooled quadratic model finding no significant temperature effect while a spatially-disaggregated linear model finds a real, geographically-varying one — worth treating as a standing methodological lesson for this branch rather than a one-off surprise: a single pooled coefficient can average away structure a state actually has.
 
 ### Quick start
 
 ```bash
 cd scripts
-UF=MT python br_01_download_production.py   # or UF=PR/GO/RS/MS/MG/BA (Parana, Goias, Rio Grande do Sul, Mato Grosso do Sul, Minas Gerais, Bahia)
+UF=MT python br_01_download_production.py   # or UF=PR/GO/RS/MS/MG/BA/TO (Parana, Goias, Rio Grande do Sul, Mato Grosso do Sul, Minas Gerais, Bahia, Tocantins)
 UF=MT python br_02_clean_production.py
 UF=MT python br_03_download_boundaries.py
 UF=MT python br_04_download_daily_weather.py   # NASA POWER, 141 units (~slow)
