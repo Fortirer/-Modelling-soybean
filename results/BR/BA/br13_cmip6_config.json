@@ -1,0 +1,36 @@
+{
+  "method": "CMIP6 delta change-factor applied to the observed municipality record, quadratic-panel estimator only (see docstring for scope vs US script 13)",
+  "baseline": "1985-2014",
+  "scenarios": [
+    "ssp245",
+    "ssp585"
+  ],
+  "horizons": [
+    "late_century",
+    "mid_century"
+  ],
+  "models": [
+    "ACCESS-ESM1-5",
+    "CanESM5",
+    "EC-Earth3",
+    "GFDL-ESM4",
+    "INM-CM5-0",
+    "MIROC6",
+    "MPI-ESM1-2-LR",
+    "MRI-ESM2-0"
+  ],
+  "n_models": 8,
+  "critical_window": "Jan-Feb",
+  "target": "yield_anom",
+  "observed_tmax_range_C": [
+    25.703047830923246,
+    35.80623271889401
+  ],
+  "caveats": [
+    "Only the quadratic-panel estimator is reported -- no boosted-tree comparison.",
+    "Only pcp_critical/tmax_critical (Jan-Feb) are perturbed; the full monthly climate-feature family (heat_x_dry, hot/dry-day counts) is not recomputed under warming, since those are daily-resolution features not retained as monthly columns in this branch's final panel.",
+    "No Palmer drought index equivalent to hold constant or perturb.",
+    "No agronomic adaptation, cultivar change or planting-date shift is assumed.",
+    "One realisation per model; internal variability not sampled."
+  ]
+}
