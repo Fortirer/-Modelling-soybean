@@ -1,0 +1,5 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Centro Norte de Mato Grosso do Sul,309,-19.343,6.241,6.34,-0.343,1.584
+Leste de Mato Grosso do Sul,307,-20.668,9.752,9.735,-0.181,-0.174
+Pantanais Sul Mato-grossense,66,-20.663,8.561,8.029,-1.137,-6.212
+Sudoeste de Mato Grosso do Sul,834,-22.521,10.651,10.687,1.725,0.339

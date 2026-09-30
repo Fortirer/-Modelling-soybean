@@ -1,0 +1,24 @@
+{
+  "cannot_do": "phenology-window discrimination test (US script 26 part C): no calibrated phenology model exists for Brazil, see br_10's docstring",
+  "holdout": "leave-one-mesorregiao-out, earlier years only, 2001-2024",
+  "best_set_under_holdout": "both",
+  "heat_slopes_equal_wald_p": 0.07595929239903551,
+  "residual_vs_latitude": {
+    "expanding_window": {
+      "slope": -0.3896932266845728,
+      "r": -0.6245567394964016,
+      "p": 7.56458031916265e-09
+    },
+    "mesorregiao_holdout": {
+      "slope": -0.6820723995012807,
+      "r": -0.7697906852539648,
+      "p": 6.840229917828009e-15
+    },
+    "municipios": 70,
+    "latitude_span_deg": 6.284480787878785
+  },
+  "limits": [
+    "yield is a noisy indirect probe of spatial transfer",
+    "4 mesorregioes, not independent of one another"
+  ]
+}
