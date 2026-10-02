@@ -1,0 +1,33 @@
+{
+  "soil_source": "ISRIC SoilGrids v2.0",
+  "n_soil_features": 15,
+  "soil_features": [
+    "soil_clay_topsoil",
+    "soil_clay_subsoil",
+    "soil_sand_topsoil",
+    "soil_sand_subsoil",
+    "soil_silt_topsoil",
+    "soil_silt_subsoil",
+    "soil_om_topsoil",
+    "soil_om_subsoil",
+    "soil_ph_topsoil",
+    "soil_ph_subsoil",
+    "soil_bd_topsoil",
+    "soil_bd_subsoil",
+    "soil_cec_topsoil",
+    "soil_cec_subsoil",
+    "is_ferralsol"
+  ],
+  "key_terms_used_in_ols": [
+    "soil_clay_topsoil",
+    "soil_sand_topsoil",
+    "soil_om_topsoil",
+    "soil_ph_topsoil",
+    "soil_bd_topsoil",
+    "soil_cec_topsoil",
+    "soil_om_subsoil",
+    "is_ferralsol"
+  ],
+  "validation": "expanding window, rolling origin 2003-2023, no random splits",
+  "q2_status": "SKIPPED -- no Brazil equivalent of US script 09 yet, real gap not a null result"
+}
