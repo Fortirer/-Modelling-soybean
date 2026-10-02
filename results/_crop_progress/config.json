@@ -1,0 +1,45 @@
+{
+  "reference": "Sacks & Kucharik 2011, Agric. For. Meteorol. 151:882-894",
+  "crop": "soybean",
+  "states": [
+    "IL",
+    "IA",
+    "IN",
+    "KS",
+    "MI",
+    "MN",
+    "MO",
+    "ND",
+    "NE",
+    "OH",
+    "SD",
+    "WI"
+  ],
+  "core9": [
+    "IA",
+    "IL",
+    "IN",
+    "KS",
+    "MI",
+    "MN",
+    "MO",
+    "NE",
+    "OH"
+  ],
+  "years": [
+    1980,
+    2025
+  ],
+  "interpolation": "PCHIP, no extrapolation",
+  "date_definition": "50% completion",
+  "fallback_levels": [
+    25,
+    75,
+    10,
+    90
+  ],
+  "min_years_for_trend": 8,
+  "us_weights": "mean county-summed acres_harvested, fixed across years",
+  "all12_first_year": 2000,
+  "not_done": "GDD between stages and crop modelling (paper restricts to corn: photoperiod)"
+}
