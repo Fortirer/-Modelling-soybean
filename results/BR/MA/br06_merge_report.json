@@ -1,0 +1,19 @@
+{
+  "production_rows": 1371,
+  "climate_rows": 4136,
+  "merged_rows": 1201,
+  "production_rows_outside_climate_coverage": 170,
+  "municipalities": 83,
+  "years": 44,
+  "min_years_rule": 20,
+  "municipalities_in_balanced_panel": 24,
+  "rows_in_balanced_panel": 720,
+  "focal_code": "2101400",
+  "focal_rows": 44,
+  "focal_year_range": [
+    1980,
+    2023
+  ],
+  "trend_slope_min": -4.652,
+  "trend_slope_max": 15.977
+}

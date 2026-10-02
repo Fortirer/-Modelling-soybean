@@ -1,0 +1,4 @@
+mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
+Centro Maranhense,23,-5.818,7.193,7.088,0.63,-1.455
+Leste Maranhense,218,-4.601,7.676,7.123,-0.16,-7.203
+Sul Maranhense,296,-7.53,7.021,7.347,0.371,4.638

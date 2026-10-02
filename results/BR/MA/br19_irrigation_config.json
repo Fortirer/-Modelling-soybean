@@ -1,0 +1,11 @@
+{
+  "source": "IBGE SIDRA tabela 6859, Censo Agropecuario 2017, all-crop irrigated area (no soja-only breakdown exists)",
+  "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
+  "n_municipios": 212,
+  "n_zero_irrigation": 15,
+  "state_prevalence_pct_median": 1.5579761198432343,
+  "state_prevalence_pct_mean": 5.5144755228559275,
+  "interaction_beta": 0.8086339771737079,
+  "interaction_p": 3.11083866387679e-05,
+  "finding": "Maranhao soybean is overwhelmingly rainfed; low/near-zero irrigation prevalence is the substantive finding for this UF, not a data gap."
+}

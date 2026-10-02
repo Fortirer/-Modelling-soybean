@@ -1,0 +1,7 @@
+model,n,k,r2,adj_r2,RMSE,MAE,aic,bic,F_pvalue,breusch_pagan_p,durbin_watson,se_type
+M1 Baseline pooled OLS,720,2,0.00149,-0.00129,6.63692,4.58048,4774.68387,4788.42162,0.09046,0.18412,1.71591,cluster(municipio)
+M2 Quadratic + interaction,720,5,0.01445,0.00755,6.5937,4.56742,4771.2771,4798.7526,1e-05,0.04305,1.71469,cluster(municipio)
+M3 M2 + municipio FE,720,28,0.01811,-0.02168,6.58146,4.58923,4814.6017,4947.39998,0.0,0.6484,1.71249,cluster(municipio)
+M4 Two-way FE (municipio + year),720,71,0.52431,0.47219,4.58093,3.29523,4378.81101,4708.5171,1.0,0.0,1.70839,cluster(municipio)
+"M5 Raw yield, two-way FE",720,29,0.52038,0.50022,6.70894,4.62268,4844.22751,4981.60504,0.0,0.59436,1.66083,cluster(municipio)
+"M6 Log yield, municipio FE",720,29,0.39751,0.37219,0.30947,0.18646,414.30196,551.6795,0.0,0.00025,1.71749,cluster(municipio)

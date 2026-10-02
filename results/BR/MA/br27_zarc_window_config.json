@@ -1,0 +1,26 @@
+{
+  "source": "ZARC (br_19), Censo year 2024/2025, official MAPA climate-risk zoning",
+  "method": "Recommended decade = minimum evaluated risk code (20/30/40) per municipio x maturity group, pooled across soil classes; expressed as days after 1-Sep to match br_05/br_10/br_18's anchor",
+  "n_municipios": 217,
+  "by_maturity_group": {
+    "Grupo I": 138.71,
+    "Grupo II": 138.31,
+    "Grupo III": 137.7
+  },
+  "maturity_group_anova": {
+    "F": 0.13024991263448776,
+    "p": 0.8778989886755649
+  },
+  "by_mesorregiao": {
+    "Sul Maranhense": 99.01,
+    "Centro Maranhense": 132.15,
+    "Leste Maranhense": 135.77,
+    "Oeste Maranhense": 139.55,
+    "Norte Maranhense": 155.15
+  },
+  "mesorregiao_anova": {
+    "F": 56.97415036985677,
+    "p": 1.7157018005196017e-32
+  },
+  "caveat": "ZARC is a climate-risk model output, not observed crop progress -- see br_19"
+}
