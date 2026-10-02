@@ -1,0 +1,7 @@
+{
+  "source": "IBGE Malhas Territoriais",
+  "url": "https://servicodados.ibge.gov.br/api/v3/malhas/estados/21?formato=application/vnd.geo+json&qualidade=minima&intrarregiao=municipio",
+  "accessed": "2026-10-02",
+  "note": "qualidade=minima -- generalized geometry, adequate for a centroid, not for area-accurate cartography.",
+  "municipalities": 217
+}

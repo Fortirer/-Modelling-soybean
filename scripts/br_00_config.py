@@ -59,6 +59,8 @@ UF_REGISTRY = {
                focal_municipio="LUÍS EDUARDO MAGALHÃES", focal_code="2919553"),
     "TO": dict(name="TOCANTINS", ibge_uf="17",
                focal_municipio="CAMPOS LINDOS", focal_code="1703842"),
+    "MA": dict(name="MARANHAO", ibge_uf="21",
+               focal_municipio="BALSAS", focal_code="2101400"),
     "SP": dict(name="SAO PAULO", ibge_uf="35",
                focal_municipio="ITAPEVA", focal_code="3522406"),
                # confirmed the state's top soy producer from br_01's own
