@@ -1,0 +1,7 @@
+Source,Target,Value
+Reported unit-years,Usable yield and area,64076
+Reported unit-years,Lost: NA or suppressed,30
+Usable yield and area,Matched to climate,64076
+Usable yield and area,Lost: no climate match,0
+Matched to climate,Balanced panel,56314
+Matched to climate,Lost: unbalanced unit,7762
