@@ -1,4 +1,4 @@
 target,n,r2,adj_r2,strongest_term,p_value
-municipality mean yield (bu/acre),9,0.99998,0.99986,soil_bd_topsoil,0.00542
-yield trend (bu/acre/yr),9,0.99908,0.99261,is_ferralsol,0.03443
-yield volatility (sd of anomaly),9,0.93019,0.44154,soil_clay_topsoil,0.29018
+municipality mean yield (bu/acre),10,0.99262,0.96681,is_ferralsol,0.00711
+yield trend (bu/acre/yr),10,0.92073,0.6433,soil_om_subsoil,0.13603
+yield volatility (sd of anomaly),10,0.89155,0.51198,soil_om_topsoil,0.09419

@@ -3,9 +3,9 @@
   "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
   "n_municipios": 241,
   "n_zero_irrigation": 22,
-  "state_prevalence_pct_median": 17.15689626391362,
-  "state_prevalence_pct_mean": 32.72562039647973,
-  "interaction_beta": 0.2741549625273803,
-  "interaction_p": 0.4197968440931741,
-  "finding": "Goias shows meaningful irrigation prevalence (median 17.2%), unlike the near-zero prevalence found elsewhere in this branch -- a real state-level difference."
+  "state_prevalence_pct_median": 15.046027205377403,
+  "state_prevalence_pct_mean": 28.92936593213972,
+  "interaction_beta": 0.5523348455484844,
+  "interaction_p": 0.19994981223367958,
+  "finding": "Goias shows meaningful irrigation prevalence (median 15.0%), unlike the near-zero prevalence found elsewhere in this branch -- a real state-level difference."
 }

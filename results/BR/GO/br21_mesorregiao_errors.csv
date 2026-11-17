@@ -1,6 +1,6 @@
 mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
-Centro Goiano,921,-16.135,4.861,4.857,0.068,-0.086
-Leste Goiano,432,-15.576,5.683,5.757,0.248,1.301
-Noroeste Goiano,319,-15.333,5.288,5.412,-0.21,2.348
-Norte Goiano,203,-13.958,6.427,6.112,0.712,-4.891
-Sul Goiano,1643,-17.658,5.343,5.527,-0.146,3.431
+Centro Goiano,1042,-16.145,4.863,4.87,-0.248,0.146
+Leste Goiano,465,-15.536,5.351,5.455,1.295,1.944
+Noroeste Goiano,354,-15.264,6.325,5.824,1.24,-7.925
+Norte Goiano,269,-13.865,6.904,7.006,1.83,1.474
+Sul Goiano,1763,-17.665,4.878,4.968,-0.293,1.849

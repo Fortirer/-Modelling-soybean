@@ -1,0 +1,17 @@
+{
+  "region": "BR:MT",
+  "accessed": "2026-11-16",
+  "units": 139,
+  "source": "ISRIC SoilGrids 2.0 REST",
+  "url": "https://rest.isric.org/soilgrids/v2.0/properties/query",
+  "awc_rows": 141,
+  "nulls": {
+    "soil_awc_topsoil": 2,
+    "soil_awc_subsoil": 2,
+    "soil_fc_topsoil": 2,
+    "soil_wp_topsoil": 2,
+    "soil_aws_0_100cm": 2
+  },
+  "median_aws_0_100cm_sr": 11.48,
+  "median_aws_0_100cm": 14.59
+}

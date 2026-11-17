@@ -3,9 +3,9 @@
   "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
   "n_municipios": 140,
   "n_zero_irrigation": 16,
-  "state_prevalence_pct_median": 0.9066988183435466,
-  "state_prevalence_pct_mean": 4.503649399129464,
-  "interaction_beta": -0.24613279653038905,
-  "interaction_p": 0.44781090437042825,
+  "state_prevalence_pct_median": 0.8064532761603114,
+  "state_prevalence_pct_mean": 4.023654577193583,
+  "interaction_beta": 0.077802963135915,
+  "interaction_p": 0.8286457320500313,
   "finding": "Mato Grosso soybean is overwhelmingly rainfed; low/near-zero irrigation prevalence is the substantive finding for this UF, not a data gap."
 }

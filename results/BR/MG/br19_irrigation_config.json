@@ -3,9 +3,9 @@
   "scope_limit": "Static single-year (2017) snapshot joined to the annual panel, same design as US NASS Census bulk files.",
   "n_municipios": 839,
   "n_zero_irrigation": 50,
-  "state_prevalence_pct_median": 57.06410077823767,
-  "state_prevalence_pct_mean": 58.178531989904585,
-  "interaction_beta": -0.8785887645507157,
-  "interaction_p": 0.26069231866758835,
-  "finding": "Minas Gerais shows meaningful irrigation prevalence (median 57.1%), unlike the near-zero prevalence found elsewhere in this branch -- a real state-level difference."
+  "state_prevalence_pct_median": 45.22180406261602,
+  "state_prevalence_pct_mean": 54.92687100358588,
+  "interaction_beta": 0.08176159364051941,
+  "interaction_p": 0.7676816620802501,
+  "finding": "Minas Gerais shows meaningful irrigation prevalence (median 45.2%), unlike the near-zero prevalence found elsewhere in this branch -- a real state-level difference."
 }

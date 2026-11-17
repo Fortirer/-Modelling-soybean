@@ -33,3 +33,13 @@ data/raw/**/epa_ozone_cache/
 # small JSON per municipality, makes a restart resumable); the assembled
 # soilgrids_horizons.csv is kept
 data/raw/**/soilgrids_cache/
+
+# Gap-filling downloads (scripts 39, 40, 44-46): large and regenerable from
+# public sources; see docs/DADOS_FALTANTES.md
+data/raw/daymet_daily.csv.gz
+data/raw/**/daymet_daily.csv.gz
+data/raw/**/nex_gddp/
+data/raw/global/nldas_cache/
+data/raw/global/era5land_cache/
+data/raw/**/*.tmp.gz
+.pytest_cache/

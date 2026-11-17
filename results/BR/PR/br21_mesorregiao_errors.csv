@@ -1,11 +1,11 @@
 mesorregiao,n,lat,rmse_expanding,rmse_mesorregiao_holdout,mean_resid_holdout,transfer_loss_pct
-Centro Ocidental Paranaense,575,-24.208,9.138,9.162,0.765,0.264
-Centro Oriental Paranaense,322,-24.548,4.974,4.977,0.425,0.062
-Centro-Sul Paranaense,665,-25.435,5.82,5.892,-0.152,1.241
-Metropolitana de Curitiba,334,-25.686,4.351,4.447,0.266,2.206
-Noroeste Paranaense,1040,-23.45,10.404,10.37,0.707,-0.324
-Norte Central Paranaense,1812,-23.484,8.489,8.376,0.329,-1.331
-Norte Pioneiro Paranaense,1016,-23.443,6.731,6.832,1.036,1.5
-Oeste Paranaense,1150,-24.884,11.364,11.483,1.099,1.054
-Sudeste Paranaense,482,-25.701,4.633,4.607,0.219,-0.567
-Sudoeste Paranaense,845,-25.924,11.027,10.854,-0.335,-1.57
+Centro Ocidental Paranaense,600,-24.208,7.929,7.929,0.789,0.0
+Centro Oriental Paranaense,336,-24.548,4.58,4.532,0.386,-1.035
+Centro-Sul Paranaense,694,-25.435,5.475,5.557,0.417,1.495
+Metropolitana de Curitiba,388,-25.666,4.129,4.196,-0.112,1.621
+Noroeste Paranaense,1151,-23.41,8.605,8.916,2.195,3.61
+Norte Central Paranaense,1891,-23.484,7.909,7.974,-0.043,0.818
+Norte Pioneiro Paranaense,1061,-23.443,7.12,7.122,0.37,0.016
+Oeste Paranaense,1200,-24.884,9.205,9.131,1.999,-0.809
+Sudeste Paranaense,503,-25.701,4.736,4.776,0.482,0.829
+Sudoeste Paranaense,882,-25.924,8.891,9.082,0.746,2.148

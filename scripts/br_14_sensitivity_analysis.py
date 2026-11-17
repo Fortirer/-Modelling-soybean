@@ -6,11 +6,25 @@ drought index. Uniform perturbations of observed climate, NOT CMIP6/IPCC
 projections -- see br_12/13 for those. Retained as a robustness check that
 isolates temperature and precipitation response separately, the same role
 it plays in the US pipeline.
+
+SCENARIO ESTIMATOR (changed 2026-11-16). The scenarios used to be predicted
+with gradient-boosted trees fitted on absolute climate levels, including each
+municipio's own climate normals, and the perturbation shifted the normals
+together with the year's weather. Two things went wrong: a tree cannot
+extrapolate, so a uniform +2 C landed where its prediction is flat; and
+moving the normal with the weather turns "a hotter year here" into "a hotter
+place", which is a cross-sectional contrast. In Rio Grande do Sul that gave
++1.5% yield for +2 C against a mean municipio-level heat correlation of
+-0.48. The scenarios now use the quadratic panel with municipio fixed effects
+that br_13 applies to CMIP6 deltas, so the two scripts answer the same
+question with the same response curve and differ only in the perturbation.
+The share of perturbed municipio-years hotter than anything observed is
+reported, because beyond it the quadratic is extrapolated.
 """
 import sys, json
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
-from sklearn.ensemble import GradientBoostingRegressor
+import statsmodels.formula.api as smf
 from _brcfg import FINAL, RES, FIG, SEED, FOCAL_CODE, FOCAL_MUNICIPIO
 from _viz import *
 
@@ -53,35 +67,39 @@ if FOCAL_CODE in t7.fips5.values:
           f"| beta_moisture {foc.beta_moisture_bu_per_sd:+.3f} bu/SD")
 
 # ---------- Scenarios -----------------------------------------------------------
-CLIM_SIMPLE = ["pcp_critical", "tmax_critical", "tmp_critical",
-               "climate_normal_pcp", "climate_normal_tmax"]
-mdl = GradientBoostingRegressor(n_estimators=200, max_depth=3, learning_rate=.05,
-                                random_state=SEED).fit(d[CLIM_SIMPLE], d[TARGET])
-d["pred_baseline"] = mdl.predict(d[CLIM_SIMPLE])
+def design(df):
+    """Regression terms of the quadratic panel (same names as br_07 / br_13)."""
+    return df.assign(PCP=df.pcp_critical, TMX=df.tmax_critical,
+                     PCP2=df.pcp_critical ** 2, TMX2=df.tmax_critical ** 2,
+                     PT=df.pcp_critical * df.tmax_critical,
+                     muni=df.fips5.astype("category"))
 
-TEMP_C = ["tmax_critical", "tmp_critical", "climate_normal_tmax"]
-PREC = ["pcp_critical", "climate_normal_pcp"]
+
+d = design(d)
+mdl = smf.ols("yield_anom ~ PCP + PCP2 + TMX + TMX2 + PT + C(muni)", data=d).fit(
+    cov_type="cluster", cov_kwds={"groups": d.fips5})
+d["pred_baseline"] = mdl.predict(d).values
+TMAX_OBSERVED_MAX = float(d.tmax_critical.max())
 
 
 def perturb(df, dT_C=0.0, dP_pct=0.0):
-    x = df.copy()
-    for c in TEMP_C:
-        x[c] = x[c] + dT_C
-    for c in PREC:
-        x[c] = x[c] * (1 + dP_pct / 100)
-    return x
+    """Observed weather shifted uniformly; the municipio and its normals stay put."""
+    return design(df.assign(tmax_critical=df.tmax_critical + dT_C,
+                            pcp_critical=df.pcp_critical * (1 + dP_pct / 100)))
 
 
 SCEN = {"S1 Baseline": (0, 0), "S2 +1C": (1, 0), "S3 -10% precip": (0, -10),
         "S4 +1C and -10% precip": (1, -10), "S5 +2C": (2, 0), "S6 +2C and -20% precip": (2, -20)}
 out = []
 for name, (dT, dP) in SCEN.items():
-    d[f"pred_{name}"] = mdl.predict(perturb(d, dT, dP)[CLIM_SIMPLE])
+    shifted = perturb(d, dT, dP)
+    d[f"pred_{name}"] = mdl.predict(shifted).values
     dl = d[f"pred_{name}"] - d.pred_baseline
     out.append(dict(scenario=name, delta_T_C=dT, delta_P_pct=dP,
                     mean_delta_bu=float(dl.mean()),
                     pct_of_mean_yield=float(dl.mean() / d.yield_bu_ac.mean() * 100),
                     p10=float(dl.quantile(.1)), p90=float(dl.quantile(.9)),
+                    out_of_range_pct=float((shifted.tmax_critical > TMAX_OBSERVED_MAX).mean() * 100),
                     municipios_worse=int((d.groupby("fips5")[f"pred_{name}"].mean()
                                          - d.groupby("fips5").pred_baseline.mean() < 0).sum())))
 S = pd.DataFrame(out).round(4)

@@ -47,7 +47,7 @@ def monthly_baseline():
     daily["date"] = pd.to_datetime(daily.date)
     daily["month"] = daily.date.dt.month
     jf = daily[daily.month.isin([1, 2])].copy()
-    jf["crop_year"] = jf.year - 1   # Jan/Feb of calendar Y belongs to crop_year Y-1
+    jf["crop_year"] = jf.year       # Jan/Feb of calendar Y belongs to harvest year Y (IBGE "ano"), as in br_05
     m = (jf.groupby(["unit_id", "crop_year", "month"])
            .agg(pcp=("prcp_mm", "sum"), tmax=("tmax_c", "mean"))
            .reset_index().rename(columns={"unit_id": "fips5", "crop_year": "year"}))

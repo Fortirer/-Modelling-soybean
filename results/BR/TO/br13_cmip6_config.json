@@ -24,7 +24,7 @@
   "target": "yield_anom",
   "observed_tmax_range_C": [
     26.92967741935484,
-    33.480455069124424
+    33.61654953917051
   ],
   "caveats": [
     "Only the quadratic-panel estimator is reported -- no boosted-tree comparison.",

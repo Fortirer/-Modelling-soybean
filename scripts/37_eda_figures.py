@@ -15,6 +15,7 @@ DESIGN RULES (one visual system across all figures)
   * The AR6 yellow has only 1.4:1 contrast on the page, so scenario rows are
     direct-labelled and the exact values are in projections_state.csv.
 """
+import json
 import textwrap
 from pathlib import Path
 
@@ -48,6 +49,13 @@ plt.rcParams.update({
     "xtick.color": MUTED, "ytick.color": INK2, "axes.edgecolor": BASE, "axes.linewidth": 0.8,
     "xtick.major.size": 0, "ytick.major.size": 0, "axes.titleweight": "regular",
 })
+
+# analysis window, read from script 36's config so the two never disagree
+_CFG = json.loads((T / "config.json").read_text())
+W0, W1 = _CFG["window"]
+R0, R1 = _CFG["recent"]
+A0, A1 = _CFG["area_recent"]
+WIN_TXT, REC_TXT = f"{W0}-{W1}", f"{R0}-{R1}"
 
 tab = pd.read_csv(T / "state_summary.csv")
 bal = pd.read_csv(T / "audit_balance.csv")
@@ -144,7 +152,7 @@ def fig1():
                 va="center", fontsize=8, color=INK2)
     rowlabels(ax)
     ax.set_xlim(0, 640)
-    ax.set_xlabel("Counties / municipios in the 1980-2023 panel")
+    ax.set_xlabel(f"Counties / municipios in the {WIN_TXT} panel")
     style(ax)
     group_tags(ax, 0)
     ax.legend(handles=[Patch(color=INK2, alpha=0.3, label="All units with a record"),
@@ -161,7 +169,7 @@ def fig1():
     im = ax2.imshow(M, aspect="auto", cmap=SEQ, vmin=0, vmax=100, extent=(years[0] - 0.5, years[-1] + 0.5, NROW - 0.5, -0.5),
                     interpolation="nearest")
     ax2.set_yticks([])
-    ax2.set_xticks(range(1980, 2024, 5))
+    ax2.set_xticks(range(W0, W1 + 1, 5))
     ax2.set_xlim(years[0] - 0.5, years[-1] + 0.5)
     ax2.set_ylim(NROW - 0.4, -0.6)
     for s_ in ("top", "right", "left"):
@@ -230,7 +238,7 @@ def fig2():
     ax2.set_yticks([])
     ax2.set_ylim(NROW - 0.4, -0.6)
     ax2.set_xlim(0, 106)
-    ax2.set_xlabel("% of reported unit-years (1980-2023)")
+    ax2.set_xlabel(f"% of reported unit-years ({WIN_TXT})")
     style(ax2)
     ax2.legend(handles=[Patch(color=c, label=l) for l, c in parts2], frameon=False, loc="upper center",
                bbox_to_anchor=(0.5, -0.07), ncol=2, fontsize=8.2, labelcolor=INK2)
@@ -248,7 +256,7 @@ def fig3():
     fig = plt.figure(figsize=(13, 9.4))
     gs = fig.add_gridspec(1, 2, width_ratios=[1.15, 1], left=0.12, right=0.985, top=0.855, bottom=0.145, wspace=0.07)
     ax = fig.add_subplot(gs[0])
-    rec = panel[(panel.year >= 2014) & (panel.year <= 2023)]
+    rec = panel[(panel.year >= R0) & (panel.year <= R1)]
     t = tab.set_index("state")
     for s, i in POS.items():
         v = rec[rec.state == s].yield_kg_ha.dropna().values
@@ -268,7 +276,7 @@ def fig3():
         ax.scatter([t.loc[s, "yield_recent_p95"]], [i], marker="D", s=24, color=c, edgecolor=SURF, linewidth=1.2, zorder=5)
     rowlabels(ax)
     ax.set_xlim(500, 6000)
-    ax.set_xlabel("Soybean yield, kg/ha (unit-years, 2014-2023)")
+    ax.set_xlabel(f"Soybean yield, kg/ha (unit-years, {REC_TXT})")
     style(ax)
     group_tags(ax, 500)
     top_legend(fig, [Line2D([0], [0], color=INK2, lw=2.2, label="P10 to P90"),
@@ -313,7 +321,7 @@ def fig4():
                    alpha=0.85, edgecolor=SURF, linewidth=1.4, zorder=3)
         ax.annotate(r.state + ("*" if r.n_units_balanced < 30 else ""), (r.yield_recent_p95, r.anom_sd_pct),
                     xytext=(6, 5), textcoords="offset points", fontsize=8.4, color=INK2)
-    ax.set_xlabel("Attainable-yield proxy: P95 of unit-year yields, 2014-2023 (kg/ha)")
+    ax.set_xlabel(f"Attainable-yield proxy: P95 of unit-year yields, {REC_TXT} (kg/ha)")
     ax.set_ylabel("Instability: SD of yield anomaly (% of trend)")
     ax.text(0.99, 0.02, "higher potential, steadier", transform=ax.transAxes, ha="right", fontsize=8.6, color=MUTED, style="italic")
     style(ax, "both")
@@ -321,7 +329,7 @@ def fig4():
     sz = [Line2D([0], [0], marker="o", color="none", markerfacecolor=MUTED, markeredgecolor=SURF,
                  markersize=np.sqrt(np.sqrt(a) * 9), label=f"{a:,} thousand ha") for a in qs]
     country_legend(ax, "upper left", sz)
-    ax.set_title("(a) Potential against stability; bubble = harvested area 2019-23", loc="left", fontsize=10.5, color=INK, pad=6)
+    ax.set_title(f"(a) Potential against stability; bubble = harvested area {A0}-{A1 % 100}", loc="left", fontsize=10.5, color=INK, pad=6)
 
     ax2 = fig.add_subplot(gs[1])
     n_bal = dict(zip(tab.state, tab.n_units_balanced))
@@ -338,7 +346,7 @@ def fig4():
     ax2.set_yticks(list(pos.values()))
     ax2.set_yticklabels([NAME[s] + ("*" if n_bal.get(s, 99) < 30 else "") for s in pos], fontsize=8.6)
     ax2.set_ylim(max(pos.values()) + 0.6, -0.8)
-    ax2.set_xlabel("Yield trend, % of mean per year (balanced units, 1980-2023)")
+    ax2.set_xlabel(f"Yield trend, % of mean per year (balanced units, {WIN_TXT})")
     style(ax2)
     ax2.set_title("(b) Brazil is gaining faster from a similar level", loc="left", fontsize=10.5, color=INK, pad=6)
     tr = tests.loc["trend_rel_pct_yr"]
@@ -361,7 +369,7 @@ def stripes(ax, wide, vmin, vmax, cmap, years, right_labels=None):
     cm.set_bad(SURF)
     im = ax.imshow(M, aspect="auto", cmap=cm, norm=TwoSlopeNorm(vmin=vmin, vcenter=0, vmax=vmax),
                    extent=(years[0] - 0.5, years[-1] + 0.5, NROW - 0.5, -0.5), interpolation="nearest")
-    ax.set_xticks(range(1980, 2024, 5))
+    ax.set_xticks(range(W0, W1 + 1, 5))
     ax.set_xlim(years[0] - 0.5, years[-1] + 0.5)
     ax.set_ylim(NROW - 0.4, -0.6)
     for s_ in ("top", "right", "left", "bottom"):
@@ -374,7 +382,7 @@ def stripes(ax, wide, vmin, vmax, cmap, years, right_labels=None):
 
 
 def fig5():
-    years = list(range(1980, 2024))
+    years = list(range(W0, W1 + 1))
     fig = plt.figure(figsize=(14, 9.6))
     gs = fig.add_gridspec(1, 2, left=0.115, right=0.975, top=0.855, bottom=0.135, wspace=0.17)
     ax = fig.add_subplot(gs[0])
@@ -405,7 +413,7 @@ def fig5():
     nsig_br = int((obs[(obs.country == "BR")].tmax_trend_p < 0.05).sum())
     nsig_us = int((obs[(obs.country == "US")].tmax_trend_p < 0.05).sum())
     head(fig, f"Observed peak-season heat: {nsig_br} of 10 Brazilian states warm significantly, {nsig_us} of 12 US states do",
-         "State means of unit anomalies, 1980-2023; significant trends (p<0.05) are marked * in the right-hand column.")
+         f"State means of unit anomalies, {WIN_TXT}; significant trends (p<0.05) are marked * in the right-hand column.")
     foot(fig, "Caution: US temperatures come from NOAA nClimDiv station-based data, Brazil's from MERRA-2 reanalysis via NASA POWER, and the windows differ "
               "(July-August vs January-February). Cross-country trend differences may reflect the data source.")
     save(fig, "fig05_observed_warming_stripes.png")
@@ -472,7 +480,7 @@ def fig8():
         off = {"BA": (9, -14), "GO": (-20, 8), "MI": (9, -2), "ND": (9, -7), "OH": (9, 6), "SD": (-22, -13),
                "IN": (9, -13), "IL": (-20, -15), "MA": (7, 6)}.get(r.state, (6, 5))
         ax.annotate(r.state, (r.oor_ssp585_late, r.heat_pct_per_c), xytext=off, textcoords="offset points", fontsize=8.4, color=INK2)
-    ax.set_xlabel("Hazard: unit-years above the 1980-2023 record under SSP5-8.5 late century (%)")
+    ax.set_xlabel(f"Hazard: unit-years above the {WIN_TXT} record under SSP5-8.5 late century (%)")
     ax.set_ylabel("Vulnerability: yield change per +1 deg C (%, 95% CI)")
     ax.text(0.99, 0.02, "higher hazard, yield falls with heat", transform=ax.transAxes, ha="right", fontsize=8.6, color="#9e2a2b", style="italic")
     ax.text(0.01, 0.98, "lower hazard, yield rises with heat", transform=ax.transAxes, va="top", fontsize=8.6, color=MUTED, style="italic")
@@ -487,7 +495,7 @@ def fig8():
             ax2.scatter([r.out_of_range_pct_med], [i + off], marker="D", s=24, facecolor=INK, edgecolor=INK, zorder=5)
     rowlabels(ax2, 8.6)
     ax2.set_xlim(0, 100)
-    ax2.set_xlabel("Unit-years hotter than any in the 1980-2023 record (%)")
+    ax2.set_xlabel(f"Unit-years hotter than any in the {WIN_TXT} record (%)")
     style(ax2)
     group_tags(ax2, 0, 7.8)
     fig.legend(handles=[Patch(color=C_US, label="United States (counties)"), Patch(color=C_BR, label="Brazil (municipios)"),
@@ -562,7 +570,7 @@ def fig10():
     wm = {c: np.average(g["median"], weights=g.n) for c, g in hot.groupby("country")}
     head(fig, f"In units running 2 deg C or more above normal, the median yield anomaly is {wm['US']:+.0f}% in the US and {wm['BR']:+.0f}% in Brazil",
          "Binned medians of unit-year yield anomalies against critical-window heat and rainfall anomalies; bins with fewer than 30 unit-years are dropped.", y=0.985)
-    foot(fig, "Balanced panel, 1980-2023. Anomalies are deviations from each unit's own mean; the shaded band is the interquartile range within each bin. "
+    foot(fig, f"Balanced panel, {WIN_TXT}. Anomalies are deviations from each unit's own mean; the shaded band is the interquartile range within each bin. "
               "Raw associations: each panel ignores the other driver, so neither curve isolates one cause (the regression in figure 9 does control for rainfall).")
     save(fig, "fig10_climate_yield_binned.png")
 

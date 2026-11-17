@@ -1,0 +1,103 @@
+{
+  "run": "2026-11-17",
+  "outcome": "log_yield_kg_ha",
+  "terms": {
+    "gdd_100": [
+      "gs_gdd_10_30",
+      100.0
+    ],
+    "edd30_10": [
+      "gs_edd_30",
+      10.0
+    ],
+    "rain_100mm": [
+      "gs_prcp_mm",
+      100.0
+    ],
+    "rain_cw_100mm": [
+      "cw_prcp_mm",
+      100.0
+    ],
+    "vpd_cw_kpa": [
+      "cw_vpd_mean_kpa",
+      1.0
+    ],
+    "soilm_cw": [
+      "gwetroot_critical",
+      0.1
+    ],
+    "spei3_cw": [
+      "spei3_critical",
+      1.0
+    ],
+    "wsdi_cw_10d": [
+      "cw_wsdi_days",
+      10.0
+    ]
+  },
+  "specifications": {
+    "schlenker_roberts_2009": [
+      "gdd_100",
+      "edd30_10",
+      "rain_100mm",
+      "rain_100mm^2"
+    ],
+    "ortiz_bobea_2019": [
+      "gdd_100",
+      "edd30_10",
+      "rain_100mm",
+      "rain_100mm^2",
+      "soilm_cw",
+      "soilm_cw^2"
+    ],
+    "lobell_2014": [
+      "gdd_100",
+      "vpd_cw_kpa",
+      "rain_cw_100mm",
+      "rain_cw_100mm^2"
+    ],
+    "silva_2023": [
+      "tmean_gs_c",
+      "rain_100mm",
+      "rain_100mm^2"
+    ],
+    "parisoto_2026": [
+      "spei3_cw",
+      "wsdi_cw_10d",
+      "spei3_cw*wsdi_cw_10d"
+    ]
+  },
+  "forest_features": [
+    "gs_gdd_10_30",
+    "gs_edd_30",
+    "gs_edd_34",
+    "gs_hot_days_35",
+    "gs_warm_nights_24",
+    "gs_prcp_mm",
+    "gs_cdd",
+    "gs_rx5day",
+    "gs_r20mm",
+    "gs_vpd_mean_kpa",
+    "cw_edd_30",
+    "cw_hot_days_32",
+    "cw_tmax_mean",
+    "cw_tmin_mean",
+    "cw_prcp_mm",
+    "cw_dry_days",
+    "cw_wsdi_days",
+    "cw_vpd_mean_kpa",
+    "spei3_critical",
+    "spei6_season",
+    "spei3_min_grow",
+    "drought_months_grow",
+    "gwetroot_grow",
+    "gwetroot_critical",
+    "gwetroot_min_month",
+    "oni_season"
+  ],
+  "min_years_per_unit": 20,
+  "folds": 5,
+  "seed": 42,
+  "fixed_effects": "unit dummies + state-specific quadratic trend",
+  "standard_errors": "clustered by state, t distribution with G-1 df (few clusters: indicative only)"
+}

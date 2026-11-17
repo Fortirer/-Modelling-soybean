@@ -7,11 +7,11 @@
   },
   "stages_gdd_from_planting": {
     "VE": 110,
-    "R1": 651,
-    "R3": 883,
+    "R1": 755.0,
+    "R3": 1004.0,
     "R5": 1110,
     "R6": 1390,
-    "R7": 1504,
+    "R7": 1610.0,
     "R8": 1550
   },
   "stages_note": "R1, R3 and R7 are the OBSERVED median thermal requirement from observed NASS planting to blooming, setting pods and leaf drop (scripts 23-25). VE, R5, R6, R8 have no NASS counterpart and are unvalidated; they are retained for script 21 only",
@@ -21,22 +21,22 @@
     "fit": {
       "r3": {
         "start": [
-          213.3743,
-          0.49089
+          222.39726154376973,
+          0.27186243880775285
         ],
         "end": [
-          262.5674,
-          0.26635
+          270.0088014641402,
+          0.10485278942896542
         ]
       },
       "gdd": {
         "start": [
-          213.3832,
-          -0.03038
+          222.4467236774813,
+          -0.027429312871679466
         ],
         "end": [
-          262.5456,
-          -0.02063
+          270.0371242840709,
+          -0.018846226465051012
         ]
       }
     },
@@ -45,7 +45,7 @@
   "planting_rule": {
     "earliest_doy": 121,
     "latest_doy": 175,
-    "temp_c": 19.0,
+    "temp_c": 22.0,
     "rule": "first day with a 7-day mean at or above temp_c",
     "note": "anchored to the observed mean planting date; a statistical device, not a physiological threshold"
   },
@@ -59,7 +59,7 @@
     "capacity": "SSURGO available water, top metre, mm",
     "et0": "FAO-56 Penman-Monteith, humidity-responsive; Hargreaves retained in _pheno for comparison"
   },
-  "county_years": 5060,
+  "county_years": 5175,
   "skipped": 0,
   "shared_module": "_pheno.py, also used by script 20 for CMIP6 scenarios"
 }

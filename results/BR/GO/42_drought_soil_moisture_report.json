@@ -1,0 +1,20 @@
+{
+  "region": "BR:GO",
+  "units": 243,
+  "rows": 10692,
+  "monthly_rows": 131220,
+  "years": [
+    1981,
+    2024
+  ],
+  "spei3_critical_mean": -0.0,
+  "spei3_critical_sd": 0.983,
+  "gwetroot_critical_mean": 0.777,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

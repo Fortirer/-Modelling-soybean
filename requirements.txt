@@ -10,3 +10,11 @@ s3fs>=2024.2
 cftime>=1.6
 # dashboard/app.py only
 streamlit>=1.38
+# gap-filling scripts 38-48 (docs/DADOS_FALTANTES.md)
+scipy>=1.11
+requests>=2.31
+netCDF4>=1.6
+# script 45 only (ERA5-Land; needs a Copernicus CDS key)
+# cdsapi>=0.7
+# tests
+pytest>=8.0

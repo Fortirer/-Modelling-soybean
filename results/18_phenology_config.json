@@ -7,11 +7,11 @@
   },
   "stages_gdd_from_planting": {
     "VE": 110,
-    "R1": 651,
-    "R3": 883,
+    "R1": 651.0,
+    "R3": 883.0,
     "R5": 1110,
     "R6": 1390,
-    "R7": 1504,
+    "R7": 1504.0,
     "R8": 1550
   },
   "stages_note": "R1, R3 and R7 are the OBSERVED median thermal requirement from observed NASS planting to blooming, setting pods and leaf drop (scripts 23-25). VE, R5, R6, R8 have no NASS counterpart and are unvalidated; they are retained for script 21 only",
@@ -59,7 +59,7 @@
     "capacity": "SSURGO available water, top metre, mm",
     "et0": "FAO-56 Penman-Monteith, humidity-responsive; Hargreaves retained in _pheno for comparison"
   },
-  "county_years": 4488,
+  "county_years": 4590,
   "skipped": 0,
   "shared_module": "_pheno.py, also used by script 20 for CMIP6 scenarios"
 }

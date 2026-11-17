@@ -27,8 +27,8 @@
     "Ferralsols": 29,
     "Cambisols": 4,
     "Lixisols": 3,
-    "NaN": 3,
     "Leptosols": 3,
+    "NaN": 3,
     "Fluvisols": 2,
     "Acrisols": 2
   },
@@ -38,5 +38,5 @@
     "soil_mollisol_pct",
     "soil_drain_*_pct -- see br08's docstring"
   ],
-  "nulls_total": 2
+  "nulls_total": 0
 }

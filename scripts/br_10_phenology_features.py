@@ -71,8 +71,11 @@ def main():
                                    d.lat, d.date.dt.dayofyear)
     print("[br10] daily GDD, EDD, VPD, ET0 computed")
 
-    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_CUR), d.year,
-                      np.where(d.month.isin(GROW_MONTHS_NEXT), d.year - 1, np.nan))
+    # crop_year is the HARVEST year, which is what IBGE's "ano" reports under
+    # (Sep-Dec of t-1 and Jan-Apr of t belong to t); same convention as br_05,
+    # see its docstring and docs/DADOS_FALTANTES.md section 8
+    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_CUR), d.year + 1,
+                      np.where(d.month.isin(GROW_MONTHS_NEXT), d.year, np.nan))
     grow = d.dropna(subset=["crop_year"]).copy()
     grow["crop_year"] = grow.crop_year.astype(int)
     grow["is_critical"] = grow.month.isin(CRITICAL_MONTHS)
@@ -98,7 +101,7 @@ def main():
     print(f"\n[br10] municipality-years built : {len(feat):,}")
     print(f"[br10] municipalities            : {feat.fips5.nunique()}")
     print(f"[br10] years                     : {int(feat.year.min())}-{int(feat.year.max())}")
-    print("\n[br10] WINDOW CONDITIONS (Jan-Feb of the year after planting)")
+    print("\n[br10] WINDOW CONDITIONS (Jan-Feb of the harvest year)")
     cols = ["win_gdd", "win_edd", "win_hot_days", "win_vpd_mean", "win_prcp_mm",
             "win_water_deficit_mm"]
     print(feat[cols].describe().T[["mean", "std", "min", "max"]].round(2).to_string())

@@ -1,0 +1,54 @@
+{
+  "built": "2026-11-16",
+  "panels": {
+    "US": {
+      "file": "model_panel_us.csv.gz",
+      "rows": 39180,
+      "units": 1029,
+      "regions": [
+        "IA",
+        "IL",
+        "IN",
+        "KS",
+        "MI",
+        "MN",
+        "MO",
+        "ND",
+        "NE",
+        "OH",
+        "SD",
+        "WI"
+      ],
+      "columns": 260,
+      "years": [
+        1980,
+        2025
+      ],
+      "size_mb": 21.8
+    },
+    "BR": {
+      "file": "model_panel_br.csv.gz",
+      "rows": 73800,
+      "units": 2520,
+      "regions": [
+        "BA",
+        "GO",
+        "MA",
+        "MG",
+        "MS",
+        "MT",
+        "PR",
+        "RS",
+        "SP",
+        "TO"
+      ],
+      "columns": 152,
+      "years": [
+        1974,
+        2025
+      ],
+      "size_mb": 23.0
+    }
+  },
+  "missing_blocks": []
+}

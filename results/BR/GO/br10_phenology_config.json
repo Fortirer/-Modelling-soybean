@@ -3,8 +3,8 @@
   "growing_season": "Sep(year)-Apr(year+1)",
   "critical_window": "Jan(year+1)-Feb(year+1)",
   "water_balance": "ET0 - precipitation, NO soil storage buffering (no TAW source for Brazil, see br_08/09)",
-  "municipality_years": 11070,
-  "municipalities": 246,
-  "year_min": 1980,
-  "year_max": 2024
+  "municipality_years": 11178,
+  "municipalities": 243,
+  "year_min": 1981,
+  "year_max": 2026
 }

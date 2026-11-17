@@ -29,7 +29,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2902252,15.0,6.0,Arataca - BA,,,
 2902302,8.0,2.0,Aratuípe - BA,,,
 2902401,2.0,0.0,Aurelino Leal - BA,,,
-2902500,180.0,175.0,Baianópolis - BA,22496.715,9104.1056,1.9222
+2902500,180.0,175.0,Baianópolis - BA,23620.5161,9558.8922,1.8308
 2902609,137.0,30.0,Baixa Grande - BA,,,
 2902658,52.0,38.0,Banzaê - BA,,,
 2902708,208.0,727.0,Barra - BA,,,
@@ -37,7 +37,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2902906,94.0,414.0,Barra do Choça - BA,,,
 2903003,191.0,248.0,Barra do Mendes - BA,,,
 2903102,20.0,38.0,Barra do Rocha - BA,,,
-2903201,570.0,31092.0,Barreiras - BA,316509.9851,128087.1598,24.2741
+2903201,570.0,31092.0,Barreiras - BA,328207.2898,132820.8953,23.409
 2903235,428.0,1043.0,Barro Alto - BA,,,
 2903276,55.0,16.0,Barrocas - BA,,,
 2903300,2.0,0.0,Barro Preto - BA,,,
@@ -98,7 +98,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2907806,36.0,36.0,Cícero Dantas - BA,,,
 2907905,396.0,225.0,Cipó - BA,,,
 2908002,24.0,33.0,Coaraci - BA,,,
-2908101,410.0,9353.0,Cocos - BA,,,
+2908101,410.0,9353.0,Cocos - BA,39883.3969,16140.2524,57.9483
 2908200,67.0,78.0,Conceição da Feira - BA,,,
 2908309,16.0,8.0,Conceição do Almeida - BA,,,
 2908408,776.0,183.0,Conceição do Coité - BA,,,
@@ -110,7 +110,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2909000,168.0,108.0,Cordeiros - BA,,,
 2909109,123.0,589.0,Coribe - BA,,,
 2909208,132.0,47.0,Coronel João Sá - BA,,,
-2909307,1136.0,6810.0,Correntina - BA,263535.4184,106649.0943,6.3854
+2909307,1136.0,6810.0,Correntina - BA,274932.4128,111261.2984,6.1207
 2909406,109.0,557.0,Cotegipe - BA,,,
 2909505,45.0,145.0,Cravolândia - BA,,,
 2909604,61.0,47.0,Crisópolis - BA,,,
@@ -132,7 +132,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2910800,435.0,262.0,Feira de Santana - BA,,,
 2910859,54.0,113.0,Filadélfia - BA,,,
 2910909,1.0,0.0,Firmino Alves - BA,,,
-2911105,28.0,75.0,Formosa do Rio Preto - BA,461921.8932,186933.3233,0.0401
+2911105,28.0,75.0,Formosa do Rio Preto - BA,503516.0724,203765.9053,0.0368
 2911204,17.0,38.0,Gandu - BA,,,
 2911253,5.0,12.0,Gavião - BA,,,
 2911303,58.0,131.0,Gentio do Ouro - BA,,,
@@ -203,7 +203,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2917201,1226.0,2705.0,Ituaçu - BA,,,
 2917300,28.0,21.0,Ituberá - BA,,,
 2917334,231.0,611.0,Iuiu - BA,,,
-2917359,248.0,13481.0,Jaborandi - BA,126417.9601,51159.5786,26.3509
+2917359,248.0,13481.0,Jaborandi - BA,135930.8944,55009.3299,24.5068
 2917409,290.0,280.0,Jacaraci - BA,,,
 2917508,404.0,697.0,Jacobina - BA,,,
 2917607,1157.0,1901.0,Jaguaquara - BA,,,
@@ -232,7 +232,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2919306,136.0,389.0,Lençóis - BA,,,
 2919405,460.0,597.0,Licínio de Almeida - BA,,,
 2919504,3358.0,8293.0,Livramento de Nossa Senhora - BA,,,
-2919553,123.0,14029.0,Luís Eduardo Magalhães - BA,380382.2064,153935.3536,9.1136
+2919553,123.0,14029.0,Luís Eduardo Magalhães - BA,395629.7515,160105.8216,8.7623
 2919603,27.0,7.0,Macajuba - BA,,,
 2919702,12.0,262.0,Macarani - BA,,,
 2919801,409.0,455.0,Macaúbas - BA,,,
@@ -319,7 +319,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2925956,20.0,123.0,Rafael Jambeiro - BA,,,
 2926004,176.0,239.0,Remanso - BA,,,
 2926103,101.0,30.0,Retirolândia - BA,,,
-2926202,186.0,17627.0,Riachão das Neves - BA,150298.3889,60823.6538,28.9805
+2926202,186.0,17627.0,Riachão das Neves - BA,160153.4693,64811.8669,27.1972
 2926301,333.0,93.0,Riachão do Jacuípe - BA,,,
 2926400,405.0,337.0,Riacho de Santana - BA,,,
 2926509,237.0,1538.0,Ribeira do Amparo - BA,,,
@@ -348,7 +348,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2928604,1800.0,1195.0,Santo Amaro - BA,,,
 2928703,118.0,39.0,Santo Antônio de Jesus - BA,,,
 2928802,207.0,124.0,Santo Estêvão - BA,,,
-2928901,223.0,32520.0,São Desidério - BA,509793.2861,206306.2058,15.763
+2928901,223.0,32520.0,São Desidério - BA,545488.6992,220751.6397,14.7315
 2928950,43.0,30.0,São Domingos - BA,,,
 2929008,19.0,13.0,São Félix - BA,,,
 2929057,227.0,2820.0,São Félix do Coribe - BA,,,
@@ -367,7 +367,7 @@ fips5,irrigated_estabs,irrigated_area_ha,county,mean_harvested_ac,mean_harvested
 2929909,396.0,759.0,Seabra - BA,,,
 2930006,445.0,1182.0,Sebastião Laranjeiras - BA,,,
 2930105,148.0,94.0,Senhor do Bonfim - BA,,,
-2930154,220.0,1606.0,Serra do Ramalho - BA,5918.0503,2394.9521,67.0577
+2930154,220.0,1606.0,Serra do Ramalho - BA,6323.539,2559.0477,62.7577
 2930204,270.0,2007.0,Sento Sé - BA,,,
 2930303,173.0,128.0,Serra Dourada - BA,,,
 2930402,25.0,13.0,Serra Preta - BA,,,

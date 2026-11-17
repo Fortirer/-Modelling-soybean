@@ -1,0 +1,34 @@
+{
+  "region": "US:MN",
+  "source": "power",
+  "input": "power_daily.csv.gz",
+  "units": 87,
+  "rows": 3915,
+  "years": [
+    1981,
+    2025
+  ],
+  "mean_gs_edd_30": 10.36,
+  "mean_cw_hot_days_32": 6.7,
+  "nulls": 0,
+  "thresholds": {
+    "t_base": 10.0,
+    "t_cap": 30.0,
+    "edd": [
+      29,
+      30,
+      32,
+      34
+    ],
+    "hot_days": [
+      30,
+      32,
+      35
+    ],
+    "base_period": [
+      1981,
+      2010
+    ]
+  },
+  "accessed": "2026-11-16"
+}

@@ -28,6 +28,6 @@
     "soil_om_subsoil",
     "is_ferralsol"
   ],
-  "validation": "expanding window, rolling origin 2002-2023, no random splits",
+  "validation": "expanding window, rolling origin 2003-2025, no random splits",
   "q2_status": "SKIPPED -- no Brazil equivalent of US script 09 yet, real gap not a null result"
 }

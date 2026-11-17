@@ -59,7 +59,7 @@
     "capacity": "SSURGO available water, top metre, mm",
     "et0": "FAO-56 Penman-Monteith, humidity-responsive; Hargreaves retained in _pheno for comparison"
   },
-  "county_years": 4048,
+  "county_years": 4140,
   "skipped": 0,
   "shared_module": "_pheno.py, also used by script 20 for CMIP6 scenarios"
 }

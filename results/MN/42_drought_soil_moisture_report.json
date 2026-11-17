@@ -1,0 +1,20 @@
+{
+  "region": "US:MN",
+  "units": 87,
+  "rows": 3915,
+  "monthly_rows": 46980,
+  "years": [
+    1981,
+    2025
+  ],
+  "spei3_critical_mean": -0.003,
+  "spei3_critical_sd": 0.985,
+  "gwetroot_critical_mean": 0.467,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

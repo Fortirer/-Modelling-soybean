@@ -1,0 +1,34 @@
+{
+  "region": "US:NE",
+  "source": "daymet",
+  "input": "daymet_daily.csv.gz",
+  "units": 93,
+  "rows": 4278,
+  "years": [
+    1980,
+    2025
+  ],
+  "mean_gs_edd_30": 37.4,
+  "mean_cw_hot_days_32": 21.76,
+  "nulls": 0,
+  "thresholds": {
+    "t_base": 10.0,
+    "t_cap": 30.0,
+    "edd": [
+      29,
+      30,
+      32,
+      34
+    ],
+    "hot_days": [
+      30,
+      32,
+      35
+    ],
+    "base_period": [
+      1981,
+      2010
+    ]
+  },
+  "accessed": "2026-11-16"
+}

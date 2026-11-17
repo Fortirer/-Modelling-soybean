@@ -11,11 +11,12 @@ HARMONISATION (what had to be fixed before the two countries can be compared)
     degC and mm (NASA POWER). Everything is converted to degC and mm. Yield is
     kg/ha in both panels already; yield anomalies are re-expressed in percent of
     each unit's own trend so they are unit-free.
-  * Anomalies. Recomputed here as deviation from each unit's own 1980-2023 mean,
+  * Anomalies. Recomputed here as deviation from each unit's own 1980-2025 mean,
     identically for both countries, rather than trusting two differently built
     *_anom columns.
-  * Window. US data run to 2025, Brazilian climate stops at 2023, so every
-    cross-country statistic uses 1980-2023.
+  * Window. Every cross-country statistic uses 1980-2025 (WIN below). Brazilian
+    climate (NASA POWER) starts in 1981, keyed by harvest year (br_05); the
+    1981 harvest has a partial season. "Recent" is the last ten years, 2016-2025.
   * Peak-season window. The repo's yield-setting window is July-August in the US
     and January-February in Brazil (southern-hemisphere summer). Both are called
     the "critical window" and compared as like-for-like local peak season.
@@ -60,10 +61,11 @@ NAME = {"IL": "Illinois", "IA": "Iowa", "IN": "Indiana", "KS": "Kansas", "MI": "
         "MS": "Mato Grosso do Sul", "MG": "Minas Gerais", "BA": "Bahia", "TO": "Tocantins",
         "SP": "São Paulo", "MA": "Maranhão"}
 CRIT = {"US": [7, 8], "BR": [1, 2]}
-WIN = (1980, 2023)
-RECENT, EARLY = (2014, 2023), (1980, 1989)
+WIN = (1980, 2025)
+RECENT, EARLY = (2016, 2025), (1980, 1989)
+AREA_RECENT = (2021, 2025)      # years averaged for the harvested-area weights
 BU_AC_TO_KG_HA = 67.25
-MIN_YEARS = 20     # common balanced-panel rule; the repo's own US rule needs 42 of 44, Brazil's 20
+MIN_YEARS = 20     # common balanced-panel rule; the repo's own US rule needs 42 of 44 (1980-2023), Brazil's 20
 SEED = 42
 
 
@@ -210,7 +212,7 @@ def describe(panel):
         a = p.yield_anom_pct.dropna()
         mad = np.median(np.abs(a - a.median()))
         robust_z = 0.6745 * (a - a.median()) / mad if mad > 0 else a * 0
-        area_recent = p[(p.year >= 2019) & (p.year <= 2023)].groupby("year").area_harvested_ha.sum().mean()
+        area_recent = p[(p.year >= AREA_RECENT[0]) & (p.year <= AREA_RECENT[1])].groupby("year").area_harvested_ha.sum().mean()
         rows.append(dict(
             country=c, state=s, name=NAME[s], n_units=p.uid.nunique(),
             n_units_balanced=b.uid.nunique(), n_unit_years=len(p),
@@ -325,8 +327,8 @@ def cliffs_delta(a, b):
 
 def group_tests(state_tab):
     rows = []
-    for k, lab in [("yield_recent_mean", "Mean yield 2014-23 (kg/ha)"), ("yield_recent_p95", "Yield proxy for potential, P95 (kg/ha)"),
-                   ("efficiency_pct", "Mean as % of P95"), ("yield_gain_pct", "Yield gain 1980s to 2010s (%)"),
+    for k, lab in [("yield_recent_mean", f"Mean yield {RECENT[0]}-{RECENT[1] % 100} (kg/ha)"), ("yield_recent_p95", "Yield proxy for potential, P95 (kg/ha)"),
+                   ("efficiency_pct", "Mean as % of P95"), ("yield_gain_pct", f"Yield gain {EARLY[0]}-{EARLY[1] % 100} to {RECENT[0]}-{RECENT[1] % 100} (%)"),
                    ("trend_rel_pct_yr", "Relative yield trend (%/yr)"), ("anom_sd_pct", "Yield anomaly SD (% of trend)"),
                    ("heat_pct_per_c", "Heat sensitivity (% yield per C)"), ("dT_ssp585_late", "Projected warming SSP5-8.5 late (C)"),
                    ("snr_ssp585_late", "Warming / interannual SD (SSP5-8.5 late)"),
@@ -439,10 +441,10 @@ def main():
     print(balance[["state", "units_total", "units_balanced", "units_balanced_repo_rule", "fill_rate_all",
                    "fill_rate_balanced", "miss_late_entry_pct", "miss_exit_pct",
                    "miss_internal_gap_pct"]].round(1).to_string(index=False))
-    print("\n[36] FUNNEL (rows 1980-2023)")
+    print("\n[36] FUNNEL (rows " + f"{WIN[0]}-{WIN[1]})")
     print(funnel[["state", "raw_rows", "usable_rows", "climate_matched_rows", "balanced_rows", "retained_pct",
                   "na_yield", "county_estimate_pct"]].round(1).to_string(index=False))
-    print("\n[36] POTENTIAL / LEVELS (2014-2023)")
+    print("\n[36] POTENTIAL / LEVELS (" + f"{RECENT[0]}-{RECENT[1]})")
     print(t[["state", "yield_recent_mean", "yield_recent_p95", "efficiency_pct", "yield_gain_pct",
              "trend_rel_pct_yr", "anom_sd_pct", "outlier_share_pct"]].round(1).to_string(index=False))
     print("\n[36] HAZARD / SENSITIVITY")
@@ -453,9 +455,9 @@ def main():
     print("\n[36] PCA explained variance:", np.round(ev[:4], 3))
 
     (OUT / "config.json").write_text(json.dumps(dict(
-        window=WIN, recent=RECENT, early=EARLY, critical_months=CRIT, seed=SEED,
+        window=WIN, recent=RECENT, early=EARLY, area_recent=AREA_RECENT, critical_months=CRIT, seed=SEED,
         states=dict(US=US, BR=BR),
-        notes=["US climate converted degF->degC and inches->mm", "anomalies recomputed vs each unit's own 1980-2023 mean",
+        notes=["US climate converted degF->degC and inches->mm", f"anomalies recomputed vs each unit's own {WIN[0]}-{WIN[1]} mean",
                "CMIP6: 8 models, baseline 1985-2014, horizons 2040-69 / 2070-99, SSP2-4.5 and SSP5-8.5, area-weighted by mean harvested area",
                "heat sensitivity: yield anomaly (% of unit trend) on critical-window Tmax and rainfall anomalies, balanced panel, unit-clustered SE",
                "yield/climate sources differ between countries: differences are descriptive"]), indent=2))

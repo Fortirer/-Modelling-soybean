@@ -1,0 +1,11 @@
+{
+  "region": "BR:SP",
+  "accessed": "2026-11-16",
+  "units": 531,
+  "source": "ISRIC SoilGrids 2.0 REST",
+  "url": "https://rest.isric.org/soilgrids/v2.0/properties/query",
+  "awc_rows": 496,
+  "nulls": {},
+  "median_aws_0_100cm_sr": 11.79,
+  "median_aws_0_100cm": 15.05
+}

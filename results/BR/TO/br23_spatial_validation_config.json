@@ -1,20 +1,20 @@
 {
   "cannot_do": "phenology-window discrimination test (US script 26 part C): no calibrated phenology model exists for Brazil, see br_10's docstring",
   "holdout": "leave-one-mesorregiao-out, earlier years only, 2001-2024",
-  "best_set_under_holdout": "climate",
-  "heat_slopes_equal_wald_p": 4.3031174392540334e-05,
+  "best_set_under_holdout": "both",
+  "heat_slopes_equal_wald_p": 0.9959073045597051,
   "residual_vs_latitude": {
     "expanding_window": {
-      "slope": -0.03008406562228838,
-      "r": -0.07663004059155999,
-      "p": 0.5854953357698123
+      "slope": -0.1344926029391098,
+      "r": -0.3277967303471705,
+      "p": 0.012008086286024976
     },
     "mesorregiao_holdout": {
-      "slope": -0.288834322556184,
-      "r": -0.43064525962098826,
-      "p": 0.0012869685396231629
+      "slope": -0.2785195941086305,
+      "r": -0.40721920788192195,
+      "p": 0.0015113207367272957
     },
-    "municipios": 53,
+    "municipios": 58,
     "latitude_span_deg": 6.256679215686275
   },
   "limits": [

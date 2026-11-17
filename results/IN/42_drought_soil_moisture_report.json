@@ -1,0 +1,20 @@
+{
+  "region": "US:IN",
+  "units": 92,
+  "rows": 4140,
+  "monthly_rows": 49680,
+  "years": [
+    1981,
+    2025
+  ],
+  "spei3_critical_mean": -0.004,
+  "spei3_critical_sd": 0.983,
+  "gwetroot_critical_mean": 0.59,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

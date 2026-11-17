@@ -1,5 +1,5 @@
 {
-  "municipalities": 497,
+  "municipalities": 479,
   "features": [
     "soil_clay_topsoil",
     "soil_clay_subsoil",
@@ -25,15 +25,14 @@
   "om_conversion": "soc_pct x 1.724 (Van Bemmelen factor) -> organic matter %",
   "wrb_class_counts": {
     "Ferralsols": 152,
-    "Nitisols": 150,
-    "Acrisols": 142,
-    "Planosols": 25,
+    "Nitisols": 148,
+    "Acrisols": 130,
+    "Planosols": 24,
     "Cambisols": 8,
     "Gleysols": 6,
-    "Phaeozems": 6,
+    "Phaeozems": 5,
     "Vertisols": 2,
     "Luvisols": 2,
-    "NaN": 2,
     "Leptosols": 2
   },
   "no_us_equivalent": [
@@ -42,5 +41,5 @@
     "soil_mollisol_pct",
     "soil_drain_*_pct -- see br08's docstring"
   ],
-  "nulls_total": 422
+  "nulls_total": 6
 }

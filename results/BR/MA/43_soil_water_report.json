@@ -1,0 +1,11 @@
+{
+  "region": "BR:MA",
+  "accessed": "2026-11-16",
+  "units": 94,
+  "source": "ISRIC SoilGrids 2.0 REST",
+  "url": "https://rest.isric.org/soilgrids/v2.0/properties/query",
+  "awc_rows": 92,
+  "nulls": {},
+  "median_aws_0_100cm_sr": 11.85,
+  "median_aws_0_100cm": 13.41
+}

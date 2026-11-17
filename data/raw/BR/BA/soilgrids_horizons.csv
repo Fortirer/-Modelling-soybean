@@ -1604,3 +1604,8 @@ fips5,property,depth,value
 2933455,cec_cmol_kg,15-30cm,13.2
 2933455,cec_cmol_kg,30-60cm,12.8
 2933455,cec_cmol_kg,60-100cm,12.7
+2912202,cec_cmol_kg,0-5cm,19.7
+2912202,cec_cmol_kg,5-15cm,17.9
+2912202,cec_cmol_kg,15-30cm,17.5
+2912202,cec_cmol_kg,30-60cm,16.7
+2912202,cec_cmol_kg,60-100cm,16.5

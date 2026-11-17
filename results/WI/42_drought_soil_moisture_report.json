@@ -1,0 +1,20 @@
+{
+  "region": "US:WI",
+  "units": 72,
+  "rows": 3240,
+  "monthly_rows": 38880,
+  "years": [
+    1981,
+    2025
+  ],
+  "spei3_critical_mean": -0.003,
+  "spei3_critical_sd": 0.986,
+  "gwetroot_critical_mean": 0.543,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

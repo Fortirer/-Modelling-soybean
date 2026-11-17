@@ -1,0 +1,20 @@
+{
+  "region": "BR:BA",
+  "units": 46,
+  "rows": 2024,
+  "monthly_rows": 24840,
+  "years": [
+    1981,
+    2024
+  ],
+  "spei3_critical_mean": 0.009,
+  "spei3_critical_sd": 0.985,
+  "gwetroot_critical_mean": 0.576,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

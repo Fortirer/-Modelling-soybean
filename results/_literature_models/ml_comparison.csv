@@ -1,0 +1,5 @@
+country,model,target,r2_out_of_sample,rmse,n,units,features,folds
+US,regression_schlenker_roberts,yield anomaly (log points),0.2546,0.1807,37519,910,4,5
+US,random_forest,yield anomaly (log points),0.2797,0.1776,37519,910,26,5
+BR,regression_schlenker_roberts,yield anomaly (log points),0.0606,0.2808,59275,1664,4,5
+BR,random_forest,yield anomaly (log points),0.2245,0.2551,59275,1664,26,5

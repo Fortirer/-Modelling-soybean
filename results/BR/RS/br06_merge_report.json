@@ -1,19 +1,19 @@
 {
   "production_rows": 17393,
-  "climate_rows": 21868,
-  "merged_rows": 15170,
-  "production_rows_outside_climate_coverage": 2223,
-  "municipalities": 473,
-  "years": 44,
+  "climate_rows": 21465,
+  "merged_rows": 15812,
+  "production_rows_outside_climate_coverage": 1581,
+  "municipalities": 474,
+  "years": 45,
   "min_years_rule": 20,
-  "municipalities_in_balanced_panel": 401,
-  "rows_in_balanced_panel": 14471,
+  "municipalities_in_balanced_panel": 406,
+  "rows_in_balanced_panel": 15165,
   "focal_code": "4312658",
-  "focal_rows": 44,
+  "focal_rows": 45,
   "focal_year_range": [
-    1980,
-    2023
+    1981,
+    2025
   ],
   "trend_slope_min": -5.448,
-  "trend_slope_max": 9.294
+  "trend_slope_max": 3.569
 }

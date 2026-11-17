@@ -1,4 +1,4 @@
 target,n,r2,adj_r2,strongest_term,p_value
-municipality mean yield (bu/acre),116,0.06312,-0.00693,soil_cec_topsoil,0.20588
-yield trend (bu/acre/yr),116,0.1827,0.12159,soil_om_topsoil,0.08898
-yield volatility (sd of anomaly),116,0.17765,0.11617,soil_sand_topsoil,0.0635
+municipality mean yield (bu/acre),153,0.08331,0.03238,soil_ph_topsoil,0.29036
+yield trend (bu/acre/yr),153,0.243,0.20094,soil_sand_topsoil,0.02452
+yield volatility (sd of anomaly),153,0.15938,0.11268,soil_sand_topsoil,0.00769

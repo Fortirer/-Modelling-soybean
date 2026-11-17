@@ -1,0 +1,20 @@
+{
+  "region": "US:MO",
+  "units": 115,
+  "rows": 5175,
+  "monthly_rows": 62100,
+  "years": [
+    1981,
+    2025
+  ],
+  "spei3_critical_mean": 0.003,
+  "spei3_critical_sd": 0.985,
+  "gwetroot_critical_mean": 0.594,
+  "nulls": {},
+  "et0": "Hargreaves-Samani",
+  "scales_months": [
+    3,
+    6
+  ],
+  "accessed": "2026-11-16"
+}

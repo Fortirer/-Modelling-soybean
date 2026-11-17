@@ -1,0 +1,24 @@
+{
+  "source": "Daymet V4 R1 daily surface weather, 1 km (ORNL DAAC)",
+  "doi": "https://doi.org/10.3334/ORNLDAAC/2129",
+  "url": "https://daymet.ornl.gov/single-pixel/api/data",
+  "accessed": "2026-11-16",
+  "period": "1980-01-01..2025-12-31",
+  "variables": {
+    "tmax (deg c)": "tmax_c",
+    "tmin (deg c)": "tmin_c",
+    "prcp (mm/day)": "prcp_mm",
+    "srad (W/m^2)": "srad_wm2",
+    "vp (Pa)": "vp_pa",
+    "dayl (s)": "dayl_s"
+  },
+  "units_requested": 102,
+  "units_returned": 102,
+  "daily_records": 1712580,
+  "years": [
+    1980,
+    2025
+  ],
+  "failed": [],
+  "note": "value of the 1 km pixel at the county centroid, not a cropland-weighted county mean; no 31 December in leap years"
+}

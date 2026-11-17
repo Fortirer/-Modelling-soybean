@@ -39,5 +39,5 @@
     "soil_mollisol_pct",
     "soil_drain_*_pct -- see br08's docstring"
   ],
-  "nulls_total": 66
+  "nulls_total": 0
 }

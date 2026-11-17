@@ -1,5 +1,5 @@
 {
-  "municipalities": 401,
+  "municipalities": 392,
   "features": [
     "soil_clay_topsoil",
     "soil_clay_subsoil",
@@ -24,7 +24,7 @@
   "weighting": "depth-bin-thickness weighted mean",
   "om_conversion": "soc_pct x 1.724 (Van Bemmelen factor) -> organic matter %",
   "wrb_class_counts": {
-    "Ferralsols": 374,
+    "Ferralsols": 365,
     "Cambisols": 16,
     "NaN": 9,
     "Lixisols": 2
@@ -35,5 +35,5 @@
     "soil_mollisol_pct",
     "soil_drain_*_pct -- see br08's docstring"
   ],
-  "nulls_total": 294
+  "nulls_total": 0
 }

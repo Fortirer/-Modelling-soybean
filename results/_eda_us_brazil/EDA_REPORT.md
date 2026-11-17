@@ -1,14 +1,20 @@
 # Soybean in the United States and Brazil: exploratory comparison
 
-22 states (12 US, 10 Brazilian), 1980-2023. Built by `scripts/36_eda_tables.py` (tables, Flourish files) and
+22 states (12 US, 10 Brazilian), 1980-2025. Built by `scripts/36_eda_tables.py` (tables, Flourish files) and
 `scripts/37_eda_figures.py` (figures). Every number below is read from the CSVs in this folder.
+
+> **Re-run on 16 November 2026.** Brazil's climate was previously matched to yield one season late: IBGE's PAM year is
+> the harvest year, and `br_05` had treated it as the planting year. With the corrected alignment the Brazilian
+> heat-sensitivity results in section 3 changed completely. The window was also extended from 1980-2023 to 1980-2025,
+> with "recent" now meaning 2016-2025.
+> See `docs/DADOS_FALTANTES.md`, section 8.
 
 ## 1. Scope and harmonisation
 
 | | United States | Brazil |
 | --- | --- | --- |
-| Unit | county (1,028 units) | municipio (2,452 units) |
-| Unit-years | 37,918 | 64,076 |
+| Unit | county (1,029 units) | municipio (2,488 units) |
+| Unit-years | 39,191 | 67,672 |
 | Yield and area | USDA NASS county estimates | IBGE PAM municipal estimates |
 | Climate | NOAA nClimDiv, degF and inches | MERRA-2 via NASA POWER, degC and mm |
 | Peak-season ("critical") window | July-August | January-February |
@@ -16,11 +22,12 @@
 What had to be fixed before the two panels could be compared:
 
 1. **Units.** US climate was converted to degC and mm. Yield anomalies are re-expressed as % of each unit's own trend.
-2. **Anomalies** are recomputed identically for both countries (deviation from each unit's own 1980-2023 mean).
-3. **Window.** Brazilian climate stops at 2023, so all cross-country statistics use 1980-2023.
-4. **The "balanced panel" was defined differently.** The repo's US rule requires at least 42 of 44 years, the Brazilian rule
-   only 20. One common rule (at least 20 years) is used here: it keeps 910 of 1,028 US units (the repo rule keeps 689)
-   and 1,593 of 2,452 Brazilian units (unchanged).
+2. **Anomalies** are recomputed identically for both countries (deviation from each unit's own 1980-2025 mean).
+3. **Window.** All cross-country statistics use 1980-2025. Brazilian climate (NASA POWER) starts in 1981, and its 1981
+   harvest has a partial season (January-April only). The 2025 US county estimates are less complete than earlier years.
+4. **The "balanced panel" was defined differently.** The repo's US rule requires at least 42 of 44 years (1980-2023), the Brazilian rule
+   only 20. One common rule (at least 20 years) is used here: it keeps 911 of 1,029 US units (the repo rule keeps 689)
+   and 1,673 of 2,488 Brazilian units.
 
 ## 2. Types of analysis
 
@@ -42,41 +49,47 @@ What had to be fixed before the two panels could be compared:
 ## 3. Findings
 
 **Data and missingness**
-- Raw files hold almost no NA (at most 0.5% of rows). Missing cells are **structural**, not suppression. In Brazil 60% of
-  missing cells are late entry (soy had not reached the municipio yet), 30% internal gaps, 10% exit. In the US 50% are
-  internal gaps, 34% exits, 16% late entry.
-- The median share of the unit x year grid that is filled is 85% in the US and 56% in Brazil. Bahia (9 balanced units) and
-  Maranhao (24) are thin samples.
+- Raw files hold almost no NA (at most 0.5% of rows). Missing cells are **structural**, not suppression. In Brazil 62% of
+  missing cells are late entry (soy had not reached the municipio yet), 28% internal gaps, 9% exit. In the US 50% are
+  internal gaps, 36% exits, 14% late entry.
+- The median share of the unit x year grid that is filled is 83% in the US and 56% in Brazil. Bahia (10 balanced units) and
+  Maranhao (27) are thin samples.
 
 **Potential and growth**
-- Yield level, the P95 proxy for potential, mean-as-% of P95 (US 82%, Brazil 80%) and instability do not differ between
+- Yield level, the P95 proxy for potential, mean-as-% of P95 (US 81%, Brazil 79%) and instability do not differ between
   countries (Holm-adjusted p = 1.0 for each).
-- Brazil's yields rose faster: 1.97 %/yr against 1.26 %/yr (Holm p = 0.005), a gain of 87% against 60% from the 1980s to the
-  2010s (p = 0.027).
-- Kansas has the largest gap to its own frontier (mean is 63% of P95); Mato Grosso, Iowa and Ohio the smallest (85-87%).
+- Brazil's yields rose faster: 1.94 %/yr against 1.25 %/yr (Holm p = 0.008), a gain of 93% against 63% from 1980-89 to
+  2016-25 (Holm p = 0.027).
+- Kansas has the largest gap to its own frontier (mean is 63% of P95); Iowa, Mato Grosso and Ohio the smallest (86-88%).
 
 **Observed and projected climate**
-- Observed critical-window warming is significant in 8 of 10 Brazilian states (+0.29 to +0.37 deg C per decade; Parana and
-  Rio Grande do Sul are not significant) and in none of the 12 US states. **This may reflect the data source** (station-based nClimDiv vs MERRA-2 reanalysis).
+- Observed critical-window warming is significant in 9 of 10 Brazilian states (+0.28 to +0.44 deg C per decade; only
+  Parana is not significant at 5%) and in none of the 12 US states. The two added years matter: January-February of
+  2024 and 2025 are among the hottest in this record in most Brazilian states (fig 5), and with the window ending in
+  2023 only 6 states were significant. **This may reflect the data source** (station-based nClimDiv vs MERRA-2 reanalysis).
 - Under SSP5-8.5, late century, projected warming of the critical window is larger in the US (median +5.5 deg C) than in
   Brazil (+3.4 deg C), Holm p = 0.001, and 94% of US unit-years would exceed the historical record against 53% in
-  Brazil. Relative to each state's own interannual variability, warming is similar (4.1 vs 3.7 SD, not significant).
+  Brazil (Holm p = 0.002). Relative to each state's own interannual variability, warming is similar (4.1 vs 3.6 SD, not
+  significant).
 - Precipitation change is small and uncertain: 76 of 88 state-scenario-horizon projections have fewer than 80% of models
   agreeing on the sign.
 
 **Sensitivity**
-- Pooled over all units, heat lowers yield by 2.6% per deg C in the US and 0.5% per deg C in Brazil (no year effects). With
-  year effects the US effect is larger (4.0%) and Brazil's smaller (0.3%).
-- At state level, heat lowers yield significantly in 8 of 12 US and 3 of 10 Brazilian states. **The sign changes when year
-  effects are added in 4 of 12 US and 6 of 10 Brazilian states**, so positive heat effects in Minnesota, Michigan and North
-  Dakota are specification-dependent and should not be read as benefits (they turn clearly negative with year effects).
-  Most Brazilian flips are among coefficients close to zero. Mato Grosso do Sul keeps a positive effect in both
-  specifications.
-- Rainfall: +6.6% per 100 mm in the US, slightly negative (-0.2%) in Brazil.
-- In units running 2 deg C or more above normal, the median yield anomaly is -18% in the US and +5% in Brazil (raw, with no control
-  for rainfall).
-- The state-level median heat sensitivity differs (US -2.6, Brazil -0.2 %/deg C) but not significantly after Holm
-  correction (p = 0.64), because Brazilian states disagree in sign.
+- Pooled over all units, heat lowers yield by 2.6% per deg C in the US and 5.2% per deg C in Brazil (no year effects). With
+  year effects the effects are 4.1% and 5.8%.
+- At state level, without year effects, heat lowers yield significantly in 8 of 12 US and 8 of 10 Brazilian states. With
+  year effects it does so in all 12 US states and in 7 of 10 Brazilian ones. **No Brazilian state has a significant
+  positive heat effect in either specification.** Goias and Bahia show no effect in either; Mato Grosso loses its effect
+  once year effects are added.
+- The largest Brazilian effects are in Rio Grande do Sul (-6.8% per deg C), Parana (-6.3%) and Mato Grosso do Sul
+  (-5.7%), close to the largest US one, Kansas (-6.6%), without year effects.
+- **The sign changes when year effects are added in 4 of 12 US states and in no Brazilian state.** The positive heat
+  effects in Minnesota, Michigan and North Dakota are specification-dependent and should not be read as benefits (they
+  turn clearly negative with year effects).
+- Rainfall: +6.6% per 100 mm in the US, +0.6% in Brazil (+1.3% with year effects).
+- In units running 2 deg C or more above normal, the median yield anomaly is -18% in the US and -13% in Brazil (raw, with
+  no control for rainfall).
+- The state-level median heat sensitivity is similar in the two countries (US -2.6, Brazil -2.2 %/deg C; Holm p = 1.0).
 
 ## 4. Data issues found along the way
 
@@ -85,6 +98,8 @@ What had to be fixed before the two panels could be compared:
 - The US `is_county_estimate` flag is 99-100% in every state, so it carries no information.
 - IBGE yields are rounded to 100 kg/ha, so several Brazilian P95 values tie (3,900 kg/ha).
 - Yield sources (NASS vs IBGE), climate sources and peak-season windows all differ between countries.
+- Brazil's yield year was misread as the planting year until 16 November 2026, which offset climate by one season and
+  hid the heat response. This was the largest data issue in the comparison.
 
 ## 5. What not to conclude
 

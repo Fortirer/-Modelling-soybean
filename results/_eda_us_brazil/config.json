@@ -1,15 +1,19 @@
 {
   "window": [
     1980,
-    2023
+    2025
   ],
   "recent": [
-    2014,
-    2023
+    2016,
+    2025
   ],
   "early": [
     1980,
     1989
+  ],
+  "area_recent": [
+    2021,
+    2025
   ],
   "critical_months": {
     "US": [
@@ -52,7 +56,7 @@
   },
   "notes": [
     "US climate converted degF->degC and inches->mm",
-    "anomalies recomputed vs each unit's own 1980-2023 mean",
+    "anomalies recomputed vs each unit's own 1980-2025 mean",
     "CMIP6: 8 models, baseline 1985-2014, horizons 2040-69 / 2070-99, SSP2-4.5 and SSP5-8.5, area-weighted by mean harvested area",
     "heat sensitivity: yield anomaly (% of unit trend) on critical-window Tmax and rainfall anomalies, balanced panel, unit-clustered SE",
     "yield/climate sources differ between countries: differences are descriptive"

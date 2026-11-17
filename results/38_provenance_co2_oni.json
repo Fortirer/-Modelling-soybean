@@ -1,0 +1,25 @@
+{
+  "accessed": "2026-11-16",
+  "co2": {
+    "source": "NOAA GML, Mauna Loa annual mean CO2",
+    "url": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv",
+    "years": [
+      1959,
+      2025
+    ],
+    "rows": 67
+  },
+  "oni": {
+    "source": "NOAA CPC Oceanic Nino Index (ERSSTv5)",
+    "url": "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt",
+    "years": [
+      1950,
+      2026
+    ],
+    "rows": 921,
+    "thresholds": {
+      "el_nino": 0.5,
+      "la_nina": -0.5
+    }
+  }
+}

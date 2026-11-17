@@ -1,0 +1,34 @@
+{
+  "source": "NASA POWER daily point API (MERRA-2 reanalysis)",
+  "url": "https://power.larc.nasa.gov/api/temporal/daily/point",
+  "accessed": "2026-11-16",
+  "period": "19810101-20251231",
+  "variables": {
+    "T2M_MAX": "tmax_c",
+    "T2M_MIN": "tmin_c",
+    "T2M": "tmean_c",
+    "T2MDEW": "tdew_c",
+    "PRECTOTCORR": "prcp_mm",
+    "ALLSKY_SFC_SW_DWN": "srad_mj",
+    "GWETROOT": "gwetroot",
+    "GWETTOP": "gwettop",
+    "RH2M": "rh_pct"
+  },
+  "units_requested": 243,
+  "units_returned": 243,
+  "daily_records": 3993948,
+  "failed": [],
+  "fill_value": -999.0,
+  "missing_pct": {
+    "tmax_c": 0.0,
+    "tmin_c": 0.0,
+    "tmean_c": 0.0,
+    "tdew_c": 0.0,
+    "prcp_mm": 0.0,
+    "srad_mj": 6.662,
+    "gwetroot": 0.0,
+    "gwettop": 0.0,
+    "rh_pct": 0.0
+  },
+  "note": "value of the ~0.5 degree MERRA-2 cell at the unit centroid; gwetroot/gwettop are fractions of saturation (0-1), not volumetric water content"
+}

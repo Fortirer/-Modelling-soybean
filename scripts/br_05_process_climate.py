@@ -8,45 +8,46 @@ model; drought is represented here only by the precipitation-deficit
 features actually computed from POWER (pcp_critical shortfall, dry-day
 counts) -- weaker than Palmer, flagged rather than faked.
 
-CROP-YEAR CONVENTION -- tested empirically, not assumed
-  Mato Grosso soybean is planted Sep-Nov and harvested Feb-Apr of the
-  FOLLOWING calendar year for the bulk of the state, so IBGE's PAM "ano"
-  could plausibly be either the planting year or the harvest year. A
-  first version of this script guessed harvest-year and got a two-way
-  FE regression (br_07) with an R2 of 0.30 and every climate coefficient
-  statistically indistinguishable from zero (p > 0.4) -- a much weaker
-  and less coherent result than every US state in this project. Testing
-  the other alignment (ano = PLANTING year) on the same regression
-  raised the temperature terms to p < 0.001 with an agronomically
-  sensible shape (positive linear + negative quadratic = a genuine
-  thermal optimum, not a meaningless curve), a decisive difference for
-  a one-bit assumption. PLANTING-year is used here as a result: ano=2020
-  means the crop planted around Sep-Nov 2020 and harvested Feb-Apr 2021,
-  growing season Sep(ano) through Apr(ano+1), critical pod-set/seed-fill
-  window Jan(ano+1)-Feb(ano+1) -- the Brazilian-summer analogue of the
-  US pipeline's July-August window.
+CROP-YEAR CONVENTION -- "ano" is the HARVEST year
+  IBGE's PAM files a crop under the calendar year it is harvested in. Soy
+  sown in Sep-Dec of ano-1 fills its pods in Jan-Feb of ano and is reported
+  under ano. So ano=2022 means: growing season Sep 2021 through Apr 2022,
+  critical pod-set/seed-fill window Jan-Feb 2022 -- the Brazilian-summer
+  analogue of the US pipeline's July-August window.
+
+  Until 2026-11-16 this script assumed the opposite (ano = planting year),
+  on the strength of a test run on Mato Grosso alone, which paired each
+  yield with the weather of the FOLLOWING season. Checked against all ten
+  states with the SPEI-3 of script 42:
+    - Rio Grande do Sul's yield collapses are in PAM 2005, 2012 and 2022,
+      the harvests of the 2004/05, 2011/12 and 2021/22 droughts;
+    - the correlation of yield anomaly with critical-window SPEI-3 is about
+      zero under the old alignment and 0.45 (RS), 0.36 (PR), 0.36 (MS) under
+      this one. Mato Grosso, where drought is rare, separates the two poorly
+      (-0.02 either way), which is how the old test went wrong.
+  See docs/DADOS_FALTANTES.md, section 8.
 """
 import sys, json
 import numpy as np, pandas as pd
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from _brcfg import RAW, PROC, RES, UF
 
-CRITICAL_MONTHS = {1, 2}            # Jan-Feb of the YEAR AFTER planting
-GROW_MONTHS_NEXT = {1, 2, 3, 4}     # Jan-Apr of the year after planting
-GROW_MONTHS_CUR = {9, 10, 11, 12}   # Sep-Dec of the planting year itself
+CRITICAL_MONTHS = {1, 2}            # Jan-Feb of the harvest year
+GROW_MONTHS_NEXT = {1, 2, 3, 4}     # Jan-Apr of the harvest year
+GROW_MONTHS_CUR = {9, 10, 11, 12}   # Sep-Dec of the year before harvest
 
 
 def main():
     d = pd.read_csv(RAW / "power_daily.csv.gz", dtype={"unit_id": str})
     d["month"] = pd.to_datetime(d.date).dt.month
 
-    # crop_year: the PLANTING year (= IBGE's "ano") this day's weather
-    # counts toward -- Sep-Dec belongs to the crop planted THIS calendar
-    # year, Jan-Apr belongs to the crop planted LAST calendar year; May-Aug
-    # is the Brazilian dry season/off-crop, excluded from every season
-    # feature below (it still exists in the daily file).
-    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_CUR), d.year,
-                      np.where(d.month.isin(GROW_MONTHS_NEXT), d.year - 1, np.nan))
+    # crop_year: the HARVEST year (= IBGE's "ano") this day's weather counts
+    # toward -- Sep-Dec belongs to the crop harvested NEXT calendar year,
+    # Jan-Apr to the crop harvested THIS calendar year; May-Aug is the
+    # Brazilian dry season/off-crop, excluded from every season feature
+    # below (it still exists in the daily file).
+    d["crop_year"] = np.where(d.month.isin(GROW_MONTHS_CUR), d.year + 1,
+                      np.where(d.month.isin(GROW_MONTHS_NEXT), d.year, np.nan))
 
     grow = d.dropna(subset=["crop_year"]).copy()
     grow["crop_year"] = grow.crop_year.astype(int)
@@ -98,9 +99,9 @@ def main():
         daily_rows=len(d), crop_year_rows=len(grow), feature_rows=len(feat),
         municipalities=int(feat.fips5.nunique()),
         year_min=int(feat.year.min()), year_max=int(feat.year.max()),
-        critical_window="Jan-Feb of the year AFTER planting (year=ano=planting year, "
-                        "tested empirically, see docstring)",
-        growing_season="Sep(year)-Apr(year+1)",
+        critical_window="Jan-Feb of the harvest year (year=ano=harvest year, "
+                        "see docstring)",
+        growing_season="Sep(year-1)-Apr(year)",
         nulls_total=int(feat.isna().sum().sum()),
         note="no Palmer drought indices available for Brazil in this pipeline; "
              "drought represented only via precipitation-deficit features",
