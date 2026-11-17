@@ -1,0 +1,28 @@
+{
+  "source": "Conab, Acompanhamento das lavouras (plantio e colheita)",
+  "url": "https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/safras/progresso-de-safra",
+  "accessed": "2026-11-17",
+  "bulletins_listed": 87,
+  "bulletins_without_spreadsheet": 1,
+  "failed": [],
+  "rows": 4662,
+  "states": [
+    "Bahia",
+    "Goiás",
+    "Maranhão",
+    "Mato Grosso",
+    "Mato Grosso do Sul",
+    "Minas Gerais",
+    "Paraná",
+    "Pará",
+    "Piauí",
+    "Rio Grande do Sul",
+    "Santa Catarina",
+    "São Paulo",
+    "Tocantins"
+  ],
+  "weeks": [
+    "2020-04-24",
+    "2026-11-13"
+  ]
+}

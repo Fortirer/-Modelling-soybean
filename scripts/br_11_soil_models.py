@@ -37,7 +37,10 @@ d = d.merge(ph, on=["fips5", "year"], how="inner", suffixes=("", "_ph"))
 
 s = pd.read_csv(PROC / "soil_features.csv", dtype={"fips5": str})
 s["is_ferralsol"] = (s.wrb_class == "Ferralsols").astype(int)
-SOIL = [c for c in s.columns if c not in ("fips5", "wrb_class")]
+# soil_awc_topsoil/subsoil (script 43) repeat soil_aws_0_100cm by layer;
+# leaving them out keeps one water term and avoids dropping extra rows
+SOIL = [c for c in s.columns
+        if c not in ("fips5", "wrb_class", "soil_awc_topsoil", "soil_awc_subsoil")]
 
 before = d.fips5.nunique()
 d = d.merge(s, on="fips5", how="left", validate="many_to_one")
@@ -68,6 +71,11 @@ def fit_ols(df, y, X):
 
 KEY = ["soil_clay_topsoil", "soil_sand_topsoil", "soil_om_topsoil", "soil_ph_topsoil",
        "soil_bd_topsoil", "soil_cec_topsoil", "soil_om_subsoil", "is_ferralsol"]
+# plant-available water in the top metre (script 43 via br_09), when present:
+# the variable a soil water balance actually needs, and the Brazilian
+# counterpart of the US pipeline's soil_aws_0_100cm
+if "soil_aws_0_100cm" in s.columns:
+    KEY = KEY + ["soil_aws_0_100cm"]
 
 # ===== Q1: soil vs the LEVEL of municipality yield ============================
 muni = (d.groupby(["fips5"])
@@ -85,7 +93,10 @@ for y, lab in [("yield_mean", "municipality mean yield (bu/acre)"),
                    adj_r2=float(m.rsquared_adj), strongest_term=p.idxmin(),
                    p_value=float(p.min())))
 Q1 = pd.DataFrame(q1)
-print("\n[br11] Q1  SOIL vs THE LEVEL OF MUNICIPALITY YIELD  (OLS, 8 soil terms)")
+missing_key = muni[KEY].isna().any(axis=1)
+print(f"[br11] Q1 sample: {int((~missing_key).sum())} of {len(muni)} municipalities "
+      f"({int(missing_key.sum())} lack a soil term, e.g. no SoilGrids water retention)")
+print("\n[br11] Q1  SOIL vs THE LEVEL OF MUNICIPALITY YIELD  (OLS, " + str(len(KEY)) + " soil terms)")
 print(Q1.round(4).to_string(index=False))
 
 m_lvl = fit_ols(muni, "yield_mean", KEY)

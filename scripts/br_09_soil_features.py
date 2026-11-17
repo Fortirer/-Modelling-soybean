@@ -57,6 +57,18 @@ def main():
         rows.append(rec)
 
     s = pd.DataFrame(rows).merge(cls, on="fips5", how="left")
+
+    # plant-available water from script 43 (SoilGrids water-retention maps),
+    # when it has been run: the Brazilian counterpart of SSURGO's
+    # soil_aws_0_100cm, which br_11 could not use before because it did not exist
+    awc_file = PROC / "soil_awc_features.csv"
+    if awc_file.exists():
+        awc = pd.read_csv(awc_file, dtype={"fips5": str})
+        keep = [c for c in ("soil_aws_0_100cm", "soil_awc_topsoil", "soil_awc_subsoil")
+                if c in awc.columns]
+        s = s.drop(columns=[c for c in keep if c in s.columns]).merge(
+            awc[["fips5"] + keep], on="fips5", how="left")
+        print(f"[br09] added from script 43: {keep}")
     feat = [c for c in s.columns if c not in ("fips5", "wrb_class")]
 
     out = PROC / "soil_features.csv"

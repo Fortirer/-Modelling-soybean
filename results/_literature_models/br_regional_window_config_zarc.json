@@ -1,0 +1,11 @@
+{
+  "run": "2026-11-17",
+  "pod_fill_days_after_sowing": [
+    60,
+    105
+  ],
+  "sowing_source": "ZARC lowest-risk decade, mean of three maturity groups (br_20)",
+  "model": "detrended log yield ~ Tmax + Tmax^2 + rain + rain^2, within municipality",
+  "min_years": 20,
+  "caveat": "the pod-fill offsets are assumed, not calibrated on observed phenology"
+}

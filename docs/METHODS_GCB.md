@@ -32,7 +32,7 @@ The growing season was defined as April-September in the US and September-April 
 
 ### 2.5 | Soil, irrigation and ancillary data
 
-US soil properties were taken from the SSURGO database (Soil Survey Staff, 2026), aggregated to counties by component percentage and area, including plant-available water in the top metre. Brazilian soil properties were sampled from SoilGrids 2.0 at 250 m (Poggio et al., 2021) at municipality centroids for five depth intervals to 100 cm: clay, sand, silt, organic carbon, pH, bulk density and cation exchange capacity. Plant-available water in the top metre was computed as the depth-integrated difference between volumetric water content at 33 and 1,500 kPa from the SoilGrids water-retention layers; the pedotransfer function of Saxton and Rawls (2006) applied to texture and organic matter served as a cross-check. Irrigated area came from the USDA Census of Agriculture and from the 2017 Brazilian Agricultural Census (IBGE, 2019). Planting windows were characterised from NASS Crop Progress reports in the US and from the official agricultural climate-risk zoning (ZARC; MAPA, 2026) in Brazil. The Oceanic Niño Index (NOAA Climate Prediction Center, 2026), averaged over each country's season, and annual mean atmospheric CO₂ at Mauna Loa (Lan et al., 2026) completed the dataset.
+US soil properties were taken from the SSURGO database (Soil Survey Staff, 2026), aggregated to counties by component percentage and area, including plant-available water in the top metre. Brazilian soil properties were sampled from SoilGrids 2.0 at 250 m (Poggio et al., 2021) at municipality centroids for five depth intervals to 100 cm: clay, sand, silt, organic carbon, pH, bulk density and cation exchange capacity. Plant-available water in the top metre was computed as the depth-integrated difference between volumetric water content at 33 and 1,500 kPa from the SoilGrids water-retention layers; the pedotransfer function of Saxton and Rawls (2006) applied to texture and organic matter served as a cross-check. Irrigated area came from the USDA Census of Agriculture and from the 2017 Brazilian Agricultural Census (IBGE, 2019). Planting dates were characterised from NASS Crop Progress reports in the US and, in Brazil, from two sources: the lowest-risk sowing decade of the official agricultural climate-risk zoning (ZARC; MAPA, 2026), per municipality, and the observed weekly share of soybean area sown and harvested in each state from the Conab crop-progress bulletins, 2020-2026 (Conab, 2026), from which we interpolated the day on which half the area was sown. For within-season prediction only, the MODIS Terra 16-day 250 m NDVI (MOD13Q1 v6.1; Didan, 2021) was retrieved at the centroids of the municipalities of Rio Grande do Sul, Paraná and Mato Grosso do Sul through the ORNL DAAC subsetting service (ORNL DAAC, 2018), and its maximum and mean over the January-February composites of each harvest year, 2001-2025, were computed. The Oceanic Niño Index (NOAA Climate Prediction Center, 2026), averaged over each country's season, and annual mean atmospheric CO₂ at Mauna Loa (Lan et al., 2026) completed the dataset.
 
 ### 2.6 | Panel regression models
 
@@ -44,9 +44,13 @@ where αᵢ is a unit fixed effect that absorbs time-invariant soil, management 
 
 Separately for each state, we fitted a model of the detrended yield anomaly on critical-window maximum temperature and precipitation, their squares and their interaction, with unit and year fixed effects and standard errors clustered by unit. From it we derived the marginal effect of temperature at the sample mean and at the 10th and 90th percentiles of precipitation, and the temperature that maximises yield where the quadratic term was negative and significant. To test whether the heat response varies within a state, the linear temperature coefficient was estimated by latitude tercile and equality of slopes was assessed with a Wald test.
 
+To identify when in the season weather matters (Mourtzinis et al., 2015), we replaced the season aggregates in the pooled model by mean temperature and total precipitation of each of the five months from flowering to maturity (May-September in the US, October-February in Brazil), with the same fixed effects, trends and inference. To test the fixed critical window, the Brazilian state models were re-estimated with a window placed 60 to 105 days after sowing in each municipality, an assumed R3-R6 interval, using either the ZARC sowing date or the Conab observed date, and compared on identical observations by the within-municipality *R*².
+
 ### 2.7 | Machine-learning models and validation
 
 To compare a flexible learner with the parametric specification (Leng & Hall, 2020), a random forest (Breiman, 2001; 200 trees, minimum leaf size 5, half of the predictors tried at each split) was trained on 26 predictors covering thermal time, heat and precipitation extremes, VPD, drought indices, soil wetness and the Oceanic Niño Index. The target was the yield anomaly net of unit effects and state trends. Skill was evaluated by five-fold cross-validation in which whole years were held out, so that no year contributes to both training and testing; unit effects and trends were re-estimated on the training years of each fold. The Schlenker-Roberts regression was evaluated under the same scheme. Predictor importance was measured by permutation on held-out years.
+
+Following the input design of Khaki et al. (2020), we also gave the learners 26 weeks of in-season weather (weekly mean maximum and minimum temperature, total precipitation and mean VPD; 104 inputs) instead of season indices, and compared a random forest and a feed-forward neural network (two hidden layers of 64 and 32 units, early stopping) under the same year-held-out scheme. This tests whether weekly timing adds skill; it is not a reproduction of their convolutional-recurrent architecture. Finally, to assess within-season prediction with remote sensing (Schwalbert et al., 2020; von Bloh et al., 2023), the random forest was refitted with the January-February NDVI added to the weather and drought predictors, on identical rows.
 
 Within states, gradient-boosted trees (200 trees, depth 3, learning rate 0.05) were evaluated with an expanding window (rolling origin from the midpoint of the record, no random splits) for climate predictors alone, climate plus process-based predictors, and both plus soil. Spatial transferability was assessed by leaving out one mesoregion at a time. Skill is reported as the percentage reduction in root-mean-square error relative to predicting a zero anomaly.
 
@@ -54,7 +58,7 @@ Within states, gradient-boosted trees (200 trees, depth 3, learning rate 0.05) w
 
 Monthly near-surface air temperature, daily maximum temperature, precipitation and relative humidity were obtained from eight CMIP6 models (Eyring et al., 2016): ACCESS-ESM1-5, CanESM5, EC-Earth3, GFDL-ESM4, INM-CM5-0, MIROC6, MPI-ESM1-2-LR and MRI-ESM2-0, one realisation each, for the historical experiment and for SSP2-4.5 and SSP5-8.5 (O'Neill et al., 2016). Change factors relative to 1985-2014 were computed for 2040-2069 and 2070-2099 at each unit centroid, additive for temperature and multiplicative for precipitation, and applied to the observed critical-window series (delta-change method). Yield was re-predicted with the state-level quadratic model. We report the ensemble median, the range across models, the number of models agreeing on the sign of the change, and the share of projected unit-years lying outside the observed range of critical-window temperature, which identifies extrapolation. Projections hold cultivars, management and planted area constant and include no CO₂ fertilisation effect.
 
-Monthly change factors shift every day of a month equally and cannot represent changes in the frequency of days above 30 °C. For projections based on degree days, the workflow extracts daily bias-corrected series from NEX-GDDP-CMIP6 at 0.25° (Thrasher et al., 2022).
+Monthly change factors shift every day of a month equally and cannot represent changes in the frequency of days above 30 °C. We therefore also extracted daily, bias-corrected maximum and minimum temperature and precipitation from NEX-GDDP-CMIP6 at 0.25° (Thrasher et al., 2022) at every unit centroid, for MPI-ESM1-2-LR under the historical experiment (2005-2014) and SSP5-8.5 (2051-2060). Season GDD, EDD above 30 °C and precipitation were computed exactly as for the observations, and their change between the two periods was translated into yield change with the pooled Schlenker-Roberts coefficients of each country. With one model and ten-year periods this demonstrates the daily method rather than providing a projection.
 
 ### 2.9 | Comparison between countries
 
@@ -62,7 +66,7 @@ For the cross-country comparison (1980-2025) climate variables were converted to
 
 ### 2.10 | Limitations of the data
 
-Each unit is represented by the grid cell at its centroid rather than by a cropland-weighted mean, which misrepresents large municipalities. The US heat variables derive from a 1 km product and the Brazilian ones from an approximately 50 km reanalysis that smooths extremes, so coefficients on extreme degree days are not directly comparable between countries; pooled analyses therefore use the NASA POWER version for both. Soil wetness is a land-surface model estimate, not a measurement. The critical window was fixed by country, although planting is later in northern Mato Grosso and Matopiba. NASA POWER begins in January 1981, so the first Brazilian harvest year has a partial season and was flagged. The Saxton-Rawls function was calibrated on US soils and is not reliable for the oxidic clays of the Cerrado.
+Each unit is represented by the grid cell at its centroid rather than by a cropland-weighted mean, which misrepresents large municipalities. The US heat variables derive from a 1 km product and the Brazilian ones from an approximately 50 km reanalysis that smooths extremes, so coefficients on extreme degree days are not directly comparable between countries; pooled analyses therefore use the NASA POWER version for both. Soil wetness is a land-surface model estimate, not a measurement. The critical window was fixed by country; moving it with the sowing date changed the fit little (Section 2.6). The ZARC lowest-risk date is two to five weeks later than the date Conab observes in most states, so it should not be read as the sowing date. NASA POWER begins in January 1981, so the first Brazilian harvest year has a partial season and was flagged. The Saxton-Rawls function was calibrated on US soils and is not reliable for the oxidic clays of the Cerrado.
 
 ### 2.11 | Software and reproducibility
 
@@ -72,11 +76,17 @@ Analyses were run in Python 3.12 with pandas, NumPy, SciPy, statsmodels (Seabold
 
 Allen, R. G., Pereira, L. S., Raes, D., & Smith, M. (1998). *Crop evapotranspiration: Guidelines for computing crop water requirements* (FAO Irrigation and Drainage Paper 56). Food and Agriculture Organization of the United Nations.
 
+von Bloh, M., Nóia Júnior, R. de S., Wangerpohl, X., Saltık, A. O., Haller, V., Kaiser, L., & Asseng, S. (2023). Machine learning for soybean yield forecasting in Brazil. *Agricultural and Forest Meteorology*, 341, 109670. https://doi.org/10.1016/j.agrformet.2023.109670
+
 Breiman, L. (2001). Random forests. *Machine Learning*, 45(1), 5-32. https://doi.org/10.1023/A:1010933404324
 
 Cameron, A. C., & Miller, D. L. (2015). A practitioner's guide to cluster-robust inference. *Journal of Human Resources*, 50(2), 317-372. https://doi.org/10.3368/jhr.50.2.317
 
 Cliff, N. (1993). Dominance statistics: Ordinal analyses to answer ordinal questions. *Psychological Bulletin*, 114(3), 494-509. https://doi.org/10.1037/0033-2909.114.3.494
+
+Conab. (2026). *Progresso de safra: Acompanhamento das lavouras* [Data set]. Companhia Nacional de Abastecimento. https://www.gov.br/conab/pt-br/atuacao/informacoes-agropecuarias/safras/progresso-de-safra
+
+Didan, K. (2021). *MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061* [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MOD13Q1.061
 
 Eyring, V., Bony, S., Meehl, G. A., Senior, C. A., Stevens, B., Stouffer, R. J., & Taylor, K. E. (2016). Overview of the Coupled Model Intercomparison Project Phase 6 (CMIP6) experimental design and organization. *Geoscientific Model Development*, 9(5), 1937-1958. https://doi.org/10.5194/gmd-9-1937-2016
 
@@ -94,6 +104,8 @@ IBGE. (2019). *Censo Agropecuário 2017: Resultados definitivos*. Instituto Bras
 
 IBGE. (2026). *Produção Agrícola Municipal, tabela 1612* [Data set]. Instituto Brasileiro de Geografia e Estatística. https://sidra.ibge.gov.br/tabela/1612
 
+Khaki, S., Wang, L., & Archontoulis, S. V. (2020). A CNN-RNN framework for crop yield prediction. *Frontiers in Plant Science*, 10, 1750. https://doi.org/10.3389/fpls.2019.01750
+
 Lan, X., Tans, P., & Thoning, K. W. (2026). *Trends in globally-averaged CO₂ determined from NOAA Global Monitoring Laboratory measurements* [Data set]. NOAA Global Monitoring Laboratory. https://gml.noaa.gov/ccgg/trends/
 
 Leng, G., & Hall, J. W. (2020). Predicting spatial and temporal variability in crop yields: An inter-comparison of machine learning, regression and process-based models. *Environmental Research Letters*, 15(4), 044027. https://doi.org/10.1088/1748-9326/ab7b24
@@ -108,11 +120,15 @@ MAPA. (2026). *Zoneamento Agrícola de Risco Climático (ZARC): Soja* [Data set]
 
 McKee, T. B., Doesken, N. J., & Kleist, J. (1993). The relationship of drought frequency and duration to time scales. In *Proceedings of the 8th Conference on Applied Climatology* (pp. 179-184). American Meteorological Society.
 
+Mourtzinis, S., Specht, J. E., Lindsey, L. E., Wiebold, W. J., Ross, J., Nafziger, E. D., Kandel, H. J., Mueller, N., Devillez, P. L., Arriaga, F. J., & Conley, S. P. (2015). Climate-induced reduction in US-wide soybean yields underpinned by region- and in-season-specific responses. *Nature Plants*, 1, 14026. https://doi.org/10.1038/nplants.2014.26
+
 NASA Langley Research Center. (2026). *Prediction Of Worldwide Energy Resources (POWER) project, daily agroclimatology data* [Data set]. https://power.larc.nasa.gov/
 
 NOAA Climate Prediction Center. (2026). *Oceanic Niño Index (ONI)* [Data set]. https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt
 
 O'Neill, B. C., Tebaldi, C., van Vuuren, D. P., Eyring, V., Friedlingstein, P., Hurtt, G., Knutti, R., Kriegler, E., Lamarque, J.-F., Lowe, J., Meehl, G. A., Moss, R., Riahi, K., & Sanderson, B. M. (2016). The Scenario Model Intercomparison Project (ScenarioMIP) for CMIP6. *Geoscientific Model Development*, 9(9), 3461-3482. https://doi.org/10.5194/gmd-9-3461-2016
+
+ORNL DAAC. (2018). *MODIS and VIIRS Land Products Global Subsetting and Visualization Tool* [Data set]. Oak Ridge National Laboratory Distributed Active Archive Center. https://doi.org/10.3334/ORNLDAAC/1379
 
 Ortiz-Bobea, A., Wang, H., Carrillo, C. M., & Ault, T. R. (2019). Unpacking the climatic drivers of US agricultural yields. *Environmental Research Letters*, 14(6), 064003. https://doi.org/10.1088/1748-9326/ab1e75
 
@@ -127,6 +143,8 @@ Reichle, R. H., Draper, C. S., Liu, Q., Girotto, M., Mahanama, S. P. P., Koster,
 Saxton, K. E., & Rawls, W. J. (2006). Soil water characteristic estimates by texture and organic matter for hydrologic solutions. *Soil Science Society of America Journal*, 70(5), 1569-1578. https://doi.org/10.2136/sssaj2005.0117
 
 Schlenker, W., & Roberts, M. J. (2009). Nonlinear temperature effects indicate severe damages to U.S. crop yields under climate change. *Proceedings of the National Academy of Sciences*, 106(37), 15594-15598. https://doi.org/10.1073/pnas.0906865106
+
+Schwalbert, R. A., Amado, T., Corassa, G., Pott, L. P., Prasad, P. V. V., & Ciampitti, I. A. (2020). Satellite-based soybean yield forecast: Integrating machine learning and weather data for improving crop yield prediction in southern Brazil. *Agricultural and Forest Meteorology*, 284, 107886. https://doi.org/10.1016/j.agrformet.2019.107886
 
 Seabold, S., & Perktold, J. (2010). Statsmodels: Econometric and statistical modeling with Python. In *Proceedings of the 9th Python in Science Conference* (pp. 92-96). https://doi.org/10.25080/Majora-92bf1922-011
 

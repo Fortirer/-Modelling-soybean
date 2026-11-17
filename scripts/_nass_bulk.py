@@ -8,19 +8,26 @@ filename from the public directory listing instead, so the auto-download path
 never needs a manual date bump again.
 """
 import re
+import urllib.parse
 import urllib.request
 
-INDEX_URL = "https://www.nass.usda.gov/datasets/"
+# In November 2026 NASS moved the listing to /datasets (no trailing slash; the
+# old /datasets/ now 404s) and the files under /sites/default/files/datasets/.
+# Links are therefore resolved from the page itself rather than assumed.
+INDEX_URL = "https://www.nass.usda.gov/datasets"
 
 
 def latest_bulk_url(prefix):
     """`prefix` e.g. 'qs.crops_' or 'qs.census2022' (no date, that part). Returns
     the full https URL of the newest matching file on the NASS datasets page.
     """
-    with urllib.request.urlopen(INDEX_URL, timeout=60) as resp:
+    req = urllib.request.Request(INDEX_URL, headers={"User-Agent": "research-script"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
         html = resp.read().decode("utf-8", errors="replace")
-    names = sorted(set(re.findall(rf'({re.escape(prefix)}[\w.\-]*\.txt\.gz)', html)))
-    if not names:
+    links = sorted(set(re.findall(rf'href="([^"]*{re.escape(prefix)}[\w.\-]*\.txt\.gz)"', html)))
+    if not links:
         raise RuntimeError(f"no file on {INDEX_URL} matches prefix {prefix!r} -- "
                            f"NASS may have changed its naming or the page layout")
-    return INDEX_URL + names[-1]   # names sort chronologically (YYYYMMDD suffix)
+    # file names end in YYYYMMDD, so sorting by name sorts by date
+    newest = max(links, key=lambda link: link.rsplit("/", 1)[-1])
+    return urllib.parse.urljoin(INDEX_URL + "/", newest)

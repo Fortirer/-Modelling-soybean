@@ -29,8 +29,10 @@ Usage (defaults: MPI-ESM1-2-LR, ssp585, 2041-2070, all regions):
 import argparse
 import re
 import tempfile
+import time
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import requests
 import xarray as xr
@@ -66,24 +68,69 @@ def find_key(model: str, scenario: str, variable: str, year: int) -> str:
     return sorted(keys)[-1]          # "..._v2.0.nc" sorts after "....nc"
 
 
+DOWNLOAD_RETRIES = 8
+
+
 def download(key: str, folder: Path) -> Path:
+    """Stream one file to disk, resuming with a Range request after a break.
+
+    A 245 MB transfer over a shared line is often cut part way; restarting
+    from zero each time could loop for ever, so the bytes already on disk are
+    kept and only the rest is requested.
+    """
     target = folder / Path(key).name
-    with requests.get(BUCKET + key, stream=True, timeout=TIMEOUT_S) as response:
-        response.raise_for_status()
-        with open(target, "wb") as handle:
-            for chunk in response.iter_content(CHUNK_BYTES):
-                handle.write(chunk)
-    return target
+    expected = None
+    for attempt in range(DOWNLOAD_RETRIES):
+        have = target.stat().st_size if target.exists() else 0
+        if expected is not None and have >= expected:
+            return target
+        headers = {"Range": f"bytes={have}-"} if have else {}
+        try:
+            with requests.get(BUCKET + key, stream=True, timeout=TIMEOUT_S,
+                              headers=headers) as response:
+                if response.status_code == 416:          # nothing left to send
+                    return target
+                response.raise_for_status()
+                resumed = response.status_code == 206
+                length = int(response.headers.get("Content-Length", 0))
+                expected = (have if resumed else 0) + length
+                with open(target, "ab" if resumed else "wb") as handle:
+                    for chunk in response.iter_content(CHUNK_BYTES):
+                        handle.write(chunk)
+            if target.stat().st_size >= expected:
+                return target
+        except requests.RequestException as error:
+            log(TAG, f"{Path(key).name}: attempt {attempt + 1} broke "
+                     f"({type(error).__name__}), resuming")
+            time.sleep(10 * (attempt + 1))
+    raise RuntimeError(f"{key}: incomplete after {DOWNLOAD_RETRIES} attempts")
 
 
-def sample(path: Path, variable: str, points: pd.DataFrame) -> pd.DataFrame:
-    """Daily series of the nearest 0.25 degree cell for every point."""
+BOX_MARGIN_DEG = 0.5
+
+
+def load_box(path: Path, variable: str, lat, lon) -> xr.DataArray:
+    """Read once, into memory, the box enclosing every requested point.
+
+    Pointwise selection straight from the compressed global file makes the
+    netCDF backend decompress far more than it returns (over an hour for one
+    year and ~400 points). Reading one box per file and picking the points
+    from memory takes seconds.
+    """
+    lon = np.asarray(lon) % 360.0
+    lat = np.asarray(lat)
     coder = xr.coders.CFDatetimeCoder(use_cftime=True)
     with xr.open_dataset(path, decode_times=coder) as dataset:
-        picked = dataset[variable].sel(
-            lat=xr.DataArray(points.lat.to_numpy(), dims="unit"),
-            lon=xr.DataArray(points.lon.to_numpy() % 360.0, dims="unit"),
-            method="nearest").load()
+        return dataset[variable].sel(
+            lat=slice(lat.min() - BOX_MARGIN_DEG, lat.max() + BOX_MARGIN_DEG),
+            lon=slice(lon.min() - BOX_MARGIN_DEG, lon.max() + BOX_MARGIN_DEG)).load()
+
+
+def sample(box: xr.DataArray, variable: str, points: pd.DataFrame) -> pd.DataFrame:
+    """Daily series of the nearest 0.25 degree cell for every point."""
+    picked = box.sel(lat=xr.DataArray(points.lat.to_numpy(), dims="unit"),
+                     lon=xr.DataArray(points.lon.to_numpy() % 360.0, dims="unit"),
+                     method="nearest")
     values = picked.to_numpy()
     values = values * SECONDS_PER_DAY if variable == "pr" else values - KELVIN
     # model calendars differ (noleap, 360-day); keep the date as text
@@ -131,11 +178,15 @@ def main() -> None:
             for variable in VARIABLES:
                 path = download(find_key(args.model, args.scenario, variable, year),
                                 Path(folder))
-                for region in pending:
-                    part = sample(path, variable, points[region.key])
-                    previous = merged[region.key]
-                    merged[region.key] = part if previous is None else previous.merge(
-                        part, on=["date", "unit_id"])
+                for country in {r.country for r in pending}:
+                    inside = pd.concat([points[r.key] for r in pending if r.country == country])
+                    box = load_box(path, variable, inside.lat, inside.lon)
+                    for region in [r for r in pending if r.country == country]:
+                        part = sample(box, variable, points[region.key])
+                        previous = merged[region.key]
+                        merged[region.key] = part if previous is None else previous.merge(
+                            part, on=["date", "unit_id"])
+                    del box
                 path.unlink()
         for region in pending:
             out = outputs[region.key]

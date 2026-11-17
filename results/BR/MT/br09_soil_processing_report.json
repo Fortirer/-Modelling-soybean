@@ -14,9 +14,12 @@
     "soil_bd_topsoil",
     "soil_bd_subsoil",
     "soil_cec_topsoil",
-    "soil_cec_subsoil"
+    "soil_cec_subsoil",
+    "soil_aws_0_100cm",
+    "soil_awc_topsoil",
+    "soil_awc_subsoil"
   ],
-  "n_features": 14,
+  "n_features": 17,
   "depth_bands": {
     "topsoil": "0-30 cm (SoilGrids bins 0-5,5-15,15-30cm)",
     "subsoil": "30-100 cm (SoilGrids bins 30-60,60-100cm)"
@@ -39,5 +42,5 @@
     "soil_mollisol_pct",
     "soil_drain_*_pct -- see br08's docstring"
   ],
-  "nulls_total": 0
+  "nulls_total": 6
 }

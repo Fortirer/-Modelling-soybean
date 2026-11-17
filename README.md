@@ -738,15 +738,15 @@ The four states with an identified response all sit on the hot side of their opt
 | State | Climate only | Climate + process + soil | Soil only | Climate only, mesorregiao held out |
 | --- | --- | --- | --- | --- |
 | Rio Grande do Sul | **+22.6%** | +22.2% | −1.9% | +20.8% |
-| Paraná | +3.2% | +6.0% | −1.9% | +3.5% |
-| Mato Grosso do Sul | +2.8% | **+11.9%** | −2.2% | −3.2% |
-| São Paulo | −0.9% | 0.0% | −2.0% | +0.2% |
-| Goiás | −4.3% | −4.3% | −3.5% | −5.0% |
-| Minas Gerais | −4.3% | −3.5% | −3.9% | −0.9% |
-| Mato Grosso | −6.0% | −7.0% | −5.2% | −39.3% |
-| Bahia | −6.4% | −8.5% | −3.2% | −12.7% |
-| Maranhão | −18.5% | −15.4% | −7.5% | −19.8% |
-| Tocantins | −19.0% | −16.9% | −5.4% | −20.2% |
+| Paraná | +3.2% | +5.5% | −1.9% | +3.5% |
+| Mato Grosso do Sul | +2.8% | **+11.6%** | −2.2% | −3.2% |
+| São Paulo | −0.9% | −0.1% | −2.0% | +0.2% |
+| Goiás | −4.3% | −4.2% | −3.5% | −5.0% |
+| Minas Gerais | −4.3% | −3.2% | −3.9% | −0.9% |
+| Mato Grosso | −6.0% | −6.8% | −5.2% | −39.3% |
+| Bahia | −6.4% | −8.2% | −3.2% | −12.7% |
+| Maranhão | −18.5% | −13.8% | −7.5% | −19.8% |
+| Tocantins | −19.0% | −17.2% | −5.4% | −20.2% |
 
 Mato Grosso do Sul is the one state where process and soil features add real skill. In Mato Grosso the model loses heavily when a whole mesorregiao is held out: what it learns in one region does not carry to another.
 
@@ -808,26 +808,26 @@ Uniform perturbations of observed January-February climate, predicted with the s
 | Goiás | −0.1 | −0.6 | −0.4 | −0.8 | −1.0 | 136 of 173 |
 | Bahia | −0.3 | −0.6 | −0.6 | −0.2 | −0.5 | 6 of 10 |
 
-These agree with the CMIP6 projections in sign and in the ranking of states. Only in Rio Grande do Sul does less rain clearly deepen the loss; in Paraná, São Paulo, Tocantins and Mato Grosso the loss is slightly *smaller* with less rain, because the fitted interaction makes heat weigh more in wet years. That is a property of the interaction term, not a benefit of drought. Fewer than 2% of perturbed municipio-years fall outside the observed temperature range, except in Tocantins (6.8% at +2 °C). Until 16 November 2026 these scenarios came from gradient-boosted trees fitted on absolute climate levels and showed yield gains under warming; that result is withdrawn (see the docstring of `br_14`).
+These agree with the CMIP6 projections in sign and in the ranking of states. Only in Rio Grande do Sul does less rain clearly deepen the loss; in Paraná, São Paulo, Tocantins and Mato Grosso the loss is slightly *smaller* with less rain, because the fitted interaction makes heat weigh more in wet years. That is a property of the interaction term, not a benefit of drought. Much of this is extrapolation: at +2 °C the January-February Tmax exceeds the hottest year the municipio itself has recorded in 9% to 23% of municipio-years in the South and Centre-West and in 27% to 48% in Matopiba (Tocantins the highest), and at −20% rain 5% to 16% of years fall below the municipio's driest. The fitted temperature curve is concave in nine states and convex, and not significant, in Bahia, whose values should not be read. Until 16 November 2026 these scenarios came from gradient-boosted trees fitted on absolute climate levels and showed yield gains under warming; that result is withdrawn (see the docstring of `br_14`).
 
 ### Soil
 
-Soil explains differences **between municipios**, not between years (`br_11`, SoilGrids with the gaps filled by script `43`):
+Soil explains differences **between municipios**, not between years (`br_11`, SoilGrids with the gaps filled by script `43`; nine soil terms including plant-available water in the top metre, `soil_aws_0_100cm`):
 
 | State | Municipios | R² for mean yield level (adjusted) | R² for trend | R² for volatility |
 | --- | --- | --- | --- | --- |
-| Paraná | 363 | 0.33 (0.31) | 0.39 | 0.47 |
-| Mato Grosso | 102 | 0.31 (0.25) | 0.25 | 0.17 |
-| Rio Grande do Sul | 400 | 0.30 (0.28) | 0.26 | 0.32 |
-| São Paulo | 286 | 0.11 (0.09) | 0.24 | 0.11 |
-| Goiás | 169 | 0.09 (0.05) | 0.07 | 0.12 |
-| Mato Grosso do Sul | 74 | 0.14 (0.04) | 0.28 | 0.27 |
-| Minas Gerais | 153 | 0.08 (0.03) | 0.24 | 0.16 |
-| Tocantins | 58 | 0.14 (0.00) | 0.43 | 0.36 |
-| Maranhão | 27 | 0.33 (0.04) | 0.17 | 0.29 |
-| Bahia | 10 | 0.99 (0.97) | 0.92 | 0.89 |
+| Rio Grande do Sul | 400 | 0.35 (0.34) | 0.26 | 0.32 |
+| Paraná | 363 | 0.33 (0.31) | 0.39 | 0.49 |
+| Mato Grosso | 102 | 0.31 (0.24) | 0.25 | 0.18 |
+| São Paulo | 286 | 0.12 (0.09) | 0.25 | 0.13 |
+| Mato Grosso do Sul | 74 | 0.14 (0.02) | 0.30 | 0.27 |
+| Goiás | 169 | 0.09 (0.04) | 0.10 | 0.16 |
+| Minas Gerais | 153 | 0.09 (0.03) | 0.24 | 0.16 |
+| Tocantins | 58 | 0.14 (−0.02) | 0.45 | 0.36 |
+| Maranhão | 27 | 0.36 (0.02) | 0.19 | 0.38 |
+| Bahia | 10 | saturated | — | — |
 
-Bahia is overfit (10 municipios, 9 parameters). Soil alone never predicts a year's anomaly (the "soil only" column above is negative in all ten states), as expected for a feature that does not change in time. Most of the soybean area is Ferralsol (deeply weathered Cerrado Oxisols), in contrast with Illinois' Mollisols. Plant-available water in the top metre (`soil_aws_0_100cm`, script `43`) is in the modelling panel but not yet in `br_11`.
+Plant-available water matters only in Rio Grande do Sul, where it is the strongest soil term for mean yield (+0.68 bu/acre per cm of water in the top metre, p<0.001) and raises the R² from 0.30 to 0.35; it is not significant in the other nine states. That fits Rio Grande do Sul being the state where drought explains most and where available water is lowest (median 7 cm, against 9 to 15 cm elsewhere). Adding soil to the climate and process model changes out-of-sample skill by −2.4 to +1.1 points: soil alone never predicts a year's anomaly, as expected for a feature that does not change in time. Bahia (10 municipios, 10 parameters) is saturated. Most of the soybean area is Ferralsol (deeply weathered Cerrado Oxisols), in contrast with Illinois' Mollisols.
 
 ### Irrigation
 
@@ -861,10 +861,22 @@ Script `48` fits one specification per reviewed paper on the pooled panel (1,664
 
 The VPD effect is nearly identical in the two countries. Degree days above 30 °C weigh less in Brazil, partly because NASA POWER's ~50 km cells smooth extremes that the 1 km Daymet used for the US keeps. In Brazil the random forest beats the regression by a wide margin; its leading features are critical-window SPEI-3, rainfall and dry days, and minimum root-zone wetness.
 
+### When in the season, and when the crop is sown
+
+**Month by month** (script `51`, the design of Mourtzinis et al. 2015, pooled panel): heat lowers yield only during seed filling, by 3.0% per °C in January and 3.7% in February in Brazil and 3.1% in August in the US; heat early in the season (October in Brazil, June in the US) slightly helps. Rain matters most late in the season. This supports January-February and July-August as the critical windows. Giving a random forest or a neural network 26 weeks of weather (the inputs of Khaki et al. 2020, not their CNN-RNN) predicts worse than well-chosen season indices in both countries.
+
+**Sowing dates** (script `52`, Conab weekly progress, 5 to 6 complete seasons per state, 2022-2027): half the soybean area is sown by 18 October in Mato Grosso, 21-26 October in São Paulo, Mato Grosso do Sul and Paraná, early-to-mid November in Goiás, Minas Gerais, Tocantins and Bahia, 23 November in Rio Grande do Sul and 1 December in Maranhão. That is 2 to 5 weeks earlier than ZARC's lowest-risk date in most states; only in Rio Grande do Sul do the two coincide. ZARC is a risk recommendation, not the date farmers sow.
+
+**A window that moves with sowing** (script `49`, days 60-105 after the ZARC or Conab sowing date) does not beat January-February overall (within-municipio R² 0.17 against 0.19) or in Rio Grande do Sul and Paraná; it helps a little only where the climate signal is weak (Mato Grosso, Matopiba).
+
+**Satellite NDVI for within-season prediction** (scripts `53` and `55`, MODIS MOD13Q1 at municipio centroids, January-February, harvests 2001-2025, Rio Grande do Sul, Paraná and Mato Grosso do Sul): adding NDVI to the weather-and-drought random forest raises held-out-year R² only from 0.293 to 0.314 (Rio Grande do Sul 0.413 to 0.424). The drought NDVI records is already in the SPEI, dry-day and soil-moisture predictors. NDVI is for in-season prediction only; it has no future values.
+
+**Degree days from daily scenario series** (scripts `46` and `56`, NEX-GDDP-CMIP6, one model, harvests 2005-2014 against 2051-2060 under SSP5-8.5, pooled Schlenker-Roberts coefficients): extreme degree days above 30 °C rise most where they are already high, giving the largest losses in Mato Grosso (−17%), Tocantins (−12%), Bahia (−10%), Maranhão (−9%) and Mato Grosso do Sul (−7%). In Rio Grande do Sul, Paraná and Minas Gerais the gain in beneficial degree days outweighs the extra heat (+4%), the opposite of the monthly-delta projections above, which rest on each state's quadratic in mean Tmax. One model and ten-year periods demonstrate the daily method; they are not a projection to report.
+
 ### Limits
 
 - One weather point per municipio, the centroid, on a ~50 km grid. The large municipios of Mato Grosso, Tocantins and Maranhão are poorly represented.
-- The critical window is fixed at January-February for every state. In Matopiba and northern Mato Grosso planting is later; a window per region taken from ZARC could change those states' results.
+- The critical window is fixed at January-February in the state tables; moving it with the sowing date changes little (see above). Conab sowing dates are state-level and cover only 2020-2026, and the 60-105 day offset to seed fill is assumed.
 - Bahia and Maranhão have 10 and 27 municipios in the balanced panel.
 - PAM figures are revised by IBGE; yields are as downloaded by `br_01`.
 
@@ -918,6 +930,12 @@ A review of thirteen climate × soybean papers listed the variables their models
 | `46_download_nex_gddp_daily.py` | NEX-GDDP-CMIP6 daily projections at unit centroids (optional, heavy) |
 | `47_build_model_panels.py` | `data/final/model_panel_us.csv.gz` and `model_panel_br.csv.gz` |
 | `48_literature_models.py` | Schlenker-Roberts, Ortiz-Bobea, Lobell, Silva and Parisoto specifications, and a random forest against the regression |
+| `49_br_regional_window.py` | Brazil: critical window placed per municipality from the ZARC sowing date |
+| `50_monthly_weekly_weather.py` | Monthly and weekly in-season weather, both countries |
+| `51_literature_models_inseason.py` | Mourtzinis month-by-month model; weekly-weather random forest and neural network (Khaki-style inputs) |
+| `52_download_conab_progress.py` | Conab weekly soybean sowing and harvest progress by state |
+| `53_download_modis_ndvi.py` | MODIS NDVI and EVI in January-February at municipio centroids |
+| `54_ssurgo_multicounty.py` | SSURGO for counties inside multi-county survey areas (needs Soil Data Access online) |
 
 ```bash
 python scripts/38_download_co2_oni.py
@@ -928,6 +946,11 @@ python scripts/42_drought_soil_moisture.py
 python scripts/43_br_soil_water.py                # ~3 h, resumable
 python scripts/47_build_model_panels.py
 python scripts/48_literature_models.py
+python scripts/49_br_regional_window.py
+python scripts/50_monthly_weekly_weather.py
+python scripts/51_literature_models_inseason.py
+python scripts/52_download_conab_progress.py
+python scripts/53_download_modis_ndvi.py     # slow: ~50 requests per municipio
 python -m pytest tests -q
 ```
 

@@ -88,21 +88,21 @@ Ganho sobre prever anomalia zero. Negativo significa pior que a linha de base.
 | Estado | Só clima | Clima + processo + solo | Só solo | Só clima, mesorregião de fora |
 | --- | --- | --- | --- | --- |
 | RS | +22,6% | +22,2% | −1,9% | +20,8% |
-| PR | +3,2% | +6,0% | −1,9% | +3,5% |
-| MS | +2,8% | +11,9% | −2,2% | −3,2% |
-| SP | −0,9% | 0,0% | −2,0% | +0,2% |
-| GO | −4,3% | −4,3% | −3,5% | −5,0% |
-| MG | −4,3% | −3,5% | −3,9% | −0,9% |
-| MT | −6,0% | −7,0% | −5,2% | −39,3% |
-| BA | −6,4% | −8,5% | −3,2% | −12,7% |
-| MA | −18,5% | −15,4% | −7,5% | −19,8% |
-| TO | −19,0% | −16,9% | −5,4% | −20,2% |
+| PR | +3,2% | +5,5% | −1,9% | +3,5% |
+| MS | +2,8% | +11,6% | −2,2% | −3,2% |
+| SP | −0,9% | −0,1% | −2,0% | +0,2% |
+| GO | −4,3% | −4,2% | −3,5% | −5,0% |
+| MG | −4,3% | −3,2% | −3,9% | −0,9% |
+| MT | −6,0% | −6,8% | −5,2% | −39,3% |
+| BA | −6,4% | −8,2% | −3,2% | −12,7% |
+| MA | −18,5% | −13,8% | −7,5% | −19,8% |
+| TO | −19,0% | −17,2% | −5,4% | −20,2% |
 
 - **RS é o único estado onde o modelo de clima é claramente útil para
   prever**, e o ganho se mantém quando uma mesorregião inteira fica fora do
   treino.
 - **Em MS as variáveis de processo e de solo quase quadruplicam o ganho**
-  (de 2,8% para 11,9%). É o único estado onde isso acontece com folga.
+  (de 2,8% para 11,6%). É o único estado onde isso acontece com folga.
 - **Em MT o modelo piora muito ao transferir entre mesorregiões** (−39%): o
   que ele aprende numa região não vale na outra.
 - **Em TO e MA o modelo é bem pior que a linha de base.** Com 58 e 27
@@ -193,37 +193,53 @@ Variação da produtividade média, em %.
   *menor* com menos chuva: o modelo estima que o calor pesa mais em anos
   úmidos. Isso reflete o termo de interação e não deve ser lido como benefício
   da seca.
-- **Menos de 2% dos anos perturbados ficam fora da faixa observada**, exceto
-  em TO (6,8% com +2 °C).
+- **Parte importante dos cenários é extrapolação.** Com +2 °C, a Tmax de
+  janeiro–fevereiro passa do máximo que o próprio município já viveu em 9% a
+  19% dos anos no Sul e no Centro-Oeste (SP 9%, MS 12%, RS 13%, MG e MT 15%,
+  PR 19%, GO 23%) e em 27% a 48% no Matopiba (BA 27%, MA 33%, TO 48%). Com
+  −20% de chuva, 5% a 16% dos anos ficam abaixo da menor chuva já registrada
+  no município. Comparar com o máximo do estado inteiro, como na versão
+  anterior, subestimava isso (menos de 2%).
+- **A curva de temperatura é côncava (com um ótimo) em nove estados e convexa
+  na BA**, onde o ajuste não é significativo; ali o aquecimento extrapolado
+  apareceria como ganho. Os valores da BA não devem ser interpretados.
 - Até 16/11/2026 estes cenários usavam um modelo de árvores sobre níveis
   absolutos de clima e davam ganho de produtividade com o aquecimento; aquele
   resultado está retirado (ver o docstring do `br_14`).
 
 ## 7. Solo (`br_11`)
 
+Nove termos de solo: argila, areia, matéria orgânica, pH, densidade e CTC da
+camada superficial, matéria orgânica da subsuperfície, Latossolo (sim/não) e
+água disponível no primeiro metro (`soil_aws_0_100cm`, script 43).
+
 | Estado | Municípios | R² do solo para o nível de produtividade (ajustado) | R² para a tendência | R² para a volatilidade |
 | --- | --- | --- | --- | --- |
-| PR | 363 | 0,33 (0,31) | 0,39 | 0,47 |
-| RS | 400 | 0,30 (0,28) | 0,26 | 0,32 |
-| MT | 102 | 0,31 (0,25) | 0,25 | 0,17 |
-| SP | 286 | 0,11 (0,09) | 0,24 | 0,11 |
-| GO | 169 | 0,09 (0,05) | 0,07 | 0,12 |
-| MS | 74 | 0,14 (0,04) | 0,28 | 0,27 |
-| MG | 153 | 0,08 (0,03) | 0,24 | 0,16 |
-| TO | 58 | 0,14 (0,00) | 0,43 | 0,36 |
-| MA | 27 | 0,33 (0,04) | 0,17 | 0,29 |
-| BA | 10 | 0,99 (0,97) | 0,92 | 0,89 |
+| RS | 400 | 0,35 (0,34) | 0,26 | 0,32 |
+| PR | 363 | 0,33 (0,31) | 0,39 | 0,49 |
+| MT | 102 | 0,31 (0,24) | 0,25 | 0,18 |
+| SP | 286 | 0,12 (0,09) | 0,25 | 0,13 |
+| MS | 74 | 0,14 (0,02) | 0,30 | 0,27 |
+| GO | 169 | 0,09 (0,04) | 0,10 | 0,16 |
+| MG | 153 | 0,09 (0,03) | 0,24 | 0,16 |
+| TO | 58 | 0,14 (−0,02) | 0,45 | 0,36 |
+| MA | 27 | 0,36 (0,02) | 0,19 | 0,38 |
+| BA | 10 | saturado | — | — |
 
-- **No PR, RS e MT o solo explica cerca de 30% da diferença de produtividade
-  média entre municípios**, e no PR quase metade da diferença de
-  volatilidade.
-- **O solo sozinho não prevê a anomalia de um ano** (ganho negativo em todos
-  os estados, tabela da seção 3). É o esperado: o solo é fixo no tempo.
-- **BA é sobreajuste** (10 municípios, 9 parâmetros). MA e TO têm R² ajustado
-  perto de zero.
-- Estes modelos já usam o SoilGrids preenchido (script 43). A água disponível
-  no solo (`soil_aws_0_100cm`) está no painel de modelagem, mas ainda não
-  entra no `br_11`.
+- **A água disponível só pesa no RS.** Lá ela é o termo de solo mais forte
+  para a produtividade média (+0,68 bu/acre por cm de água no primeiro metro,
+  p < 0,001) e eleva o R² do nível de 0,30 para 0,35. Nos outros nove estados
+  o coeficiente não é significativo (p de 0,12 em SP a 0,90 em MS). É coerente
+  com o RS ser o estado onde a seca mais explica a produtividade, e onde a
+  água disponível é mais baixa (mediana de 7 cm, contra 9 a 15 cm nos demais).
+- **No PR, RS e MT o solo explica cerca de um terço da diferença de
+  produtividade média entre municípios**, e no PR quase metade da diferença
+  de volatilidade.
+- **O solo não melhora a previsão ano a ano em nenhum estado**: o ganho de
+  incluir o solo no modelo de clima e processo fica entre −2,4 e +1,1 ponto
+  percentual. É o esperado para uma variável fixa no tempo.
+- **BA (10 municípios, 10 parâmetros) está saturada; MA e TO têm R² ajustado
+  perto de zero.** Não interprete esses três.
 
 ## 8. Irrigação (`br_16`, Censo Agropecuário 2017)
 
@@ -276,13 +292,176 @@ estado (10 grupos): o p é indicativo.
 - **Ondas de calor (WSDI) não têm efeito próprio** em nenhum dos dois países
   depois de controlar o SPEI.
 
+## 9b. Efeitos mês a mês e clima semanal (script 51)
+
+**Mourtzinis et al. (2015): efeito de cada mês da estação.** Mesmo painel e
+mesmos efeitos fixos da seção 9; meses de outubro a fevereiro no Brasil e de
+maio a setembro nos EUA. Variação da produtividade, em %:
+
+| Mês (Brasil) | +1 °C | +100 mm | Mês (EUA) | +1 °C | +100 mm |
+| --- | --- | --- | --- | --- | --- |
+| Out | +1,9 (p < 0,001) | −1,6 (0,28) | Mai | +0,2 (0,19) | +0,2 (0,86) |
+| Nov | −1,7 (0,25) | +1,4 (0,21) | Jun | +1,3 (0,001) | +1,8 (0,02) |
+| Dez | +1,4 (0,69) | +5,3 (0,08) | Jul | −0,5 (0,41) | +5,6 (0,002) |
+| Jan | **−3,0 (0,02)** | +3,5 (0,15) | Ago | **−3,1 (< 0,001)** | **+9,1 (< 0,001)** |
+| Fev | **−3,7 (0,002)** | +6,7 (0,09) | Set | +0,5 (0,17) | +0,6 (0,42) |
+
+- **O calor prejudica só no enchimento de grãos nos dois países**: janeiro e
+  fevereiro no Brasil, agosto nos EUA, com perdas parecidas (−3% a −4% por
+  °C). Calor no início da estação (outubro no Brasil, junho nos EUA) chega a
+  ajudar.
+- **A chuva importa mais no fim da estação.** Nos EUA o efeito cresce de junho
+  a agosto; no Brasil os coeficientes de dezembro a fevereiro são positivos e
+  grandes, mas imprecisos com 10 grupos de erro-padrão.
+- Isso confirma a escolha de janeiro–fevereiro e julho–agosto como janelas
+  críticas.
+
+**Khaki et al. (2020): o clima semana a semana prevê melhor?** O modelo
+original é uma rede CNN-RNN; aqui, com as mesmas entradas semanais (26
+semanas de Tmax, Tmin, chuva e VPD), comparei uma rede neural densa e um
+random forest com a regressão de Schlenker-Roberts. R² em anos fora do treino:
+
+| Modelo | Brasil | EUA |
+| --- | --- | --- |
+| Regressão de Schlenker-Roberts (4 termos) | 0,06 | 0,24 |
+| Random forest, clima semanal (104 entradas) | 0,15 | 0,16 |
+| Rede neural, clima semanal (104 entradas) | 0,01 | −0,04 |
+| Random forest, índices sazonais (26 entradas, seção 9) | 0,22 | 0,28 |
+
+- **O detalhe semanal não ajuda.** Nos dois países o random forest com índices
+  sazonais bem escolhidos (SPEI, dias secos, umidade do solo) supera o mesmo
+  modelo com 104 médias semanais, e a rede neural simples não aprende nada
+  útil. O ganho do trabalho de Khaki vem da arquitetura recorrente, do solo
+  por camada e do progresso de plantio, que não estão nesta comparação.
+
+## 9c. Quando a soja é semeada: Conab × ZARC (scripts 52 e 49)
+
+A Conab publica toda semana a fração da área de soja semeada e colhida em
+cada estado. A série coletada vai de abril de 2020 a novembro de 2026 e cobre
+5 a 6 safras completas por estado (colheitas de 2022 a 2027). Mediana entre
+safras do dia em que metade da área estava semeada e colhida, comparada com a
+data de menor risco do ZARC:
+
+| Estado | Conab: 50% semeado | Variação entre safras (dias após 1º set) | ZARC: menor risco | Conab − ZARC (dias) | Conab: 50% colhido | Ciclo (dias) |
+| --- | --- | --- | --- | --- | --- | --- |
+| MT | 18 out | 43–55 | 81 | −35 | 12 fev | 117 |
+| SP | 21 out | 49–56 | 76 | −26 | 7 mar | 137 |
+| MS | 23 out | 50–54 | 75 | −23 | 27 fev | 127 |
+| PR | 26 out | 52–59 | 71 | −17 | 9 mar | 134 |
+| GO | 5 nov | 54–70 | 85 | −20 | 1 mar | 116 |
+| MG | 11 nov | 62–80 | 79 | −8 | 9 mar | 118 |
+| TO | 12 nov | 62–76 | 91 | −20 | 4 mar | 112 |
+| BA | 17 nov | 67–84 | 64 | +13 | 19 mar | 122 |
+| RS | 23 nov | 79–90 | 83 | 0 | 21 abr | 149 |
+| MA | 1 dez | 80–108 | 148 | −57 | 19 mar | 108 |
+
+- **Na maior parte do país o agricultor semeia 2 a 5 semanas antes da data de
+  menor risco do ZARC.** Só no RS as duas coincidem, e na BA o plantio é mais
+  tardio. O ZARC indica a janela de menor risco climático, não a data
+  praticada, e não deve ser usado como data de semeadura.
+- **Com semeadura em outubro (MT, SP, MS, PR), o enchimento de grãos cai em
+  dezembro–janeiro**; no RS e no Matopiba, em janeiro–fevereiro. O RS tem o
+  ciclo mais longo (149 dias até 50% colhido).
+
+**Janela crítica móvel (script 49).** Em cada estado, a janela de
+janeiro–fevereiro foi substituída pelos dias 60 a 105 após a semeadura (uma
+suposição para R3–R6), usando a data do ZARC por município ou a data
+observada da Conab por estado. Mesmo modelo quadrático, mesmas linhas; R²
+dentro do município:
+
+| Estado | Janeiro–fevereiro | Janela pela data do ZARC | Janela pela data da Conab |
+| --- | --- | --- | --- |
+| RS | **0,402** | 0,347 | 0,362 |
+| PR | **0,213** | 0,208 | 0,211 |
+| MS | 0,172 | **0,186** | 0,143 |
+| MG | 0,046 | 0,033 | **0,050** |
+| SP | **0,045** | 0,038 | 0,043 |
+| MT | 0,017 | 0,023 | **0,034** |
+| TO | 0,034 | **0,045** | 0,028 |
+| GO | 0,020 | 0,016 | **0,023** |
+| BA | 0,025 | **0,115** | 0,045 |
+| MA | 0,017 | **0,063** | 0,045 |
+| Todos | **0,187** | 0,170 | 0,172 |
+
+- **Janeiro–fevereiro continua sendo a melhor janela no conjunto e nos dois
+  estados com sinal climático forte (RS e PR).** Posicionar a janela pela
+  semeadura, observada ou recomendada, não melhora o ajuste ali.
+- **Onde o sinal é fraco, qualquer janela posicionada pela semeadura ajuda um
+  pouco** (MT, Matopiba), mas o R² continua abaixo de 0,12.
+- Interpretação: o dano por calor e seca no enchimento de grãos se concentra
+  em janeiro–fevereiro em quase todo o país mesmo com semeaduras diferentes,
+  e a janela de 46 dias após uma data estadual única é estreita demais para a
+  dispersão de semeadura dentro de cada estado.
+
+## 9d. O NDVI melhora a previsão dentro da safra? (scripts 53 e 55)
+
+NDVI do MODIS (MOD13Q1, 250 m) no centroide de cada município, máximo e média
+das imagens de janeiro–fevereiro, colheitas de 2001 a 2025, para os três
+estados do Sul usados nos artigos de previsão (RS, PR e MS; 848
+municípios). O mesmo random forest da seção 9, com e sem o NDVI, nas mesmas
+linhas e com anos inteiros fora do treino. R² fora da amostra:
+
+| Estado | Municípios | Clima e seca | Clima, seca e NDVI | Ganho |
+| --- | --- | --- | --- | --- |
+| RS | 394 | 0,413 | 0,424 | +0,011 |
+| PR | 368 | 0,198 | 0,203 | +0,005 |
+| MS | 70 | 0,105 | 0,124 | +0,019 |
+| Os três juntos | 832 | 0,293 | 0,314 | +0,021 |
+
+- **O NDVI acrescenta pouco** (+0,005 a +0,021 de R²): a seca de
+  janeiro–fevereiro, que o NDVI registra, já está nos índices de clima (SPEI,
+  dias secos, umidade do solo). Schwalbert et al. (2020) encontraram ganho
+  maior com NDVI ao longo de toda a safra e com máscara de lavoura; aqui é um
+  pixel no centroide, que nem sempre é soja.
+- O NDVI só serve para previsão durante a safra, nunca para projeção.
+- Para os outros sete estados: `python scripts/53_download_modis_ndvi.py BR:SP
+  BR:GO ...` e depois o script 55 (cerca de 35 s por município).
+
+## 9e. Graus-dia acima de 30 °C com séries diárias de cenário (scripts 46 e 56)
+
+Séries diárias corrigidas do NEX-GDDP-CMIP6 (0,25°), um modelo
+(MPI-ESM1-2-LR), colheitas de 2005–2014 (histórico) contra 2051–2060
+(SSP5-8.5). A variação de graus-dia e chuva na estação é convertida em
+variação de produtividade pelos coeficientes de Schlenker-Roberts de cada
+país (seção 9). Medianas por estado:
+
+| Estado | Graus-dia > 30 °C, histórico | Variação | Variação de GDD 10–30 °C | Chuva | Produtividade | Municípios que pioram |
+| --- | --- | --- | --- | --- | --- | --- |
+| MT | 251 | +145 | +197 | −5% | **−17%** | 100% |
+| TO | 201 | +119 | +204 | −2% | **−12%** | 100% |
+| BA | 113 | +114 | +264 | +5% | −10% | 94% |
+| MA | 194 | +90 | +162 | +3% | −9% | 100% |
+| MS | 198 | +89 | +211 | +1% | −7% | 100% |
+| GO | 146 | +66 | +212 | +9% | −3% | 76% |
+| SP | 95 | +54 | +273 | +2% | −1% | 54% |
+| PR | 42 | +34 | +319 | 0% | +4% | 25% |
+| RS | 28 | +35 | +357 | −4% | +4% | 31% |
+| MG | 47 | +35 | +302 | +6% | +4% | 32% |
+
+- **Com séries diárias, o Centro-Oeste e o Matopiba são os mais
+  prejudicados** (MT −17%, TO −12%): já começam com muitos graus-dia acima de
+  30 °C e ganham mais 90 a 145.
+- **No Sul o resultado inverte o das projeções por deltas mensais (seção 5).**
+  O RS e o PR ganham ~4% porque o aumento de graus-dia benéficos (10–30 °C)
+  supera o de graus-dia acima de 30 °C, que partem de níveis baixos. As
+  projeções mensais da seção 5 usam o modelo quadrático de Tmax média, em que
+  o RS e o PR já estão acima do ótimo.
+- As duas abordagens respondem a perguntas diferentes e nenhuma é a resposta
+  final: a de graus-dia usa coeficientes do painel conjunto (os mesmos para
+  todos os estados), e a de deltas mensais não capta a mudança na frequência
+  de dias quentes. **Um modelo e dez anos não bastam para uma projeção**: o
+  objetivo aqui é demonstrar o método diário; para publicar, rode o script 46
+  com mais modelos e períodos de 30 anos.
+
 ## 10. Limites desta análise
 
 - **Um único ponto de clima por município**, o centroide, numa grade de
   ~50 km. Municípios grandes de MT, TO e MA são mal representados.
-- **A janela crítica é fixa em janeiro–fevereiro para todos os estados.** No
-  Matopiba e no norte de MT o plantio é mais tardio; uma janela por região,
-  definida pelo ZARC, pode mudar o resultado desses estados.
+- **A janela crítica é fixa em janeiro–fevereiro** em todas as tabelas acima.
+  Janelas posicionadas pela semeadura (seção 9c) melhoram o ajuste só onde o
+  sinal é fraco (MT e Matopiba), e pouco.
+- **A data de semeadura da Conab é estadual** e só cobre 2020–2026; o
+  deslocamento de 60 a 105 dias até o enchimento de grãos é suposto.
 - **1981 tem estação incompleta** (o NASA POWER começa em janeiro de 1981).
 - **A comparação EUA × Brasil (scripts `36` e `37`) usa a janela 1980–2025**;
   ver `results/_eda_us_brazil/EDA_REPORT.md`.

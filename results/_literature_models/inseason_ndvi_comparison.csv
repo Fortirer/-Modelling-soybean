@@ -1,0 +1,9 @@
+group,features,n,municipalities,years,r2_out_of_sample,rmse_log
+MS,weather and drought,1671,70,2001-2025,0.1052,0.3010
+MS,"weather, drought and NDVI",1671,70,2001-2025,0.1243,0.2977
+PR,weather and drought,9073,368,2001-2025,0.1977,0.2552
+PR,"weather, drought and NDVI",9073,368,2001-2025,0.2031,0.2543
+RS,weather and drought,9678,394,2001-2025,0.4134,0.3733
+RS,"weather, drought and NDVI",9678,394,2001-2025,0.4238,0.3700
+all with NDVI,weather and drought,20422,832,2001-2025,0.2934,0.3212
+all with NDVI,"weather, drought and NDVI",20422,832,2001-2025,0.3140,0.3165

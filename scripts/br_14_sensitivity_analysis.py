@@ -79,7 +79,17 @@ d = design(d)
 mdl = smf.ols("yield_anom ~ PCP + PCP2 + TMX + TMX2 + PT + C(muni)", data=d).fit(
     cov_type="cluster", cov_kwds={"groups": d.fips5})
 d["pred_baseline"] = mdl.predict(d).values
-TMAX_OBSERVED_MAX = float(d.tmax_critical.max())
+# extrapolation is judged against each municipio's OWN record: a cool
+# municipio pushed beyond anything it has seen is extrapolated even if the
+# state's hottest municipio has been hotter
+OWN_TMAX_MAX = d.groupby("fips5").tmax_critical.transform("max")
+OWN_PCP_MIN = d.groupby("fips5").pcp_critical.transform("min")
+# shape of the fitted temperature response: concave (an optimum) or convex
+# (a minimum, so warming beyond it is extrapolated as a GAIN)
+TMX2_COEF = float(mdl.params["TMX2"])
+TMX2_P = float(mdl.pvalues["TMX2"])
+SHAPE = "concave" if TMX2_COEF < 0 else "convex (vertex is a minimum)"
+print(f"[br14] fitted temperature response: TMX2 = {TMX2_COEF:+.4f} (p={TMX2_P:.3f}), {SHAPE}")
 
 
 def perturb(df, dT_C=0.0, dP_pct=0.0):
@@ -99,7 +109,10 @@ for name, (dT, dP) in SCEN.items():
                     mean_delta_bu=float(dl.mean()),
                     pct_of_mean_yield=float(dl.mean() / d.yield_bu_ac.mean() * 100),
                     p10=float(dl.quantile(.1)), p90=float(dl.quantile(.9)),
-                    out_of_range_pct=float((shifted.tmax_critical > TMAX_OBSERVED_MAX).mean() * 100),
+                    tmax_beyond_own_record_pct=float(
+                        (shifted.tmax_critical > OWN_TMAX_MAX).mean() * 100),
+                    pcp_below_own_record_pct=float(
+                        (shifted.pcp_critical < OWN_PCP_MIN).mean() * 100),
                     municipios_worse=int((d.groupby("fips5")[f"pred_{name}"].mean()
                                          - d.groupby("fips5").pred_baseline.mean() < 0).sum())))
 S = pd.DataFrame(out).round(4)
@@ -164,6 +177,10 @@ for n, (key, ttl) in enumerate([
     save(f, FIG / f"fig_br{n}_scenario_{key.split()[0].lower()}.png")
 
 json.dump({"scenarios": {k: dict(delta_T_C=v[0], delta_P_pct=v[1]) for k, v in SCEN.items()},
+          "estimator": "quadratic panel with municipio fixed effects (same as br_13)",
+          "temperature_response": dict(tmx2=TMX2_COEF, tmx2_p=TMX2_P, shape=SHAPE),
+          "extrapolation": "shares of perturbed rows beyond each municipio's own "
+                           "observed Tmax maximum / precipitation minimum",
           "note": "no Palmer Z-index for Brazil -- moisture sensitivity built from "
                   "pcp_critical directly, not a drought index (see br_05)",
           "disclaimer": "Sensitivity experiments. Uniform perturbations of observed "

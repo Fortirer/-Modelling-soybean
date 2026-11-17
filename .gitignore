@@ -43,3 +43,10 @@ data/raw/global/nldas_cache/
 data/raw/global/era5land_cache/
 data/raw/**/*.tmp.gz
 .pytest_cache/
+
+# MODIS per-municipality download cache for script 53 (resumable)
+data/raw/**/modis_cache/
+
+# Weekly in-season weather for script 51 (26 weeks x 4 variables, ~150 MB in
+# total): rebuilt in a few minutes by script 50 from the daily files
+data/processed/**/weekly_weather_features.csv

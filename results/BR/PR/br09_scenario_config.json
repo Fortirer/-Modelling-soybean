@@ -25,6 +25,13 @@
       "delta_P_pct": -20
     }
   },
+  "estimator": "quadratic panel with municipio fixed effects (same as br_13)",
+  "temperature_response": {
+    "tmx2": -0.42902183678512096,
+    "tmx2_p": 4.480177410131269e-102,
+    "shape": "concave"
+  },
+  "extrapolation": "shares of perturbed rows beyond each municipio's own observed Tmax maximum / precipitation minimum",
   "note": "no Palmer Z-index for Brazil -- moisture sensitivity built from pcp_critical directly, not a drought index (see br_05)",
   "disclaimer": "Sensitivity experiments. Uniform perturbations of observed climate. Not CMIP6/IPCC projections and carry no probability information."
 }

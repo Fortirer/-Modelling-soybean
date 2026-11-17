@@ -1,0 +1,171 @@
+state,operation,season,weeks,first_pct,last_pct,day50_from_sep1,day50_5yr_mean_from_sep1
+Bahia,colheita,2020,9,90.0,100.0,,
+Bahia,colheita,2022,29,0.0,100.0,199.0,
+Bahia,colheita,2023,38,0.0,100.0,206.2,
+Bahia,colheita,2024,38,0.0,100.0,212.0,
+Bahia,colheita,2025,27,0.0,100.0,188.0,
+Bahia,colheita,2026,27,0.0,100.0,197.5,202.3
+Bahia,semeadura,2020,9,100.0,100.0,,
+Bahia,semeadura,2021,1,0.0,0.0,,
+Bahia,semeadura,2022,42,2.0,100.0,68.3,
+Bahia,semeadura,2023,52,0.0,100.0,78.1,
+Bahia,semeadura,2024,52,0.0,100.0,83.6,
+Bahia,semeadura,2025,29,0.0,100.0,79.2,
+Bahia,semeadura,2026,25,0.0,100.0,75.0,80.6
+Bahia,semeadura,2027,10,0.0,74.0,67.2,
+Goiás,colheita,2020,9,100.0,100.0,,
+Goiás,colheita,2022,29,0.0,100.0,176.6,
+Goiás,colheita,2023,38,0.0,100.0,180.9,
+Goiás,colheita,2024,38,0.0,100.0,182.4,
+Goiás,colheita,2025,27,0.0,100.0,178.4,
+Goiás,colheita,2026,27,0.0,100.0,184.3,183.2
+Goiás,semeadura,2020,9,100.0,100.0,,
+Goiás,semeadura,2021,1,1.0,1.0,,
+Goiás,semeadura,2022,42,13.0,100.0,54.3,
+Goiás,semeadura,2023,52,0.0,100.0,66.1,
+Goiás,semeadura,2024,52,0.0,100.0,69.2,
+Goiás,semeadura,2025,29,0.0,100.0,63.3,
+Goiás,semeadura,2026,25,0.0,100.0,70.2,64.5
+Goiás,semeadura,2027,10,0.0,86.0,55.7,61.3
+Maranhão,colheita,2020,9,70.0,100.0,,
+Maranhão,colheita,2022,29,0.0,100.0,195.8,
+Maranhão,colheita,2023,38,0.0,100.0,199.0,
+Maranhão,colheita,2024,37,0.0,100.0,223.2,
+Maranhão,colheita,2025,27,0.0,100.0,188.0,
+Maranhão,colheita,2026,27,0.0,100.0,219.4,209.6
+Maranhão,semeadura,2020,9,100.0,100.0,,
+Maranhão,semeadura,2021,1,0.0,0.0,,
+Maranhão,semeadura,2022,42,0.0,100.0,80.0,
+Maranhão,semeadura,2023,52,0.0,100.0,87.0,
+Maranhão,semeadura,2024,52,0.0,100.0,99.0,
+Maranhão,semeadura,2025,29,0.0,100.0,91.0,
+Maranhão,semeadura,2026,25,0.0,100.0,107.7,94.6
+Maranhão,semeadura,2027,10,0.0,31.0,,
+Mato Grosso,colheita,2020,9,100.0,100.0,,
+Mato Grosso,colheita,2022,29,1.0,100.0,160.1,
+Mato Grosso,colheita,2023,38,0.1,100.0,166.5,
+Mato Grosso,colheita,2024,38,0.1,100.0,164.0,
+Mato Grosso,colheita,2025,27,0.1,100.0,168.0,
+Mato Grosso,colheita,2026,27,0.0,100.0,160.6,161.6
+Mato Grosso,semeadura,2020,9,100.0,100.0,,
+Mato Grosso,semeadura,2021,2,1.1,6.2,,
+Mato Grosso,semeadura,2022,42,21.2,100.0,46.5,
+Mato Grosso,semeadura,2023,52,1.5,100.0,46.6,
+Mato Grosso,semeadura,2024,52,0.3,100.0,46.6,
+Mato Grosso,semeadura,2025,29,0.0,100.0,54.9,
+Mato Grosso,semeadura,2026,25,0.0,100.0,50.2,47.4
+Mato Grosso,semeadura,2027,10,0.0,99.0,42.9,45.8
+Mato Grosso do Sul,colheita,2020,9,100.0,100.0,,
+Mato Grosso do Sul,colheita,2022,29,0.0,100.0,178.7,
+Mato Grosso do Sul,colheita,2023,38,0.0,100.0,188.7,
+Mato Grosso do Sul,colheita,2024,38,0.0,100.0,177.3,
+Mato Grosso do Sul,colheita,2025,27,0.0,100.0,178.8,
+Mato Grosso do Sul,colheita,2026,27,0.0,100.0,180.0,183.6
+Mato Grosso do Sul,semeadura,2020,9,100.0,100.0,,
+Mato Grosso do Sul,semeadura,2021,2,1.0,6.9,,
+Mato Grosso do Sul,semeadura,2022,42,19.8,100.0,54.0,
+Mato Grosso do Sul,semeadura,2023,52,2.7,100.0,51.3,
+Mato Grosso do Sul,semeadura,2024,52,0.0,100.0,53.3,
+Mato Grosso do Sul,semeadura,2025,29,0.0,100.0,51.8,
+Mato Grosso do Sul,semeadura,2026,25,0.0,100.0,52.6,50.2
+Mato Grosso do Sul,semeadura,2027,10,0.0,95.0,49.8,48.8
+Minas Gerais,colheita,2020,9,100.0,100.0,,
+Minas Gerais,colheita,2022,29,0.0,100.0,187.8,
+Minas Gerais,colheita,2023,38,0.0,100.0,188.7,
+Minas Gerais,colheita,2024,38,0.0,100.0,196.0,
+Minas Gerais,colheita,2025,27,0.0,100.0,185.7,
+Minas Gerais,colheita,2026,27,0.0,100.0,192.9,191.9
+Minas Gerais,semeadura,2020,9,100.0,100.0,,
+Minas Gerais,semeadura,2021,1,0.0,0.0,,
+Minas Gerais,semeadura,2022,42,0.0,100.0,62.0,
+Minas Gerais,semeadura,2023,52,0.0,100.0,71.0,
+Minas Gerais,semeadura,2024,52,0.0,100.0,79.6,
+Minas Gerais,semeadura,2025,29,0.0,100.0,70.6,
+Minas Gerais,semeadura,2026,25,0.0,100.0,75.4,72.7
+Minas Gerais,semeadura,2027,10,0.0,81.3,62.9,67.4
+Paraná,colheita,2020,9,99.0,100.0,,
+Paraná,colheita,2022,29,0.0,100.0,190.6,
+Paraná,colheita,2023,38,0.0,100.0,196.4,
+Paraná,colheita,2024,38,0.0,100.0,182.4,
+Paraná,colheita,2025,27,0.0,100.0,181.6,
+Paraná,colheita,2026,27,0.0,100.0,189.0,191.9
+Paraná,semeadura,2020,9,100.0,100.0,,
+Paraná,semeadura,2021,2,3.0,7.0,,
+Paraná,semeadura,2022,42,16.0,100.0,55.8,
+Paraná,semeadura,2023,52,6.0,100.0,59.3,
+Paraná,semeadura,2024,52,1.0,100.0,55.8,
+Paraná,semeadura,2025,29,0.0,100.0,52.0,
+Paraná,semeadura,2026,25,1.0,100.0,52.9,51.6
+Paraná,semeadura,2027,10,1.0,79.0,53.4,50.4
+Pará,semeadura,2026,1,20.0,20.0,,
+Pará,semeadura,2027,2,10.0,20.0,,
+Piauí,colheita,2020,9,92.0,100.0,,
+Piauí,colheita,2022,29,0.0,100.0,202.4,
+Piauí,colheita,2023,38,0.0,100.0,205.0,
+Piauí,colheita,2024,38,0.0,100.0,214.3,
+Piauí,colheita,2025,27,0.0,100.0,200.5,
+Piauí,colheita,2026,27,0.0,100.0,208.0,208.5
+Piauí,semeadura,2020,9,100.0,100.0,,
+Piauí,semeadura,2021,1,0.0,0.0,,
+Piauí,semeadura,2022,42,0.0,100.0,80.0,
+Piauí,semeadura,2023,52,0.0,100.0,81.6,
+Piauí,semeadura,2024,52,0.0,100.0,94.2,
+Piauí,semeadura,2025,29,0.0,100.0,84.0,
+Piauí,semeadura,2026,25,0.0,100.0,87.0,86.3
+Piauí,semeadura,2027,10,0.0,20.0,,
+Rio Grande do Sul,colheita,2020,9,61.0,100.0,,
+Rio Grande do Sul,colheita,2022,29,0.0,100.0,231.9,
+Rio Grande do Sul,colheita,2023,38,0.0,100.0,233.9,
+Rio Grande do Sul,colheita,2024,38,0.0,100.0,234.6,
+Rio Grande do Sul,colheita,2025,27,0.0,100.0,225.2,225.8
+Rio Grande do Sul,colheita,2026,27,0.0,100.0,227.8,228.9
+Rio Grande do Sul,semeadura,2020,9,100.0,100.0,,
+Rio Grande do Sul,semeadura,2021,1,0.0,0.0,,
+Rio Grande do Sul,semeadura,2022,42,0.0,100.0,79.4,
+Rio Grande do Sul,semeadura,2023,52,0.0,100.0,82.6,
+Rio Grande do Sul,semeadura,2024,52,0.0,100.0,90.1,
+Rio Grande do Sul,semeadura,2025,29,0.0,100.0,84.7,
+Rio Grande do Sul,semeadura,2026,25,0.0,100.0,83.2,86.6
+Rio Grande do Sul,semeadura,2027,10,0.0,37.0,,
+Santa Catarina,colheita,2020,9,93.0,100.0,,
+Santa Catarina,colheita,2022,29,0.0,100.0,197.7,
+Santa Catarina,colheita,2023,38,0.0,100.0,229.9,
+Santa Catarina,colheita,2024,38,0.0,100.0,226.7,
+Santa Catarina,colheita,2025,27,0.0,100.0,206.4,
+Santa Catarina,colheita,2026,27,0.0,100.0,223.0,218.0
+Santa Catarina,semeadura,2020,9,100.0,100.0,,
+Santa Catarina,semeadura,2021,1,4.4,4.4,,
+Santa Catarina,semeadura,2022,42,14.4,100.0,67.8,
+Santa Catarina,semeadura,2023,52,6.0,100.0,81.1,
+Santa Catarina,semeadura,2024,52,0.0,100.0,76.8,
+Santa Catarina,semeadura,2025,29,0.0,100.0,75.0,
+Santa Catarina,semeadura,2026,25,0.0,100.0,80.8,80.1
+Santa Catarina,semeadura,2027,10,0.0,55.0,70.7,
+São Paulo,colheita,2020,9,100.0,100.0,,
+São Paulo,colheita,2022,29,0.0,100.0,186.8,
+São Paulo,colheita,2023,38,0.0,100.0,194.5,
+São Paulo,colheita,2024,38,0.0,100.0,185.8,
+São Paulo,colheita,2025,27,0.0,100.0,184.2,
+São Paulo,colheita,2026,27,0.0,100.0,194.0,191.0
+São Paulo,semeadura,2020,9,100.0,100.0,,
+São Paulo,semeadura,2021,2,5.0,10.0,,
+São Paulo,semeadura,2022,42,20.0,100.0,54.8,
+São Paulo,semeadura,2023,52,2.0,100.0,49.2,
+São Paulo,semeadura,2024,52,0.0,100.0,49.2,
+São Paulo,semeadura,2025,29,0.0,100.0,51.3,
+São Paulo,semeadura,2026,25,0.0,100.0,56.3,49.9
+São Paulo,semeadura,2027,10,0.0,95.0,49.2,48.4
+Tocantins,colheita,2020,9,96.0,100.0,,
+Tocantins,colheita,2022,29,0.0,100.0,174.5,
+Tocantins,colheita,2023,38,0.0,100.0,184.0,
+Tocantins,colheita,2024,38,0.0,100.0,189.2,
+Tocantins,colheita,2025,27,0.0,100.0,178.7,
+Tocantins,colheita,2026,27,0.0,100.0,184.2,186.0
+Tocantins,semeadura,2020,9,100.0,100.0,,
+Tocantins,semeadura,2021,1,0.0,0.0,,
+Tocantins,semeadura,2022,42,2.0,100.0,61.8,
+Tocantins,semeadura,2023,52,0.0,100.0,74.3,
+Tocantins,semeadura,2024,52,0.0,100.0,76.0,
+Tocantins,semeadura,2025,29,0.0,100.0,72.3,
+Tocantins,semeadura,2026,25,0.0,100.0,70.6,74.3
+Tocantins,semeadura,2027,10,0.0,55.0,71.2,69.6
