@@ -112,6 +112,36 @@ def correlations(panel: pd.DataFrame, country: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def write_excel(coverage_table: pd.DataFrame) -> None:
+    """Coverage table plus a metadata sheet describing every column."""
+    from openpyxl.styles import Alignment, Font
+
+    from _inventory_metadata import COVERAGE_METADATA, METADATA_COLUMNS
+
+    metadata = pd.DataFrame(COVERAGE_METADATA, columns=METADATA_COLUMNS)
+    missing = set(coverage_table.columns) - set(metadata.column)
+    if missing:
+        raise SystemExit(f"columns without metadata: {sorted(missing)}")
+    path = OUT / "state_coverage.xlsx"
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        coverage_table.to_excel(writer, sheet_name="coverage", index=False)
+        metadata.to_excel(writer, sheet_name="metadata", index=False)
+        widths = {"coverage": {}, "metadata": {"A": 20, "B": 28, "C": 26, "D": 30, "E": 34,
+                                               "F": 40, "G": 70, "H": 70}}
+        for name, sheet in writer.sheets.items():
+            sheet.freeze_panes = "C2" if name == "coverage" else "B2"
+            for cell in sheet[1]:
+                cell.font = Font(bold=True)
+            for column, width in widths[name].items():
+                sheet.column_dimensions[column].width = width
+            if name == "metadata":
+                for row in sheet.iter_rows(min_row=2):
+                    for cell in row:
+                        cell.alignment = Alignment(wrap_text=True, vertical="top")
+    log_path = path.relative_to(ROOT)
+    print(f"-> {log_path}")
+
+
 def main() -> None:
     cov, desc, cor = [], [], []
     for country in ["US", "BR"]:
@@ -126,6 +156,8 @@ def main() -> None:
         with pd.option_context("display.width", 250, "display.max_columns", 40):
             print(f"\n=== {name} ===")
             print(table.round(2).to_string(index=False))
+        if name == "coverage":
+            write_excel(table)
 
 
 if __name__ == "__main__":
